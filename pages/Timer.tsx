@@ -7,6 +7,16 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 
 const HOURS = 60*60
 
+function formatTime(time) {
+  const hours = Math.floor(time / 3600)
+  const minutes = Math.floor((time % 3600) / 60)
+  const seconds = time % 60
+
+  const pad = (num) => `0${num}`.slice(-2)
+
+  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+}
+
 export default function Timer() {
   const [countdownReset, setCountdownReset] = useState(0);
   const resetCountdown = () => setCountdownReset(countdownReset + 1)
@@ -55,15 +65,9 @@ export default function Timer() {
         trailColor="#dddddd"
       >
         {({ remainingTime }) => {
-          const hours = Math.floor(remainingTime / 3600)
-          const minutes = Math.floor((remainingTime % 3600) / 60)
-          const seconds = remainingTime % 60
-
-          const pad = (num) => `0${num}`.slice(-2)
-
           return (
             <div style={{ fontSize: '1.5rem' }}>
-              {pad(hours)}:{pad(minutes)}:{pad(seconds)}
+              {formatTime(remainingTime)}
             </div>
           );
         }}
