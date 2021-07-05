@@ -50,7 +50,7 @@ export default function Timer() {
         }}
         isPlaying={isRunning}
         duration={30}
-        direction="counterclockwise"
+        rotation="counterclockwise"
         colors="#3f51b5"
         trailColor="#dddddd"
       >
