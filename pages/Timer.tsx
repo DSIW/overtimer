@@ -7,10 +7,10 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 
 const HOURS = 60*60
 
-function formatTime(time) {
-  const hours = Math.floor(time / 3600)
-  const minutes = Math.floor((time % 3600) / 60)
-  const seconds = time % 60
+function formatTime(seconds: number) {
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const seconds = seconds % 60
 
   const pad = (num) => `0${num}`.slice(-2)
 
