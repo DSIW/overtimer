@@ -49,7 +49,7 @@ export default function Timer() {
           return [false] // do not repeat
         }}
         isPlaying={isRunning}
-        duration={30}
+        duration={8*HOURS}
         rotation="counterclockwise"
         colors="#3f51b5"
         trailColor="#dddddd"
