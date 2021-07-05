@@ -1,7 +1,7 @@
 {
   "name": "Overtimer",
   "short_name": "Overtimer",
-  "theme_color": "#607d8b",
+  "theme_color": "#3f51b5",
   "background_color": "#2196f3",
   "display": "standalone",
   "scope": "/",
