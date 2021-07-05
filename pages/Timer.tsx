@@ -56,7 +56,7 @@ export default function Timer() {
       <CountdownCircleTimer
         key={countdownReset}
         onComplete={() => {
-          return [false] // do not repeat
+          return [false, 0] // do not repeat
         }}
         isPlaying={isRunning}
         duration={8*HOURS}
