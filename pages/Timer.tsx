@@ -4,6 +4,9 @@ import { formatDuration } from 'date-fns'
 import { useStopwatch } from 'react-timer-hook'
 import useInterval from '@use-it/interval'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import TimeLog from './TimeLog'
+import TimeLogTable from './TimeLogTable'
+import { timeLogRepository } from './TimeLogRepository'
 
 const HOURS = 60*60
 
@@ -20,6 +23,12 @@ function formatTime(num: number) {
 export default function Timer() {
   const [countdownReset, setCountdownReset] = useState(0);
   const resetCountdown = () => setCountdownReset(countdownReset + 1)
+
+  const [timeLogs, setTimeLogs] = useState<TimeLog[]>([])
+
+  useEffect(() => {
+    setTimeLogs(timeLogRepository.all())
+  }, []);
 
   const {
     seconds,
@@ -39,11 +48,19 @@ export default function Timer() {
 
   const resetable = !isRunning && formattedTime
 
+  const currentTimeLog = timeLogs[0];
+
   function handleStartStop() {
     if (isRunning) {
       pause()
+      const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
+      timeLogRepository.updateLast(updatedTimeLog)
+      setTimeLogs(timeLogRepository.all())
     } else {
       start()
+      const newTimeLog = new TimeLog({startTime: new Date(), endTime: null})
+      timeLogRepository.save(newTimeLog)
+      setTimeLogs(timeLogRepository.all())
     }
   }
 
@@ -81,6 +98,8 @@ export default function Timer() {
       <Button variant="outlined" color="primary" disabled={!resetable} onClick={handleReset} style={{ marginTop: '1rem' }}>
         Reset
       </Button>
+
+      <TimeLogTable timeLogs={timeLogs} />
     </>
   )
 }
