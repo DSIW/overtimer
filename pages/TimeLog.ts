@@ -27,18 +27,20 @@ export default class TimeLog {
   }
 
   getDuration(): number {
-    if (this.isRunning()) {
+    if (this.endTime === null) {
       return DURATION_ZERO
     }
 
+    // @ts-ignore
     return this.endTime - this.startTime
   }
 
   getOverworkDuration(): number {
-    if (this.isRunning()) {
+    if (this.endTime === null) {
       return DURATION_ZERO
     }
 
+    // @ts-ignore
     return subHours(this.endTime, WORK_HOURS) - this.startTime
   }
 }

@@ -19,7 +19,7 @@ export default function TimerLogTable({ timeLogs }: Props) {
       <tbody>
         {timeLogs.length === 0 && <div>No entries</div>}
         {timeLogs.map((timeLog: TimeLog) => (
-          <TimeLogTableRow timeLog={timeLog} />
+          <TimeLogTableRow key={`${timeLog.startTime}-${timeLog.endTime}`} timeLog={timeLog} />
         ))}
       </tbody>
     </table>

@@ -15,7 +15,7 @@ export default class TimeLogRepository {
     this.timeLogs = [timeLog, ...this.timeLogs]
   }
 
-  updateLast(timeLog: TimeLogs) {
+  updateLast(timeLog: TimeLog) {
     const [_, ...previousTimeLogs] = this.timeLogs
     this.timeLogs = [timeLog, ...previousTimeLogs]
   }

@@ -4,7 +4,7 @@ import TimeLog from './TimeLog'
 const TIME_FORMAT = "yyyy-MM-dd HH:mm"
 
 interface Props {
-  timeLogs: TimeLog[];
+  timeLog: TimeLog;
 }
 
 function parseMs(milliseconds: number) {
