@@ -19,7 +19,7 @@ export default function TimerLogTableRow({ timeLog }: Props) {
       <TableCell>{format(timeLog.startTime, TIME_FORMAT)}</TableCell>
       <TableCell>{timeLog.endTime ? format(timeLog.endTime, TIME_FORMAT) : 'Running'}</TableCell>
       <TableCell><Duration milliseconds={duration} zero=">0 m" /></TableCell>
-      <TableCell><Duration milliseconds={overworkDuration} zero="0m" /></TableCell>
+      <TableCell><Duration milliseconds={overworkDuration} zero="0 m" /></TableCell>
     </TableRow>
   )
 }
