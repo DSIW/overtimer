@@ -1,7 +1,7 @@
 import { subHours } from 'date-fns'
 
 const WORK_HOURS = 8
-
+const HOURS_TO_MILLISECONDS = 60*60*1000
 const DURATION_ZERO = 0
 
 interface Fields {
@@ -18,6 +18,10 @@ export default class TimeLog {
     this.endTime = fields.endTime
   }
 
+  static getTotalWorkMs() {
+    return WORK_HOURS*HOURS_TO_MILLISECONDS;
+  }
+
   isRunning() {
     return this.endTime === null
   }
@@ -26,21 +30,31 @@ export default class TimeLog {
     return !this.isRunning()
   }
 
-  getDuration(): number {
+  getElapsedMs(): number {
     if (this.endTime === null) {
-      return DURATION_ZERO
+      return +new Date() - +this.startTime
     }
 
-    // @ts-ignore
-    return this.endTime - this.startTime
+    return +this.endTime - +this.startTime
   }
 
-  getOverworkDuration(): number {
+  getWorkTimeMs(): number {
+    return TimeLog.getTotalWorkMs() - this.getElapsedMs()
+  }
+
+  getDurationMs(): number {
     if (this.endTime === null) {
       return DURATION_ZERO
     }
 
-    // @ts-ignore
-    return subHours(this.endTime, WORK_HOURS) - this.startTime
+    return +this.endTime - +this.startTime
+  }
+
+  getOverworkDurationMs(): number {
+    if (this.endTime === null) {
+      return DURATION_ZERO
+    }
+
+    return +subHours(this.endTime, WORK_HOURS) - +this.startTime
   }
 }

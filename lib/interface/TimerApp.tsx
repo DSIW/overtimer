@@ -1,62 +1,42 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
 import { formatDuration } from 'date-fns'
 import { useStopwatch } from 'react-timer-hook'
-import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import TimeLog from '../domain/TimeLog'
 import TimeLogTable from './TimeLogTable'
 import { timeLogRepository } from '../infrastructure/TimeLogRepository'
+import Timer from './Timer'
 
-const HOURS = 60*60
-
-function formatTime(num: number) {
-  const hours = Math.floor(num / 3600)
-  const minutes = Math.floor((num % 3600) / 60)
-  const seconds = num % 60
-
-  const pad = (num: number) => `0${num}`.slice(-2)
-
-  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
-}
-
-export default function Timer() {
-  const [countdownReset, setCountdownReset] = useState(0);
-  const resetCountdown = () => setCountdownReset(countdownReset + 1)
-
+export default function TimerApp() {
   const [timeLogs, setTimeLogs] = useState<TimeLog[]>([])
+  const [currentTimeLog, setCurrentTimeLog] = useState<TimeLog | null>(null)
+
+  const elapsedMs = currentTimeLog?.getElapsedMs() || 0
 
   useEffect(() => {
     setTimeLogs(timeLogRepository.all())
   }, []);
 
   const {
-    seconds,
-    minutes,
-    hours,
-    days,
     isRunning,
     start,
     pause,
     reset,
   } = useStopwatch({ autoStart: false });
 
-  const duration = { seconds, minutes, hours, days };
-  
-  const formattedTime = formatDuration(duration)
-
-  const resetable = !isRunning && formattedTime
-
-  const currentTimeLog = timeLogs[0];
+  const resetable = !isRunning
 
   function handleStartStop() {
-    if (isRunning) {
+    if (isRunning && currentTimeLog) {
       pause()
       const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
+      setCurrentTimeLog(updatedTimeLog)
       timeLogRepository.updateLast(updatedTimeLog)
       setTimeLogs(timeLogRepository.all())
     } else {
       start()
       const newTimeLog = new TimeLog({startTime: new Date(), endTime: null})
+      setCurrentTimeLog(newTimeLog)
       timeLogRepository.save(newTimeLog)
       setTimeLogs(timeLogRepository.all())
     }
@@ -64,30 +44,12 @@ export default function Timer() {
 
   function handleReset() {
     reset(0, false)
-    resetCountdown()
+    setCurrentTimeLog(null)
   }
 
   return (
     <>
-      <CountdownCircleTimer
-        key={countdownReset}
-        onComplete={() => {
-          return [false, 0] // do not repeat
-        }}
-        isPlaying={isRunning}
-        duration={8*HOURS}
-        rotation="counterclockwise"
-        colors="#3f51b5"
-        trailColor="#dddddd"
-      >
-        {({ remainingTime }) => {
-          return (
-            <div style={{ fontSize: '1.5rem' }}>
-              {remainingTime && formatTime(remainingTime)}
-            </div>
-          );
-        }}
-      </CountdownCircleTimer>
+      <Timer elapsedMs={elapsedMs} />
 
       <Button variant="contained" color="primary" onClick={handleStartStop} style={{ marginTop: '1rem' }}>
         {isRunning ? 'Stop' : 'Start'}
