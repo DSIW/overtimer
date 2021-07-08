@@ -7,7 +7,7 @@ interface Props {
 
 export default function Duration({ milliseconds, zero }: Props) {
   if (milliseconds === 0 && zero) {
-    return zero
+    return <span>{zero}</span>
   }
 
   const { hours, minutes, seconds } = parseMs(milliseconds)
