@@ -1,7 +1,7 @@
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import TimeLog from '../domain/TimeLog';
-import { formatTime } from './time-utils';
+import Time from './Time';
 
 interface Props {
   elapsedMs: number;
@@ -22,7 +22,7 @@ export default function Timer({ elapsedMs }: Props) {
           pathColor: BLUE,
           trailColor: GRAY
         })}>
-          <div style={{ color: BLUE, fontSize: '2em' }}>{formatTime(workTimeMs)}</div>
+          <div style={{ color: BLUE, fontSize: '2em' }}><Time milliseconds={workTimeMs} /></div>
         </CircularProgressbarWithChildren>
       </div>
     </>

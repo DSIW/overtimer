@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import TimeLog from '../domain/TimeLog'
-import { formatDuration } from './time-utils'
+import Duration from './Duration'
 
 const TIME_FORMAT = "yyyy-MM-dd HH:mm"
 
@@ -17,8 +17,8 @@ export default function TimerLogTableRow({ timeLog }: Props) {
     <tr>
       <td>{format(timeLog.startTime, TIME_FORMAT)}</td>
       <td>{timeLog.endTime ? format(timeLog.endTime, TIME_FORMAT) : 'Running'}</td>
-      <td>{formatDuration(duration)}</td>
-      <td>{formatDuration(overworkDuration)}</td>
+      <td><Duration milliseconds={duration} /></td>
+      <td><Duration milliseconds={overworkDuration} /></td>
     </tr>
   )
 }
