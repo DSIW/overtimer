@@ -55,7 +55,7 @@ export default function TimerApp() {
         {isRunning ? 'Stop' : 'Start'}
       </Button>
 
-      <Button variant="outlined" color="primary" disabled={!resetable} onClick={handleReset} style={{ marginTop: '1rem' }}>
+      <Button variant="outlined" color="primary" disabled={!resetable} onClick={handleReset} style={{ marginTop: '1rem', marginBottom: '2rem' }}>
         Reset
       </Button>
 

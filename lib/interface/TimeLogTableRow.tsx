@@ -1,3 +1,4 @@
+import { TableRow, TableCell } from '@material-ui/core'
 import { format } from 'date-fns'
 import TimeLog from '../domain/TimeLog'
 import Duration from './Duration'
@@ -14,11 +15,11 @@ export default function TimerLogTableRow({ timeLog }: Props) {
   const overworkDuration = timeLog.getOverworkDurationMs()
 
   return (
-    <tr>
-      <td>{format(timeLog.startTime, TIME_FORMAT)}</td>
-      <td>{timeLog.endTime ? format(timeLog.endTime, TIME_FORMAT) : 'Running'}</td>
-      <td><Duration milliseconds={duration} /></td>
-      <td><Duration milliseconds={overworkDuration} /></td>
-    </tr>
+    <TableRow>
+      <TableCell>{format(timeLog.startTime, TIME_FORMAT)}</TableCell>
+      <TableCell>{timeLog.endTime ? format(timeLog.endTime, TIME_FORMAT) : 'Running'}</TableCell>
+      <TableCell><Duration milliseconds={duration} zero=">0 m" /></TableCell>
+      <TableCell><Duration milliseconds={overworkDuration} zero="0m" /></TableCell>
+    </TableRow>
   )
 }

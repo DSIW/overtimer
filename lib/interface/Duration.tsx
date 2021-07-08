@@ -2,10 +2,11 @@ import parseMs from "./parse-ms"
 
 interface Props {
   milliseconds: number;
+  zero: string;
 }
 
-export default function Duration({ milliseconds }: Props) {
-  let formattedDuration = ">0 m"
+export default function Duration({ milliseconds, zero }: Props) {
+  let formattedDuration = zero;
 
   const { hours, minutes, seconds } = parseMs(milliseconds)
 
