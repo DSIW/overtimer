@@ -14,8 +14,8 @@ export default function TimerLogTable({ timeLogs }: Props) {
           <TableRow>
             <TableCell>Start</TableCell>
             <TableCell>End</TableCell>
-            <TableCell>Duration</TableCell>
-            <TableCell>Overtime</TableCell>
+            <TableCell align="right">Duration</TableCell>
+            <TableCell align="right">Overtime</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
