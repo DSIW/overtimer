@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
 import { formatDuration } from 'date-fns'
 import { useStopwatch } from 'react-timer-hook'
-import useInterval from '@use-it/interval'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
-import TimeLog from './TimeLog'
+import TimeLog from '../domain/TimeLog'
 import TimeLogTable from './TimeLogTable'
-import { timeLogRepository } from './TimeLogRepository'
+import { timeLogRepository } from '../infrastructure/TimeLogRepository'
 
 const HOURS = 60*60
 
@@ -42,7 +41,6 @@ export default function Timer() {
   } = useStopwatch({ autoStart: false });
 
   const duration = { seconds, minutes, hours, days };
-  const durationSeconds = seconds + minutes * 60 + hours * HOURS
   
   const formattedTime = formatDuration(duration)
 

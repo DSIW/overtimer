@@ -1,4 +1,4 @@
-import TimeLog from "./TimeLog"
+import TimeLog from "../domain/TimeLog"
 
 export default class TimeLogRepository {
   private timeLogs: TimeLog[]

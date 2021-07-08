@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import TimeLog from './TimeLog'
+import TimeLog from '../domain/TimeLog'
 
 const TIME_FORMAT = "yyyy-MM-dd HH:mm"
 

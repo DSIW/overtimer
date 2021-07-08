@@ -1,4 +1,4 @@
-import TimeLog from './TimeLog'
+import TimeLog from '../domain/TimeLog'
 import TimeLogTableRow from './TimeLogTableRow'
 
 interface Props {

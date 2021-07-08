@@ -1,4 +1,4 @@
-import { intervalToDuration, subHours } from 'date-fns'
+import { subHours } from 'date-fns'
 
 const WORK_HOURS = 8
 

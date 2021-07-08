@@ -1,7 +1,6 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import Timer from './Timer'
+import Timer from '../lib/interface/TimerApp'
 
 export default function Home() {
   return (
