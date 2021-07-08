@@ -9,7 +9,7 @@ interface Props {
 export default function TimerLogTable({ timeLogs }: Props) {
   return (
     <TableContainer component={Paper}>
-      <Table style={{ minWidth: 500 }}>
+      <Table style={{ minWidth: 450 }}>
         <TableHead>
           <TableRow>
             <TableCell>Start Time</TableCell>
@@ -19,7 +19,7 @@ export default function TimerLogTable({ timeLogs }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {timeLogs.length === 0 && <div>No entries</div>}
+          {timeLogs.length === 0 && <TableCell>No entries</TableCell>}
           {timeLogs.map((timeLog: TimeLog) => (
             <TimeLogTableRow key={`${timeLog.startTime}-${timeLog.endTime}`} timeLog={timeLog} />
           ))}
