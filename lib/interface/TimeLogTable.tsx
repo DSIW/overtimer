@@ -12,8 +12,8 @@ export default function TimerLogTable({ timeLogs }: Props) {
       <Table style={{ minWidth: 450 }}>
         <TableHead>
           <TableRow>
-            <TableCell>Start Time</TableCell>
-            <TableCell>End Time</TableCell>
+            <TableCell>Start</TableCell>
+            <TableCell>End</TableCell>
             <TableCell>Duration</TableCell>
             <TableCell>Overtime</TableCell>
           </TableRow>
