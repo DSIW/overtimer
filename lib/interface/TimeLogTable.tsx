@@ -9,7 +9,7 @@ interface Props {
 export default function TimerLogTable({ timeLogs }: Props) {
   return (
     <TableContainer component={Paper}>
-      <Table style={{ minWidth: 450 }}>
+      <Table style={{ minWidth: 400, maxWidth: '95vw' }}>
         <TableHead>
           <TableRow>
             <TableCell>Start</TableCell>

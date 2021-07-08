@@ -5,6 +5,8 @@ import TimeLog from '../domain/TimeLog'
 import TimeLogTable from './TimeLogTable'
 import { timeLogRepository } from '../infrastructure/TimeLogRepository'
 import Timer from './Timer'
+import TimeLogSummary from './TimeLogSummary'
+import { isToday } from 'date-fns'
 
 export default function TimerApp() {
   const [timeLogs, setTimeLogs] = useState<TimeLog[]>([])
@@ -20,7 +22,6 @@ export default function TimerApp() {
     isRunning,
     start,
     pause,
-    reset,
   } = useStopwatch({ autoStart: false });
 
   const resetable = !isRunning
@@ -29,7 +30,7 @@ export default function TimerApp() {
     if (isRunning && currentTimeLog) {
       pause()
       const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
-      setCurrentTimeLog(updatedTimeLog)
+      setCurrentTimeLog(null)
       timeLogRepository.updateLast(updatedTimeLog)
       setTimeLogs(timeLogRepository.all())
     } else {
@@ -41,22 +42,17 @@ export default function TimerApp() {
     }
   }
 
-  function handleReset() {
-    reset(0, false)
-    setCurrentTimeLog(null)
-  }
+  const todayTotalMs = timeLogs.filter((timeLog) => {
+    return isToday(timeLog.startTime)
+  }).map(timeLog => {
+    return timeLog.getDurationMs()
+  }).reduce((sum, val) => sum + val, 0)
 
   return (
     <>
-      <Timer elapsedMs={elapsedMs} />
+      <Timer elapsedMs={todayTotalMs + elapsedMs} isRunning={isRunning} onClick={handleStartStop} />
 
-      <Button variant="contained" color="primary" onClick={handleStartStop} style={{ marginTop: '1rem' }}>
-        {isRunning ? 'Stop' : 'Start'}
-      </Button>
-
-      <Button variant="outlined" color="primary" disabled={!resetable} onClick={handleReset} style={{ marginTop: '1rem', marginBottom: '2rem' }}>
-        Reset
-      </Button>
+      <TimeLogSummary timeLogs={timeLogs} />
 
       <TimeLogTable timeLogs={timeLogs} />
     </>
