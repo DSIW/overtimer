@@ -21,6 +21,10 @@ export default class TimeLogRepository {
   async updateLast(timeLog: TimeLog): Promise<void> {
     await this.db.timeLogs.put(timeLog)
   }
+
+  async delete(timeLog: TimeLog): Promise<void> {
+    await this.db.timeLogs.delete(timeLog.startTime)
+  }
 }
 
 export const timeLogRepository = new TimeLogRepository()

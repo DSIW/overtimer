@@ -24,7 +24,7 @@ export default class TimeLog {
   }
 
   isRunning() {
-    return this.endTime === null
+    return !this.endTime
   }
 
   isDone() {

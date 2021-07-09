@@ -37,6 +37,10 @@ export default function TimerApp() {
     }
   }
 
+  async function handleDelete(timeLog: TimeLog) {
+      await timeLogRepository.delete(timeLog)
+  }
+
   const todayTotalMs = new TimeLogStatistics(timeLogs).getTodayTotalMs();
 
   return (
@@ -45,7 +49,7 @@ export default function TimerApp() {
 
       <TimeLogSummary timeLogs={timeLogs} />
 
-      <TimeLogTable timeLogs={timeLogs} />
+      <TimeLogTable timeLogs={timeLogs} onDelete={handleDelete} />
     </>
   )
 }
