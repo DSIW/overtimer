@@ -1,24 +1,14 @@
 import { Typography } from '@material-ui/core'
 import TimeLog from '../domain/TimeLog'
 import Duration from './Duration'
-import { isToday } from 'date-fns'
+import TimeLogStatistics from '../domain/TimeLogStatistics'
 
 interface Props {
   timeLogs: TimeLog[];
 }
 
 export default function TimerLogSummary({ timeLogs }: Props) {
-  const todayTotalMs = timeLogs.filter((timeLog) => {
-    return isToday(timeLog.startTime)
-  }).map(timeLog => {
-    return timeLog.getDurationMs()
-  }).reduce((sum, val) => sum + val, 0)
-
-  const totalOvertimeMs = timeLogs.filter((timeLog) => {
-    return isToday(timeLog.startTime)
-  }).map(timeLog => {
-    return timeLog.getOverworkDurationMs()
-  }).reduce((sum, val) => sum + val, 0)
+  const totalOvertimeMs = new TimeLogStatistics(timeLogs).getTotalOvertimeMs();
 
   return (
     <div style={{ margin: '2rem' }}>

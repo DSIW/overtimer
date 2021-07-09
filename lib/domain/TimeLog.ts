@@ -1,7 +1,8 @@
-import { subHours } from 'date-fns'
+import { subHours, isToday } from 'date-fns'
 
 const WORK_HOURS = 8
 const HOURS_TO_MILLISECONDS = 60*60*1000
+const WORK_HOURS_MS = WORK_HOURS * HOURS_TO_MILLISECONDS
 const DURATION_ZERO = 0
 
 interface Fields {
@@ -19,7 +20,7 @@ export default class TimeLog {
   }
 
   static getTotalWorkMs() {
-    return WORK_HOURS*HOURS_TO_MILLISECONDS;
+    return WORK_HOURS_MS;
   }
 
   isRunning() {
@@ -31,11 +32,8 @@ export default class TimeLog {
   }
 
   getElapsedMs(): number {
-    if (this.endTime === null) {
-      return +new Date() - +this.startTime
-    }
-
-    return +this.endTime - +this.startTime
+    const end = this.endTime || new Date()
+    return +end - +this.startTime
   }
 
   getWorkTimeMs(): number {
@@ -51,10 +49,12 @@ export default class TimeLog {
   }
 
   getOverworkDurationMs(): number {
-    if (this.endTime === null) {
-      return DURATION_ZERO
+    const duration = this.getDurationMs() - WORK_HOURS_MS
+
+    if (!this.endTime || isToday(this.endTime) && duration < 0)  {
+      return DURATION_ZERO;
     }
 
-    return +subHours(this.endTime, WORK_HOURS) - +this.startTime
+    return duration
   }
 }

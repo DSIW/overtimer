@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import Button from '@material-ui/core/Button'
 import { useStopwatch } from 'react-timer-hook'
 import TimeLog from '../domain/TimeLog'
 import TimeLogTable from './TimeLogTable'
 import { timeLogRepository } from '../infrastructure/TimeLogRepository'
 import Timer from './Timer'
 import TimeLogSummary from './TimeLogSummary'
-import { isToday } from 'date-fns'
+import TimeLogStatistics from '../domain/TimeLogStatistics'
 
 export default function TimerApp() {
   const [timeLogs, setTimeLogs] = useState<TimeLog[]>([])
@@ -42,11 +41,7 @@ export default function TimerApp() {
     }
   }
 
-  const todayTotalMs = timeLogs.filter((timeLog) => {
-    return isToday(timeLog.startTime)
-  }).map(timeLog => {
-    return timeLog.getDurationMs()
-  }).reduce((sum, val) => sum + val, 0)
+  const todayTotalMs = new TimeLogStatistics(timeLogs).getTodayTotalMs();
 
   return (
     <>
