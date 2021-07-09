@@ -2,7 +2,7 @@ import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-pro
 import 'react-circular-progressbar/dist/styles.css';
 import TimeLog from '../domain/TimeLog';
 import Time from './Time';
-import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import { Pause, PlayArrow } from '@material-ui/icons';
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 
 const BLUE = "#3f51b5"
 const GRAY = "#dddddd"
+const DIMETER = 250
 
 export default function Timer({ elapsedMs, isRunning, onClick }: Props) {
   const totalWorkMs = TimeLog.getTotalWorkMs()
@@ -21,8 +22,8 @@ export default function Timer({ elapsedMs, isRunning, onClick }: Props) {
 
   return (
     <>
-      <div style={{ width: 200, height: 200 }}>
-        <CircularProgressbarWithChildren minValue={0} maxValue={totalWorkMs} value={value} strokeWidth={6} styles={buildStyles({
+      <div style={{ width: DIMETER, height: DIMETER }}>
+        <CircularProgressbarWithChildren minValue={0} maxValue={totalWorkMs} value={value} strokeWidth={4} styles={buildStyles({
           pathColor: BLUE,
           trailColor: GRAY
         })}>
@@ -30,9 +31,11 @@ export default function Timer({ elapsedMs, isRunning, onClick }: Props) {
             <Time milliseconds={workTimeMs} />
           </div>
           
-          <IconButton onClick={onClick} style={{ marginTop: '1rem', color: BLUE, background: GRAY }}>
-            {isRunning ? <Pause fontSize="large" /> : <PlayArrow fontSize="large" />}
-          </IconButton>
+          <Button variant="outlined" color="primary" onClick={onClick} startIcon={
+            isRunning ? <Pause fontSize="large" /> : <PlayArrow fontSize="large" />
+          } style={{ marginTop: '1rem' }}>
+            {isRunning ? 'Pause' : 'Start'}
+          </Button>
         </CircularProgressbarWithChildren>
       </div>
     </>
