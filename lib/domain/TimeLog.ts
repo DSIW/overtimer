@@ -32,6 +32,10 @@ export default class TimeLog {
   }
 
   getElapsedMs(): number {
+    if (this.isDone()) {
+      return 0;
+    }
+
     const end = this.endTime || new Date()
     return +end - +this.startTime
   }

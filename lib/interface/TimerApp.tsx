@@ -9,9 +9,11 @@ import TimeLogStatistics from '../domain/TimeLogStatistics'
 import { useLiveQuery } from 'dexie-react-hooks'
 
 export default function TimerApp() {
-  const [currentTimeLog, setCurrentTimeLog] = useState<TimeLog | null>(null)
-
   const timeLogs = useLiveQuery(() => timeLogRepository.all(), [], [] as TimeLog[])
+
+  const currentTimeLog = timeLogs[0]
+
+  console.log({ currentTimeLog })
 
   const elapsedMs = currentTimeLog?.getElapsedMs() || 0
 
@@ -19,7 +21,13 @@ export default function TimerApp() {
     isRunning,
     start,
     pause,
-  } = useStopwatch({ autoStart: false });
+  } = useStopwatch({ autoStart: false })
+
+  useEffect(() => {
+    if (currentTimeLog?.isRunning()) {
+      start()
+    }
+  }, [currentTimeLog])
 
   const resetable = !isRunning
 
@@ -28,12 +36,10 @@ export default function TimerApp() {
       pause()
       const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
       await timeLogRepository.updateLast(updatedTimeLog)
-      setCurrentTimeLog(null)
     } else {
       start()
       const timeLog = new TimeLog({startTime: new Date()})
       await timeLogRepository.save(timeLog)
-      setCurrentTimeLog(timeLog)
     }
   }
 
