@@ -3,7 +3,8 @@ import { format } from 'date-fns'
 import TimeLog from '../domain/TimeLog'
 import Duration from './Duration'
 
-const TIME_FORMAT = "yyyy-MM-dd HH:mm"
+const DATE_FORMAT = "yyyy-MM-dd"
+const TIME_FORMAT = "HH:mm"
 
 interface Props {
   timeLog: TimeLog;
@@ -12,14 +13,16 @@ interface Props {
 export default function TimerLogTableRow({ timeLog }: Props) {
 
   const duration = timeLog.getDurationMs()
-  const overworkDuration = timeLog.getOverworkDurationMs()
+
+  const formattedDate = format(timeLog.startTime, DATE_FORMAT)
+  const formattedStartTime = format(timeLog.startTime, TIME_FORMAT)
+  const formattedEndTime = timeLog.endTime ? format(timeLog.endTime, TIME_FORMAT) : 'Running'
 
   return (
     <TableRow>
-      <TableCell>{format(timeLog.startTime, TIME_FORMAT)}</TableCell>
-      <TableCell>{timeLog.endTime ? format(timeLog.endTime, TIME_FORMAT) : 'Running'}</TableCell>
+      <TableCell>{formattedDate}</TableCell>
+      <TableCell>{formattedStartTime} - {formattedEndTime}</TableCell>
       <TableCell align="right"><Duration milliseconds={duration} zero=">0 s" /></TableCell>
-      <TableCell align="right"><Duration milliseconds={overworkDuration} /></TableCell>
     </TableRow>
   )
 }

@@ -12,10 +12,9 @@ export default function TimerLogTable({ timeLogs }: Props) {
       <Table style={{ minWidth: 400, maxWidth: '95vw' }}>
         <TableHead>
           <TableRow>
-            <TableCell>Start</TableCell>
-            <TableCell>End</TableCell>
+            <TableCell>Date</TableCell>
+            <TableCell>Time Range</TableCell>
             <TableCell align="right">Duration</TableCell>
-            <TableCell align="right">Overtime</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
