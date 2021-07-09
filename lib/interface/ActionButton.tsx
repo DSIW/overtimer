@@ -1,6 +1,7 @@
 import { IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core'
 import { DeleteOutlined, EditOutlined, MoreVert } from '@material-ui/icons'
 import TimeLog from '../domain/TimeLog'
+import FormDialog from './FormDialog'
 import {
   usePopupState,
   bindTrigger,
@@ -17,12 +18,26 @@ interface Props {
 export default function ActionButton({ timeLog, onAction }: Props) {
 
   const popupState = usePopupState({ variant: 'popover', popupId: 'ActionMenu' })
+  const dialogState = usePopupState({ variant: 'popover', popupId: 'Dialog' })
 
   function handleAction(action: Action) {
     return () => {
+      if (action === 'edit') {
+        dialogState.open()
+      }
       onAction(action, timeLog)
       popupState.close()
     }
+  }
+
+  function handleCancel() {
+    onAction('edit', timeLog)
+    dialogState.close()
+  }
+
+  function handleSubmit(timeLog: TimeLog) {
+    onAction('edit', timeLog)
+    dialogState.close()
   }
 
   return (
@@ -44,6 +59,7 @@ export default function ActionButton({ timeLog, onAction }: Props) {
           Delete
         </MenuItem>
       </Menu>
+      <FormDialog open={dialogState.isOpen} timeLog={timeLog} onCancel={handleCancel} onSubmit={handleSubmit} />
     </>
   )
 }

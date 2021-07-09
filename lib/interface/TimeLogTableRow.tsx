@@ -1,5 +1,4 @@
-import { TableRow, TableCell, IconButton } from '@material-ui/core'
-import { DeleteOutline } from '@material-ui/icons'
+import { TableRow, TableCell } from '@material-ui/core'
 import { format } from 'date-fns'
 import TimeLog from '../domain/TimeLog'
 import ActionButton, { Action } from './ActionButton'
