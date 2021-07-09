@@ -15,7 +15,7 @@ export default function TimerLogSummary({ timeLogs }: Props) {
       <Typography color="textSecondary" gutterBottom>
         TOTAL OVERTIME
       </Typography>
-      <Typography variant="body2" component="p" align="right">
+      <Typography variant="body2" component="p" align="right" color="primary" style={{ fontSize: '1.3rem' }}>
         <Duration milliseconds={totalOvertimeMs} />
       </Typography>
     </div>
