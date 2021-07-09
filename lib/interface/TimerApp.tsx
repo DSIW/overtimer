@@ -7,13 +7,12 @@ import Timer from './Timer'
 import TimeLogSummary from './TimeLogSummary'
 import TimeLogStatistics from '../domain/TimeLogStatistics'
 import { useLiveQuery } from 'dexie-react-hooks'
+import { Action } from './ActionButton'
 
 export default function TimerApp() {
   const timeLogs = useLiveQuery(() => timeLogRepository.all(), [], [] as TimeLog[])
 
   const currentTimeLog = timeLogs[0]
-
-  console.log({ currentTimeLog })
 
   const elapsedMs = currentTimeLog?.getElapsedMs() || 0
 
@@ -35,7 +34,7 @@ export default function TimerApp() {
     if (isRunning && currentTimeLog) {
       pause()
       const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
-      await timeLogRepository.updateLast(updatedTimeLog)
+      await timeLogRepository.update(updatedTimeLog)
     } else {
       start()
       const timeLog = new TimeLog({startTime: new Date()})
@@ -43,8 +42,15 @@ export default function TimerApp() {
     }
   }
 
-  async function handleDelete(timeLog: TimeLog) {
-      await timeLogRepository.delete(timeLog)
+  async function handleAction(action: Action, timeLog: TimeLog) {
+    switch (action) {
+      case 'delete':
+        await timeLogRepository.delete(timeLog)
+        return;
+      case 'edit':
+        await timeLogRepository.update(timeLog)
+        return;
+    }
   }
 
   const todayTotalMs = new TimeLogStatistics(timeLogs).getTodayTotalMs();
@@ -55,7 +61,7 @@ export default function TimerApp() {
 
       <TimeLogSummary timeLogs={timeLogs} />
 
-      <TimeLogTable timeLogs={timeLogs} onDelete={handleDelete} />
+      <TimeLogTable timeLogs={timeLogs} onAction={handleAction} />
     </>
   )
 }

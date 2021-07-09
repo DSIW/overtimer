@@ -18,7 +18,7 @@ export default class TimeLogRepository {
     await this.db.timeLogs.put(timeLog)
   }
 
-  async updateLast(timeLog: TimeLog): Promise<void> {
+  async update(timeLog: TimeLog): Promise<void> {
     await this.db.timeLogs.put(timeLog)
   }
 
