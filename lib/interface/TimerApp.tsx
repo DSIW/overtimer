@@ -6,16 +6,14 @@ import { timeLogRepository } from '../infrastructure/TimeLogRepository'
 import Timer from './Timer'
 import TimeLogSummary from './TimeLogSummary'
 import TimeLogStatistics from '../domain/TimeLogStatistics'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 export default function TimerApp() {
-  const [timeLogs, setTimeLogs] = useState<TimeLog[]>([])
   const [currentTimeLog, setCurrentTimeLog] = useState<TimeLog | null>(null)
 
-  const elapsedMs = currentTimeLog?.getElapsedMs() || 0
+  const timeLogs = useLiveQuery(() => timeLogRepository.all(), [], [] as TimeLog[])
 
-  useEffect(() => {
-    setTimeLogs(timeLogRepository.all())
-  }, []);
+  const elapsedMs = currentTimeLog?.getElapsedMs() || 0
 
   const {
     isRunning,
@@ -25,19 +23,17 @@ export default function TimerApp() {
 
   const resetable = !isRunning
 
-  function handleStartStop() {
+  async function handleStartStop() {
     if (isRunning && currentTimeLog) {
       pause()
       const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
+      await timeLogRepository.updateLast(updatedTimeLog)
       setCurrentTimeLog(null)
-      timeLogRepository.updateLast(updatedTimeLog)
-      setTimeLogs(timeLogRepository.all())
     } else {
       start()
-      const newTimeLog = new TimeLog({startTime: new Date(), endTime: null})
-      setCurrentTimeLog(newTimeLog)
-      timeLogRepository.save(newTimeLog)
-      setTimeLogs(timeLogRepository.all())
+      const timeLog = new TimeLog({startTime: new Date()})
+      await timeLogRepository.save(timeLog)
+      setCurrentTimeLog(timeLog)
     }
   }
 

@@ -1,4 +1,4 @@
-import { subHours, isToday } from 'date-fns'
+import { isToday } from 'date-fns'
 
 const WORK_HOURS = 8
 const HOURS_TO_MILLISECONDS = 60*60*1000
@@ -7,12 +7,12 @@ const DURATION_ZERO = 0
 
 interface Fields {
   startTime: Date;
-  endTime: Date | null;
+  endTime?: Date
 }
 
 export default class TimeLog {
   public startTime: Date
-  public endTime: Date | null
+  public endTime?: Date
 
   constructor(fields: Fields) {
     this.startTime = fields.startTime
@@ -41,7 +41,7 @@ export default class TimeLog {
   }
 
   getDurationMs(): number {
-    if (this.endTime === null) {
+    if (this.endTime === undefined) {
       return DURATION_ZERO
     }
 

@@ -1,23 +1,25 @@
 import TimeLog from "../domain/TimeLog"
+import IndexDb from "./IndexDb";
 
 export default class TimeLogRepository {
-  private timeLogs: TimeLog[]
+  private db: IndexDb;
 
   constructor() {
-    this.timeLogs = []
+    this.db = new IndexDb();
+    this.db.timeLogs.mapToClass(TimeLog);
   }
 
-  all() {
-    return this.timeLogs
+  async all(): Promise<TimeLog[]> {
+    const records = await this.db.timeLogs.orderBy("startTime").reverse().toArray();
+    return records.map(record => new TimeLog({...record}))
   }
 
-  save(timeLog: TimeLog) {
-    this.timeLogs = [timeLog, ...this.timeLogs]
+  async save(timeLog: TimeLog): Promise<void> {
+    await this.db.timeLogs.put(timeLog)
   }
 
-  updateLast(timeLog: TimeLog) {
-    const [_, ...previousTimeLogs] = this.timeLogs
-    this.timeLogs = [timeLog, ...previousTimeLogs]
+  async updateLast(timeLog: TimeLog): Promise<void> {
+    await this.db.timeLogs.put(timeLog)
   }
 }
 
