@@ -19,7 +19,7 @@ export default function Timer({ timeLogs, onClick }: Props) {
 
   const statistics = new TimeLogStatistics(timeLogs)
 
-  const { value, isRunning, maxValue, isOverdue } = statistics.getTimerValues()
+  const { isRunning, value, percentage, isOverdue } = statistics.getTimerValues()
 
   const color = isOverdue ? RED : BLUE
 
@@ -28,7 +28,7 @@ export default function Timer({ timeLogs, onClick }: Props) {
   return (
     <>
       <div style={{ width: DIMETER, height: DIMETER }}>
-        <CircularProgressbarWithChildren minValue={0} maxValue={maxValue} value={value} strokeWidth={4} styles={progressStyles}>
+        <CircularProgressbarWithChildren value={percentage} strokeWidth={4} styles={progressStyles}>
           <div style={{ color, fontSize: '2em', marginTop: '3rem' }}>
             <Time milliseconds={value} />
           </div>

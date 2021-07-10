@@ -27,13 +27,14 @@ export default class TimerLogStatistics {
 
     const value = Math.abs(workTimeMs)
 
-    const maxValue = isOverdue ? value : totalWorkTimeMs
     const isRunning = currentTimeLog?.isRunning() || false
+
+    const percentage = isOverdue ? 100 : value / totalWorkTimeMs * 100
 
     return {
       isRunning,
       value,
-      maxValue,
+      percentage,
       isOverdue
     }
   }
