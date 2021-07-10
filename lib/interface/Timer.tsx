@@ -13,7 +13,7 @@ interface Props {
 const BLUE = "#3f51b5"
 const RED = "#A71608"
 const GRAY = "#dddddd"
-const DIMETER = 250
+const DIAMETER = 250
 
 export default function Timer({ timeLogs, onClick }: Props) {
 
@@ -27,7 +27,7 @@ export default function Timer({ timeLogs, onClick }: Props) {
 
   return (
     <>
-      <div style={{ width: DIMETER, height: DIMETER }}>
+      <div style={{ width: DIAMETER, height: DIAMETER }}>
         <CircularProgressbarWithChildren value={percentage} strokeWidth={4} styles={progressStyles}>
           <div style={{ color, fontSize: '2em', marginTop: '3rem' }}>
             <Time milliseconds={value} />
