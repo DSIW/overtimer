@@ -5,8 +5,6 @@ import { format } from 'date-fns'
 
 const TIME_FORMAT = "HH:mm"
 
-export type Action = "delete" | "edit"
-
 interface Props {
   open: boolean;
   timeLog: TimeLog;
