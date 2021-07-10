@@ -31,6 +31,10 @@ export default class TimeLog {
     return !this.isRunning()
   }
 
+  isDeletable() {
+    return !(this.isRunning() && isToday(this.startTime))
+  }
+
   getElapsedMs(): number {
     if (this.isDone()) {
       return 0;

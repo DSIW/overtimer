@@ -52,7 +52,7 @@ export default function ActionButton({ timeLog, onAction }: Props) {
           </ListItemIcon>
           Edit
         </MenuItem>
-        <MenuItem onClick={handleAction('delete')} disabled={timeLog.isRunning()}>
+        <MenuItem onClick={handleAction('delete')} disabled={!timeLog.isDeletable()}>
           <ListItemIcon>
             <DeleteOutlined fontSize="small" />
           </ListItemIcon>
