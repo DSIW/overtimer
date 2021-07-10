@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useStopwatch } from 'react-timer-hook'
 import TimeLog from '../domain/TimeLog'
 import TimeLogTable from './TimeLogTable'
 import { timeLogRepository } from '../infrastructure/TimeLogRepository'
 import Timer from './Timer'
 import TimeLogSummary from './TimeLogSummary'
-import TimeLogStatistics from '../domain/TimeLogStatistics'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Action } from './FormDialog'
 
@@ -14,10 +13,7 @@ export default function TimerApp() {
 
   const currentTimeLog = timeLogs[0]
 
-  const elapsedMs = currentTimeLog?.getElapsedMs() || 0
-
   const {
-    isRunning,
     start,
     pause,
   } = useStopwatch({ autoStart: false })
@@ -28,10 +24,8 @@ export default function TimerApp() {
     }
   }, [currentTimeLog])
 
-  const resetable = !isRunning
-
   async function handleStartStop() {
-    if (isRunning && currentTimeLog) {
+    if (currentTimeLog && currentTimeLog.isRunning()) {
       pause()
       const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
       await timeLogRepository.update(updatedTimeLog)
@@ -53,11 +47,9 @@ export default function TimerApp() {
     }
   }
 
-  const todayTotalMs = new TimeLogStatistics(timeLogs).getTodayTotalMs();
-
   return (
     <>
-      <Timer elapsedMs={todayTotalMs + elapsedMs} isRunning={isRunning} onClick={handleStartStop} />
+      <Timer timeLogs={timeLogs} onClick={handleStartStop} />
 
       <TimeLogSummary timeLogs={timeLogs} />
 

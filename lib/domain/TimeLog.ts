@@ -40,10 +40,6 @@ export default class TimeLog {
     return +end - +this.startTime
   }
 
-  getWorkTimeMs(): number {
-    return TimeLog.getTotalWorkMs() - this.getElapsedMs()
-  }
-
   getDurationMs(): number {
     if (this.endTime === undefined) {
       return DURATION_ZERO
