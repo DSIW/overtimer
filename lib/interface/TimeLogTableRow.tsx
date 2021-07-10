@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import TimeLog from '../domain/TimeLog'
 import ActionButton, { Action } from './ActionButton'
 import Duration from './Duration'
+import TitleDescription from './TitleDescription'
 
 const DATE_FORMAT = "yyyy-MM-dd"
 const TIME_FORMAT = "HH:mm"
@@ -23,8 +24,9 @@ export default function TimerLogTableRow({ timeLog, onAction }: Props) {
   return (
     <TableRow>
       <TableCell>{formattedDate}</TableCell>
-      <TableCell>{formattedStartTime} - {formattedEndTime}</TableCell>
-      <TableCell align="right"><Duration milliseconds={duration} zero=">0 s" /></TableCell>
+      <TableCell align="right">
+        <TitleDescription title={`${formattedStartTime} - ${formattedEndTime}`} description={<Duration milliseconds={duration} zero=">0 s" />} />
+      </TableCell>
       <TableCell align="right">
         <ActionButton timeLog={timeLog} onAction={onAction} />
       </TableCell>
