@@ -4,24 +4,28 @@ import TimeLog from '../domain/TimeLog';
 import Time from './Time';
 import StartStopButton from './StartStopButton';
 import TimeLogStatistics from '../domain/TimeLogStatistics';
+import { useTheme } from '@material-ui/core';
 
 interface Props {
   timeLogs: TimeLog[];
   onClick: () => void;
 }
 
-const BLUE = "#3f51b5"
-const RED = "#A71608"
 const GRAY = "#dddddd"
 const DIAMETER = 250
 
 export default function Timer({ timeLogs, onClick }: Props) {
 
+  const theme = useTheme();
+
+  const blue = theme.palette.primary.main
+  const red = theme.palette.secondary.main
+
   const statistics = new TimeLogStatistics(timeLogs)
 
   const { isRunning, value, percentage, isOverdue } = statistics.getTimerValues()
 
-  const color = isOverdue ? RED : BLUE
+  const color = isOverdue ? red : blue
 
   const progressStyles = buildStyles({ pathColor: color, trailColor: GRAY })
 
@@ -33,7 +37,7 @@ export default function Timer({ timeLogs, onClick }: Props) {
             <Time milliseconds={value} />
           </div>
           
-          <StartStopButton isRunning={isRunning} onClick={onClick} />
+          <StartStopButton isRunning={isRunning} isOverdue={isOverdue} onClick={onClick} />
         </CircularProgressbarWithChildren>
       </div>
     </>
