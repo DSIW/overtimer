@@ -47,10 +47,6 @@ export default class TimerLogStatistics {
     const totalWorkMs = this.getTotalWorkTimeMs()
     const workTimeMs = totalWorkMs - (todayTotalMs + elapsedMs)
 
-    console.log({
-      totalWorkMs, todayTotalMs, elapsedMs
-    })
-
     return workTimeMs
   }
 
