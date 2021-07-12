@@ -53,6 +53,10 @@ export default function TimerApp() {
 
       <TimeLogSummary timeLogs={timeLogs} />
 
+      <button type="button" onClick={() => { throw new Error("Sentry Frontend Error"); }}>
+        Throw error
+      </button>
+
       <TimeLogTable timeLogs={timeLogs} onAction={handleAction} />
     </>
   )
