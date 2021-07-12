@@ -21,11 +21,14 @@ export default function TimerLogTableRow({ timeLog, onAction }: Props) {
   const formattedStartTime = format(timeLog.startTime, TIME_FORMAT)
   const formattedEndTime = timeLog.endTime ? format(timeLog.endTime, TIME_FORMAT) : 'Running'
 
+  const formattedTimeRange = `${formattedStartTime} - ${formattedEndTime}`
+  const formattedDuration = <Duration milliseconds={duration} zero=">0 s" />
+
   return (
     <TableRow>
       <TableCell>{formattedDate}</TableCell>
       <TableCell align="right">
-        <TitleDescription title={`${formattedStartTime} - ${formattedEndTime}`} description={<Duration milliseconds={duration} zero=">0 s" />} />
+        <TitleDescription title={formattedDuration} description={formattedTimeRange} />
       </TableCell>
       <TableCell align="right">
         <ActionButton timeLog={timeLog} onAction={onAction} />

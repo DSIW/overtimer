@@ -16,7 +16,7 @@ export default function TimerLogTable({ timeLogs, onAction }: Props) {
         <TableHead>
           <TableRow>
             <TableCell>DATE</TableCell>
-            <TableCell align="right"><TitleDescription title="TIME" description="DURATION" /></TableCell>
+            <TableCell align="right"><TitleDescription title="DURATION" description="TIME" /></TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
