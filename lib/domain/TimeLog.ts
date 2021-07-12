@@ -23,6 +23,11 @@ export default class TimeLog {
     return WORK_HOURS_MS;
   }
 
+  isValid() {
+    const end = this.endTime || new Date()
+    return this.startTime < end
+  }
+
   isRunning() {
     return !this.endTime
   }

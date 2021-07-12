@@ -21,7 +21,9 @@ interface ChangeEvent {
 export default function FormDialog(props: Props) {
   const { open, onCancel, onSubmit } = props;
 
-  const [timeLog] = useState(props.timeLog);
+  const [error, setError] = useState(false)
+
+  const [timeLog] = useState(props.timeLog)
 
   function handleStartTime(event: ChangeEvent) {
     const [hours, minutes] = event.target.value.split(':')
@@ -34,7 +36,12 @@ export default function FormDialog(props: Props) {
   }
 
   function handleSubmit() {
-    onSubmit(timeLog)
+    if (timeLog.isValid()) {
+      onSubmit(timeLog)
+      setError(false)
+    } else {
+      setError(true)
+    }
   }
 
   return (
@@ -46,6 +53,7 @@ export default function FormDialog(props: Props) {
             label="Start"
             type="time"
             defaultValue={format(timeLog.startTime, TIME_FORMAT)}
+            error={error}
             autoFocus
             margin="dense"
             InputLabelProps={{
