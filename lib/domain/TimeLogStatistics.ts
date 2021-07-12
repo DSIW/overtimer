@@ -1,7 +1,7 @@
 import TimeLog from './TimeLog'
 import { isToday } from 'date-fns'
 
-export default class TimerLogStatistics {
+export default class TimeLogStatistics {
   private readonly timeLogs: TimeLog[]
 
   constructor(timeLogs: TimeLog[]) {
@@ -9,8 +9,9 @@ export default class TimerLogStatistics {
   }
 
   getTotalOvertimeMs() {
+    const workTimeMs = 0; //Math.max(0, -1 * this.getCurrentWorkTimeMs())
     const durations = this.timeLogs.map(timeLog => timeLog.getOverworkDurationMs())
-    return this.sum(durations)
+    return this.sum(durations) + workTimeMs
   }
 
   getTotalWorkTimeMs() {

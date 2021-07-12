@@ -22,7 +22,7 @@ export default function TimerApp() {
     if (currentTimeLog?.isRunning()) {
       start()
     }
-  }, [currentTimeLog])
+  }, [currentTimeLog, start])
 
   async function handleStartStop() {
     if (currentTimeLog && currentTimeLog.isRunning()) {

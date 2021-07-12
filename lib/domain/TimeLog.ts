@@ -60,7 +60,7 @@ export default class TimeLog {
   getOverworkDurationMs(): number {
     const duration = this.getDurationMs() - WORK_HOURS_MS
 
-    const today = this.endTime && isToday(this.endTime)
+    const today = isToday(this.startTime)
 
     if (today && duration < 0)  {
       return DURATION_ZERO;
