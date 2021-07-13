@@ -10,7 +10,8 @@ export default class TimeLogStatistics {
 
   getTotalOvertimeMs() {
     const durations = this.timeLogs.map(timeLog => timeLog.getOverworkDurationMs())
-    return this.sum(durations)
+    const totalDuration = this.sum(durations)
+    return totalDuration - days * this.getTotalWorkTimeMs()
   }
 
   getTotalWorkTimeMs() {
