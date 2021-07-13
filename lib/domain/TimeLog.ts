@@ -58,7 +58,7 @@ export default class TimeLog {
   }
 
   getOverworkDurationMs(): number {
-    const duration = this.getDurationMs() - WORK_HOURS_MS
+    const duration = this.getDurationMs()
 
     const today = isToday(this.startTime)
 
