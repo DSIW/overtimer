@@ -82,5 +82,21 @@ describe("TimeLogStatistics", () => {
 
       expect(overtimeMs).toBe(2*HOURS)
     })
+
+    it("returns 0h if yesterday's time logs have total duration of 8h", () => {
+      const yesterdayTimeLog = new TimeLog({
+        startTime: YESTERDAY,
+        endTime: addHours(YESTERDAY, 4)
+      })
+
+      const yesterdayTimeLog2 = new TimeLog({
+        startTime: YESTERDAY,
+        endTime: addHours(YESTERDAY, 4)
+      })
+
+      const overtimeMs = new TimeLogStatistics([yesterdayTimeLog, yesterdayTimeLog2]).getTotalOvertimeMs()
+
+      expect(overtimeMs).toBe(0*HOURS)
+    })
   })
 })
