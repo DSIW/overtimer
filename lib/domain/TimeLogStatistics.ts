@@ -1,5 +1,5 @@
 import TimeLog from './TimeLog'
-import { isToday } from 'date-fns'
+import { isToday, format } from 'date-fns'
 
 export default class TimeLogStatistics {
   private readonly timeLogs: TimeLog[]
@@ -11,6 +11,7 @@ export default class TimeLogStatistics {
   getTotalOvertimeMs() {
     const durations = this.timeLogs.map(timeLog => timeLog.getOverworkDurationMs())
     const totalDuration = this.sum(durations)
+    const days = new Set(this.timeLogs.map(timeLog => format(timeLog.startTime, 'yyyy-MM-dd'))).length
     return totalDuration - days * this.getTotalWorkTimeMs()
   }
 
