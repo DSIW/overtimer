@@ -1,6 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@material-ui/core'
 import { useState } from 'react';
-import TimeLog from '../domain/TimeLog'
+import TimeLog from '../../domain/TimeLog'
 import { format } from 'date-fns'
 
 const TIME_FORMAT = "HH:mm"

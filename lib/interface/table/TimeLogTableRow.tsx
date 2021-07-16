@@ -1,8 +1,8 @@
 import { TableRow, TableCell } from '@material-ui/core'
 import { format } from 'date-fns'
-import TimeLog from '../domain/TimeLog'
+import TimeLog from '../../domain/TimeLog'
 import ActionButton, { Action } from './ActionButton'
-import Duration from './Duration'
+import Duration from '../Duration'
 import TitleDescription from './TitleDescription'
 
 const DATE_FORMAT = "yyyy-MM-dd"
