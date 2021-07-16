@@ -1,40 +1,14 @@
-import React, { useEffect } from 'react'
-import { useStopwatch } from 'react-timer-hook'
+import React from 'react'
 import TimeLog from '../domain/TimeLog'
 import TimeLogTable from './TimeLogTable'
-import { timeLogRepository } from '../infrastructure/TimeLogRepository'
-import Timer from './Timer'
+import {timeLogRepository} from '../infrastructure/TimeLogRepository'
 import TimeLogSummary from './TimeLogSummary'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { Action } from './ActionButton'
+import {useLiveQuery} from 'dexie-react-hooks'
+import {Action} from './ActionButton'
+import TimerContainer from './TimerContainer'
 
 export default function TimerApp() {
   const timeLogs = useLiveQuery(() => timeLogRepository.all(), [], [] as TimeLog[])
-
-  const currentTimeLog = timeLogs[0]
-
-  const {
-    start,
-    pause,
-  } = useStopwatch({ autoStart: false })
-
-  useEffect(() => {
-    if (currentTimeLog?.isRunning()) {
-      start()
-    }
-  }, [currentTimeLog, start])
-
-  async function handleStartStop() {
-    if (currentTimeLog && currentTimeLog.isRunning()) {
-      pause()
-      const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
-      await timeLogRepository.update(updatedTimeLog)
-    } else {
-      start()
-      const timeLog = new TimeLog({startTime: new Date()})
-      await timeLogRepository.save(timeLog)
-    }
-  }
 
   async function handleAction(action: Action, timeLog: TimeLog) {
     switch (action) {
@@ -49,10 +23,8 @@ export default function TimerApp() {
 
   return (
     <>
-      <Timer timeLogs={timeLogs} onClick={handleStartStop} />
-
+      <TimerContainer timeLogs={timeLogs} />
       <TimeLogSummary timeLogs={timeLogs} />
-
       <TimeLogTable timeLogs={timeLogs} onAction={handleAction} />
     </>
   )
