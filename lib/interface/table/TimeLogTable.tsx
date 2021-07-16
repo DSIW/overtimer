@@ -2,7 +2,6 @@ import { Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell
 import TimeLog from '../../domain/TimeLog'
 import { Action } from './ActionButton'
 import TimeLogTableRow from './TimeLogTableRow'
-import TitleDescription from './TitleDescription'
 
 interface Props {
   timeLogs: TimeLog[];
@@ -15,8 +14,8 @@ export default function TimerLogTable({ timeLogs, onAction }: Props) {
       <Table style={{ minWidth: 400, maxWidth: '95vw' }}>
         <TableHead>
           <TableRow>
-            <TableCell>DATE</TableCell>
-            <TableCell align="right"><TitleDescription title="DURATION" description="TIME" /></TableCell>
+            <TableCell align="center">DATE</TableCell>
+            <TableCell align="right">DURATION</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>

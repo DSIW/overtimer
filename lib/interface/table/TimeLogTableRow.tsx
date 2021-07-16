@@ -4,6 +4,7 @@ import TimeLog from '../../domain/TimeLog'
 import ActionButton, { Action } from './ActionButton'
 import Duration from '../Duration'
 import TitleDescription from './TitleDescription'
+import DateCell from "./DateCell";
 
 const DATE_FORMAT = "yyyy-MM-dd"
 const TIME_FORMAT = "HH:mm"
@@ -17,7 +18,6 @@ export default function TimerLogTableRow({ timeLog, onAction }: Props) {
 
   const duration = timeLog.getDurationMs()
 
-  const formattedDate = format(timeLog.startTime, DATE_FORMAT)
   const formattedStartTime = format(timeLog.startTime, TIME_FORMAT)
   const formattedEndTime = timeLog.endTime && format(timeLog.endTime, TIME_FORMAT)
 
@@ -26,7 +26,7 @@ export default function TimerLogTableRow({ timeLog, onAction }: Props) {
 
   return (
     <TableRow>
-      <TableCell>{formattedDate}</TableCell>
+      <TableCell><DateCell time={timeLog.startTime} /></TableCell>
       <TableCell align="right" style={{ minWidth: '120px' }}>
         <TitleDescription title={formattedDuration} description={formattedTimeRange} />
       </TableCell>

@@ -8,14 +8,28 @@ interface Props {
 export default function TitleDescription({ title, description }: Props) {
   return (
     <div>
-      <div>
-        <strong>
-          {title}
-        </strong>
+      <div className="title">
+        {title}
       </div>
-      <div>
+      <div className="description">
         {description}
       </div>
+      <style jsx>{`
+        .title {
+          font-size: 1.1rem;
+          font-weight: 400;
+        }
+        
+        :global(th) .title {
+          font-size: 1rem;
+          font-weight: 500;
+        }
+        
+        .description {
+          color: gray;
+        }
+      `}
+      </style>
     </div>
   )
 }
