@@ -1,5 +1,9 @@
 import TimeLog from './TimeLog'
-import { isToday, format } from 'date-fns'
+import {format, isToday} from 'date-fns'
+
+const WORK_HOURS = 8
+const HOURS_TO_MILLISECONDS = 60*60*1000
+const WORK_HOURS_MS = WORK_HOURS * HOURS_TO_MILLISECONDS
 
 export default class TimeLogStatistics {
   private readonly timeLogs: TimeLog[]
@@ -9,14 +13,21 @@ export default class TimeLogStatistics {
   }
 
   getTotalOvertimeMs() {
-    const durations = this.timeLogs.map(timeLog => timeLog.getOverworkDurationMs())
-    const totalDuration = this.sum(durations)
-    const days = new Set(this.timeLogs.map(timeLog => format(timeLog.startTime, 'yyyy-MM-dd'))).size
-    return totalDuration - days * this.getTotalWorkTimeMs()
+    const oldTimeLogs = this.timeLogs.filter(timeLog => !isToday(timeLog.startTime))
+    const oldOvertime = this.calcOvertimeMs(oldTimeLogs)
+
+    const todayTimeLogs = this.timeLogs.filter(timeLog => isToday(timeLog.startTime))
+    const todayOvertime = this.calcOvertimeMs(todayTimeLogs)
+
+    return oldOvertime + Math.max(0, todayOvertime)
   }
 
   getTotalWorkTimeMs() {
-    return TimeLog.getTotalWorkMs()
+    return WORK_HOURS_MS
+  }
+
+  getTotalDuration() {
+    return this.timeLogs.map(timeLog => timeLog.getDurationMs())
   }
 
   getTimerValues() {
@@ -39,6 +50,21 @@ export default class TimeLogStatistics {
       percentage,
       isOverdue
     }
+  }
+
+  getDays() {
+    const formattedTimeLogs = this.timeLogs.map(timeLog => format(timeLog.startTime, 'yyyy-MM-dd'))
+    return new Set(formattedTimeLogs).size
+  }
+
+  private calcOvertimeMs(timeLogs: TimeLog[]) {
+    const todayTimeLogs = timeLogs
+    const todayTimeLogStatistics = new TimeLogStatistics(todayTimeLogs)
+    const durations = todayTimeLogStatistics.getTotalDuration()
+    const days = todayTimeLogStatistics.getDays()
+
+    const totalDuration = this.sum(durations)
+    return totalDuration - days * this.getTotalWorkTimeMs()
   }
 
   private getCurrentWorkTimeMs() {

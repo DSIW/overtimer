@@ -1,12 +1,58 @@
 import TimeLog from "./TimeLog"
 import TimeLogStatistics from "./TimeLogStatistics"
-import { addHours, subDays } from 'date-fns'
+import {addHours, subDays} from 'date-fns'
 
 const HOURS = 1000*60*60
-const YESTERDAY = subDays(new Date(), 1)
+const TODAY = new Date()
+const YESTERDAY = subDays(TODAY, 1)
+
+function testFulfilledTimeLog(date: Date, hours: number) {
+  return new TimeLog({
+    startTime: date,
+    endTime: addHours(date, hours)
+  })
+}
+
+function testRunningTimeLog(date: Date) {
+  return new TimeLog({ startTime: date })
+}
 
 describe("TimeLogStatistics", () => {
-  describe("getTotalOvertimeMs", () => {
+  describe("getDays()", () => {
+    it("returns 0 if no time logs", () => {
+      const timeLogStatistics = new TimeLogStatistics([])
+
+      expect(timeLogStatistics.getDays()).toBe(0)
+    })
+
+    it("returns 1 if one running time log", () => {
+      const currentTimeLog = testRunningTimeLog(TODAY)
+
+      const timeLogStatistics = new TimeLogStatistics([currentTimeLog])
+
+      expect(timeLogStatistics.getDays()).toBe(1)
+    })
+
+    it("returns 1 if two time logs at the same day", () => {
+      const currentTimeLog = testRunningTimeLog(TODAY)
+
+      const timeLogStatistics = new TimeLogStatistics([currentTimeLog, currentTimeLog])
+
+      expect(timeLogStatistics.getDays()).toBe(1)
+    })
+
+    it("returns 2 if two time logs at different days", () => {
+      const currentTimeLog = testRunningTimeLog(TODAY)
+
+      const yesterdayTimeLog = testRunningTimeLog(YESTERDAY)
+
+      const timeLogStatistics = new TimeLogStatistics([currentTimeLog, yesterdayTimeLog])
+
+      expect(timeLogStatistics.getDays()).toBe(2)
+    })
+  })
+
+  describe("getTotalOvertimeMs()", () => {
     it("returns 0 if no time logs", () => {
       const overtimeMs = new TimeLogStatistics([]).getTotalOvertimeMs()
 
@@ -14,89 +60,61 @@ describe("TimeLogStatistics", () => {
     })
 
     it("returns 0 if today's time log is running", () => {
-      const currentTimeLog = new TimeLog({
-        startTime: new Date()
-      })
+      const currentTimeLog = testRunningTimeLog(TODAY)
 
-      const overtimeMs = new TimeLogStatistics([currentTimeLog]).getTotalOvertimeMs()
+      const statistics = new TimeLogStatistics([currentTimeLog])
 
-      expect(overtimeMs).toBe(0)
-    })
-
-    it("returns 1h if yesterday's time log has duration of 9h", () => {
-      const currentTimeLog = new TimeLog({
-        startTime: YESTERDAY,
-        endTime: addHours(YESTERDAY, 8+1)
-      })
-
-      const overtimeMs = new TimeLogStatistics([currentTimeLog]).getTotalOvertimeMs()
-
-      expect(overtimeMs).toBe(1*HOURS)
-    })
-
-    it("returns -1h if yesterday's time log has duration of 7h", () => {
-      const currentTimeLog = new TimeLog({
-        startTime: YESTERDAY,
-        endTime: addHours(YESTERDAY, 8-1)
-      })
-
-      const overtimeMs = new TimeLogStatistics([currentTimeLog]).getTotalOvertimeMs()
-
-      expect(overtimeMs).toBe(-1*HOURS)
+      expect(statistics.getTotalOvertimeMs()).toBe(0)
     })
 
     it("returns 0h if todays's time log has duration of 7h", () => {
-      const currentTimeLog = new TimeLog({
-        startTime: new Date(),
-        endTime: addHours(new Date(), 8-1)
-      })
+      const currentTimeLog = testFulfilledTimeLog(TODAY, 8-1)
 
-      const overtimeMs = new TimeLogStatistics([currentTimeLog]).getTotalOvertimeMs()
+      const statistics = new TimeLogStatistics([currentTimeLog])
 
-      expect(overtimeMs).toBe(0)
+      expect(statistics.getTotalOvertimeMs()).toBe(0)
     })
 
     it("returns 1h if todays's time log has duration of 9h", () => {
-      const currentTimeLog = new TimeLog({
-        startTime: new Date(),
-        endTime: addHours(new Date(), 8+1)
-      })
+      const currentTimeLog = testFulfilledTimeLog(TODAY, 8+1)
 
-      const overtimeMs = new TimeLogStatistics([currentTimeLog]).getTotalOvertimeMs()
+      const statistics = new TimeLogStatistics([currentTimeLog])
 
-      expect(overtimeMs).toBe(1*HOURS)
+      expect(statistics.getTotalOvertimeMs()).toBe(1*HOURS)
+    })
+
+    it("returns 1h if yesterday's time log has duration of 9h", () => {
+      const currentTimeLog = testFulfilledTimeLog(YESTERDAY, 8+1)
+
+      const statistics = new TimeLogStatistics([currentTimeLog])
+
+      expect(statistics.getTotalOvertimeMs()).toBe(1*HOURS)
+    })
+
+    it("returns -1h if yesterday's time log has duration of 7h", () => {
+      const currentTimeLog = testFulfilledTimeLog(YESTERDAY, 8-1)
+
+      const statistics = new TimeLogStatistics([currentTimeLog])
+
+      expect(statistics.getTotalOvertimeMs()).toBe(-1*HOURS)
     })
 
     it("returns 2h if yesterday's and todays's time log has duration of 9h", () => {
-      const yesterdayTimeLog = new TimeLog({
-        startTime: YESTERDAY,
-        endTime: addHours(YESTERDAY, 8+1)
-      })
+      const yesterdayTimeLog = testFulfilledTimeLog(YESTERDAY, 8+1)
+      const currentTimeLog = testFulfilledTimeLog(TODAY, 8+1)
 
-      const currentTimeLog = new TimeLog({
-        startTime: new Date(),
-        endTime: addHours(new Date(), 8+1)
-      })
+      const statistics = new TimeLogStatistics([currentTimeLog, yesterdayTimeLog])
 
-      const overtimeMs = new TimeLogStatistics([currentTimeLog, yesterdayTimeLog]).getTotalOvertimeMs()
-
-      expect(overtimeMs).toBe(2*HOURS)
+      expect(statistics.getTotalOvertimeMs()).toBe(2*HOURS)
     })
 
     it("returns 0h if yesterday's time logs have total duration of 8h", () => {
-      const yesterdayTimeLog = new TimeLog({
-        startTime: YESTERDAY,
-        endTime: addHours(YESTERDAY, 4)
-      })
+      const yesterdayTimeLog = testFulfilledTimeLog(YESTERDAY, 4)
+      const yesterdayTimeLog2 = testFulfilledTimeLog(YESTERDAY, 4)
 
-      const yesterdayTimeLog2 = new TimeLog({
-        startTime: YESTERDAY,
-        endTime: addHours(YESTERDAY, 4)
-      })
+      const statistics = new TimeLogStatistics([yesterdayTimeLog, yesterdayTimeLog2])
 
-      const overtimeMs = new TimeLogStatistics([yesterdayTimeLog, yesterdayTimeLog2]).getTotalOvertimeMs()
-
-      expect(overtimeMs).toBe(0*HOURS)
+      expect(statistics.getTotalOvertimeMs()).toBe(0)
     })
   })
 })
