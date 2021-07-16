@@ -21,7 +21,8 @@ export default function TimerContainer({ timeLogs }: Props) {
     if (currentTimeLog?.isRunning()) {
       start()
     }
-  }, [currentTimeLog, start])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTimeLog])
 
   async function handleStartStop() {
     if (currentTimeLog && currentTimeLog.isRunning()) {
