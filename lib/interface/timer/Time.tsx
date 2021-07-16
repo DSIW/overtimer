@@ -1,4 +1,4 @@
-import parseMs from './parse-ms';
+import parseMs from '../parse-ms';
 
 interface Props {
   milliseconds: number;

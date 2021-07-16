@@ -1,9 +1,9 @@
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import TimeLog from '../domain/TimeLog';
+import TimeLog from '../../domain/TimeLog';
 import Time from './Time';
 import StartStopButton from './StartStopButton';
-import TimeLogStatistics from '../domain/TimeLogStatistics';
+import TimeLogStatistics from '../../domain/TimeLogStatistics';
 import { useTheme } from '@material-ui/core';
 
 interface Props {
@@ -36,7 +36,7 @@ export default function Timer({ timeLogs, onClick }: Props) {
           <div style={{ color, fontSize: '2em', marginTop: '3rem' }}>
             <Time milliseconds={value} />
           </div>
-          
+
           <StartStopButton isRunning={isRunning} isOverdue={isOverdue} onClick={onClick} />
         </CircularProgressbarWithChildren>
       </div>

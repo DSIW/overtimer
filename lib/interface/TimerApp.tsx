@@ -5,7 +5,7 @@ import {timeLogRepository} from '../infrastructure/TimeLogRepository'
 import TimeLogSummary from './TimeLogSummary'
 import {useLiveQuery} from 'dexie-react-hooks'
 import {Action} from './ActionButton'
-import TimerContainer from './TimerContainer'
+import TimerContainer from './timer/TimerContainer'
 
 export default function TimerApp() {
   const timeLogs = useLiveQuery(() => timeLogRepository.all(), [], [] as TimeLog[])

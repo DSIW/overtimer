@@ -1,6 +1,6 @@
 import 'react-circular-progressbar/dist/styles.css';
-import TimeLog from '../domain/TimeLog';
-import {timeLogRepository} from "../infrastructure/TimeLogRepository";
+import TimeLog from '../../domain/TimeLog';
+import {timeLogRepository} from "../../infrastructure/TimeLogRepository";
 import {useStopwatch} from "react-timer-hook";
 import React, {useEffect} from "react";
 import Timer from "./Timer";
