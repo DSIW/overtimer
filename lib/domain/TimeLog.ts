@@ -1,4 +1,4 @@
-import { isToday } from 'date-fns'
+import {isToday, setMilliseconds} from 'date-fns'
 
 interface Fields {
   startTime: Date;
@@ -6,12 +6,19 @@ interface Fields {
 }
 
 export default class TimeLog {
-  public startTime: Date
-  public endTime?: Date
+  public readonly startTime: Date
+  public readonly endTime?: Date
 
   constructor(fields: Fields) {
-    this.startTime = fields.startTime
-    this.endTime = fields.endTime
+    this.startTime = this.reducePrecision(fields.startTime)
+    this.endTime = fields.endTime && this.reducePrecision(fields.endTime)
+  }
+
+  clone() {
+    return new TimeLog({
+      startTime: this.startTime,
+      endTime: this.endTime
+    })
   }
 
   isValid() {
@@ -46,5 +53,9 @@ export default class TimeLog {
     }
 
     return +this.endTime - +this.startTime
+  }
+
+  private reducePrecision(time: Date): Date {
+    return setMilliseconds(time, 0);
   }
 }
