@@ -1,7 +1,7 @@
 import { IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core'
 import { DeleteOutlined, EditOutlined, MoreVert } from '@material-ui/icons'
 import TimeLog from '../../domain/TimeLog'
-import FormDialog from './FormDialog'
+import FormDialog from '../form/FormDialog'
 import {
   usePopupState,
   bindTrigger,
