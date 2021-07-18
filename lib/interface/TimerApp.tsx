@@ -4,7 +4,7 @@ import TimeLogTable from './table/TimeLogTable'
 import {timeLogRepository} from '../infrastructure/TimeLogRepository'
 import TimeLogSummary from './TimeLogSummary'
 import {useLiveQuery} from 'dexie-react-hooks'
-import {Action} from './table/ActionButton'
+import {Action} from './table/TableRowActionButton'
 import TimerContainer from './timer/TimerContainer'
 
 export default function TimerApp() {

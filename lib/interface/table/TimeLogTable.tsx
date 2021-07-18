@@ -1,6 +1,6 @@
 import { Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 import TimeLog from '../../domain/TimeLog'
-import { Action } from './ActionButton'
+import { Action } from './TableRowActionButton'
 import TimeLogTableRow from './TimeLogTableRow'
 
 interface Props {

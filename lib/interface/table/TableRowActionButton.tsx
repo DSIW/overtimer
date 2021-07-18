@@ -15,7 +15,7 @@ interface Props {
   onAction: (action: Action, timeLog: TimeLog) => void;
 }
 
-export default function ActionButton({ timeLog, onAction }: Props) {
+export default function TableRowActionButton({ timeLog, onAction }: Props) {
 
   const popupState = usePopupState({ variant: 'popover', popupId: 'ActionMenu' })
   const dialogState = usePopupState({ variant: 'popover', popupId: 'Dialog' })
