@@ -2,8 +2,8 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from '@materi
 import TimeLog from '../../domain/TimeLog'
 import {TimeField} from "./TimeField";
 import ChangeEvent, {TimeLogEventTarget} from "./ChangeEvent";
-import {State, updateTime} from './formDialogReducer';
-import {useState} from "react";
+import {updateTime} from './formDialogReducer';
+import useStateFromProps from "./useStateFromProps";
 
 interface Props {
   open: boolean;
@@ -15,12 +15,7 @@ interface Props {
 export default function FormDialog(props: Props) {
   const {open, onCancel, onSubmit} = props;
 
-  const initial: State = {
-    timeLog: props.timeLog,
-    error: false
-  };
-
-  const [state, setState] = useState(initial);
+  const [state, setState] = useStateFromProps(props.timeLog);
 
   const {timeLog, error} = state;
   const {startTime, endTime} = timeLog;
