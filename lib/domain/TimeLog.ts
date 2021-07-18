@@ -1,4 +1,4 @@
-import {isToday, setMilliseconds} from 'date-fns'
+import {isSameDay, isToday, setMilliseconds} from 'date-fns'
 
 interface Fields {
   startTime: Date;
@@ -23,7 +23,8 @@ export default class TimeLog {
 
   isValid() {
     const end = this.endTime || new Date()
-    return this.startTime < end
+    const sameDay = isSameDay(this.startTime, end)
+    return sameDay && this.startTime < end
   }
 
   isRunning() {
