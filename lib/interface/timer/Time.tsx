@@ -9,13 +9,9 @@ function pad(num: number) {
 }
 
 export default function Time({ milliseconds }: Props) {
-  let formattedDuration = ">0 m"
-
   const { hours, minutes, seconds } = parseMs(milliseconds)
 
-  if (milliseconds > 0) {
-    formattedDuration = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
-  }
+  const formattedDuration = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
 
   return (
     <span>{formattedDuration}</span>
