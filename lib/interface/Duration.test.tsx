@@ -6,45 +6,45 @@ const MIN = 60*SEC
 const HOUR = 60*MIN
 
 describe("<Duration />", () => {
-  it("renders 0s", async () => {
+  it("renders zero seconds", async () => {
     render(<Duration milliseconds={0} />);
 
-    expect(await screen.findByText(/0 s/i)).toBeInTheDocument();
+    expect(await screen.findByText("0 s")).toBeInTheDocument();
   })
 
   it("renders special zero case", async () => {
     render(<Duration milliseconds={0} zero="ZERO" />);
 
-    expect(await screen.findByText(/ZERO/i)).toBeInTheDocument();
+    expect(await screen.findByText("ZERO")).toBeInTheDocument();
   })
 
-  it("renders 1s", async () => {
+  it("renders seconds", async () => {
     render(<Duration milliseconds={1*SEC} />);
 
-    expect(await screen.findByText(/1 s/i)).toBeInTheDocument();
+    expect(await screen.findByText("1 s")).toBeInTheDocument();
   })
 
-  it("renders 1m", async () => {
+  it("renders minutes", async () => {
     render(<Duration milliseconds={1*MIN} />);
 
-    expect(await screen.findByText(/1 m/i)).toBeInTheDocument();
+    expect(await screen.findByText("1 m")).toBeInTheDocument();
   })
 
   it("removes seconds if in minute range", async () => {
     render(<Duration milliseconds={1*MIN + 1*SEC} />);
 
-    expect(await screen.findByText(/1 m/i)).toBeInTheDocument();
+    expect(await screen.findByText("1 m")).toBeInTheDocument();
   })
 
-  it("renders 1h", async () => {
+  it("renders hours", async () => {
     render(<Duration milliseconds={1*HOUR} />);
 
-    expect(await screen.findByText(/1 h/i)).toBeInTheDocument();
+    expect(await screen.findByText("1 h")).toBeInTheDocument();
   })
 
-  it("renders 1h 1m", async () => {
+  it("renders hours and minutes", async () => {
     render(<Duration milliseconds={1*HOUR + 1*MIN} />);
 
-    expect(await screen.findByText(/1 h 1 m/i)).toBeInTheDocument();
+    expect(await screen.findByText("1 h 1 m")).toBeInTheDocument();
   })
 })

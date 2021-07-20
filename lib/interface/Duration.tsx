@@ -5,24 +5,24 @@ interface Props {
   zero?: string;
 }
 
-export default function Duration({ milliseconds, zero }: Props) {
-  if (milliseconds === 0 && zero) {
-    return <span>{zero}</span>
-  }
-
+export default function Duration({ milliseconds, zero = "0 s" }: Props) {
   const { hours, minutes, seconds } = parseMs(milliseconds)
 
-  let formattedDuration = `${hours} h ${minutes} m`
+  let parts = [];
 
-  if (hours === 0) {
-    formattedDuration = `${minutes} m`
+  if (hours !== 0) {
+    parts.push(`${hours} h`)
   }
 
-  if (hours === 0 && minutes === 0) {
-    formattedDuration = `${seconds} s`
+  if (minutes !== 0) {
+    parts.push(`${minutes} m`)
+  }
+
+  if (seconds !== 0 && hours === 0 && minutes === 0) {
+    parts.push(`${seconds} s`)
   }
 
   return (
-    <span>{formattedDuration}</span>
+    <span>{parts.join(" ") || zero}</span>
   )
 }
