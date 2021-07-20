@@ -25,6 +25,10 @@ export default class TimerApplicationService {
     async update(timeLog: TimeLog) {
       await this.timeLogRepository.update(timeLog)
     }
+
+    async delete(timeLog: TimeLog) {
+      await this.timeLogRepository.delete(timeLog)
+    }
 }
 
 export const timerApplicationService = new TimerApplicationService()

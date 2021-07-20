@@ -1,7 +1,6 @@
 import React from 'react'
 import TimeLog from '../domain/TimeLog'
 import TimeLogTable from './table/TimeLogTable'
-import {timeLogRepository} from '../infrastructure/TimeLogRepository'
 import TimeLogSummary from './TimeLogSummary'
 import {useLiveQuery} from 'dexie-react-hooks'
 import {Action} from './table/TableRowActionButton'
@@ -18,10 +17,10 @@ export default function TimerApp() {
   async function handleAction(action: Action, timeLog: TimeLog) {
     switch (action) {
       case 'delete':
-        await timeLogRepository.delete(timeLog)
+        await timerApplicationService.delete(timeLog)
         return;
       case 'edit':
-        await timeLogRepository.update(timeLog)
+        await timerApplicationService.update(timeLog)
         return;
     }
   }
