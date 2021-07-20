@@ -14,6 +14,10 @@ export default class TimeLog {
     this.endTime = fields.endTime && this.reducePrecision(fields.endTime)
   }
 
+  static startedNow() {
+      return new TimeLog({ startTime: new Date() })
+  }
+
   clone() {
     return new TimeLog({
       startTime: this.startTime,

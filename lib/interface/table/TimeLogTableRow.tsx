@@ -6,7 +6,6 @@ import Duration from '../Duration'
 import TitleDescription from './TitleDescription'
 import DateCell from "./DateCell";
 
-const DATE_FORMAT = "yyyy-MM-dd"
 const TIME_FORMAT = "HH:mm"
 
 interface Props {

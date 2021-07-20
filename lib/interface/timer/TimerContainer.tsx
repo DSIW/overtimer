@@ -4,6 +4,7 @@ import {timeLogRepository} from "../../infrastructure/TimeLogRepository";
 import {useStopwatch} from "react-timer-hook";
 import React, {useEffect} from "react";
 import Timer from "./Timer";
+import { timerApplicationService } from '../../application/TimerApplicationService';
 
 interface Props {
   timeLogs: TimeLog[];
@@ -27,12 +28,10 @@ export default function TimerContainer({ timeLogs }: Props) {
   async function handleStartStop() {
     if (currentTimeLog && currentTimeLog.isRunning()) {
       pause()
-      const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
-      await timeLogRepository.update(updatedTimeLog)
+      await timerApplicationService.stop(currentTimeLog)
     } else {
       start()
-      const timeLog = new TimeLog({startTime: new Date()})
-      await timeLogRepository.save(timeLog)
+      await timerApplicationService.start()
     }
   }
 
