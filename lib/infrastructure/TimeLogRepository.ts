@@ -18,12 +18,20 @@ export default class TimeLogRepository {
     await this.db.timeLogs.put(timeLog)
   }
 
+  async saveAll(timeLogs: TimeLog[]): Promise<void> {
+    await this.db.timeLogs.bulkPut(timeLogs)
+  }
+
   async update(timeLog: TimeLog): Promise<void> {
     await this.db.timeLogs.put(timeLog)
   }
 
   async delete(timeLog: TimeLog): Promise<void> {
     await this.db.timeLogs.delete(timeLog.startTime)
+  }
+
+  async deleteAll(): Promise<void> {
+    await this.db.timeLogs.clear()
   }
 }
 

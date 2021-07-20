@@ -1,6 +1,7 @@
 import { Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 import TimeLog from '../../domain/TimeLog'
 import EmptyTableRow from './EmptyTableRow'
+import ExportImportActionButton from './ExportImportActionButton'
 import { Action } from './TableRowActionButton'
 import TimeLogTableRow from './TimeLogTableRow'
 
@@ -17,7 +18,7 @@ export default function TimerLogTable({ timeLogs, onAction }: Props) {
           <TableRow>
             <TableCell align="center">DATE</TableCell>
             <TableCell align="right">DURATION</TableCell>
-            <TableCell></TableCell>
+            <TableCell align="right"><ExportImportActionButton /></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
