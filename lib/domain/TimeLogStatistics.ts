@@ -1,9 +1,9 @@
 import TimeLog from './TimeLog'
 import {format, isToday} from 'date-fns'
+import { HOUR } from './time-constants'
 
 const WORK_HOURS = 8
-const HOURS_TO_MILLISECONDS = 60*60*1000
-const WORK_HOURS_MS = WORK_HOURS * HOURS_TO_MILLISECONDS
+const WORK_HOURS_MS = WORK_HOURS * HOUR
 
 export default class TimeLogStatistics {
   private readonly timeLogs: TimeLog[]

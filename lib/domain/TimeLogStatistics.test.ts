@@ -1,10 +1,7 @@
 import TimeLog from "./TimeLog"
 import TimeLogStatistics from "./TimeLogStatistics"
 import {addHours, subDays} from 'date-fns'
-
-const HOURS = 1000*60*60
-const TODAY = new Date()
-const YESTERDAY = subDays(TODAY, 1)
+import { HOUR, TODAY, YESTERDAY } from "./time-constants"
 
 function testFulfilledTimeLog(date: Date, hours: number) {
   return new TimeLog({
@@ -80,7 +77,7 @@ describe("TimeLogStatistics", () => {
 
       const statistics = new TimeLogStatistics([currentTimeLog])
 
-      expect(statistics.getTotalOvertimeMs()).toBe(1*HOURS)
+      expect(statistics.getTotalOvertimeMs()).toBe(1*HOUR)
     })
 
     it("returns 1h if yesterday's time log has duration of 9h", () => {
@@ -88,7 +85,7 @@ describe("TimeLogStatistics", () => {
 
       const statistics = new TimeLogStatistics([currentTimeLog])
 
-      expect(statistics.getTotalOvertimeMs()).toBe(1*HOURS)
+      expect(statistics.getTotalOvertimeMs()).toBe(1*HOUR)
     })
 
     it("returns -1h if yesterday's time log has duration of 7h", () => {
@@ -96,7 +93,7 @@ describe("TimeLogStatistics", () => {
 
       const statistics = new TimeLogStatistics([currentTimeLog])
 
-      expect(statistics.getTotalOvertimeMs()).toBe(-1*HOURS)
+      expect(statistics.getTotalOvertimeMs()).toBe(-1*HOUR)
     })
 
     it("returns 2h if yesterday's and todays's time log has duration of 9h", () => {
@@ -105,7 +102,7 @@ describe("TimeLogStatistics", () => {
 
       const statistics = new TimeLogStatistics([currentTimeLog, yesterdayTimeLog])
 
-      expect(statistics.getTotalOvertimeMs()).toBe(2*HOURS)
+      expect(statistics.getTotalOvertimeMs()).toBe(2*HOUR)
     })
 
     it("returns 0h if yesterday's time logs have total duration of 8h", () => {

@@ -1,8 +1,6 @@
 import TimeLog from "./TimeLog"
 import {addDays, addHours, addSeconds, getMilliseconds} from 'date-fns'
-
-const HOURS = 1000 * 60 * 60
-const NOW = new Date()
+import { HOUR, NOW } from "./time-constants";
 
 describe("TimeLog", () => {
   describe("constructor", () => {
@@ -49,7 +47,7 @@ describe("TimeLog", () => {
         endTime: addHours(new Date(), 4)
       })
 
-      expect(timeLog.getDurationMs()).toBe(4 * HOURS)
+      expect(timeLog.getDurationMs()).toBe(4 * HOUR)
     });
   });
 })

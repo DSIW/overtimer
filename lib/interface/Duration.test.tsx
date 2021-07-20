@@ -1,9 +1,6 @@
 import Duration from "./Duration"
 import { render, screen } from "@testing-library/react"
-
-const SEC = 1000
-const MIN = 60*SEC
-const HOUR = 60*MIN
+import { HOUR, MIN, SEC } from "../domain/time-constants";
 
 describe("<Duration />", () => {
   it("renders zero seconds", async () => {
