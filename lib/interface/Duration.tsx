@@ -18,7 +18,7 @@ export default function Duration({ milliseconds, zero }: Props) {
     formattedDuration = `${minutes} m`
   }
 
-  if (minutes === 0) {
+  if (hours === 0 && minutes === 0) {
     formattedDuration = `${seconds} s`
   }
 
