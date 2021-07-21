@@ -15,7 +15,9 @@ function useTimeLogs() {
 export default function TimerApp() {
   const timeLogs = useTimeLogs()
 
-  Notification.requestPermission()
+  if (window.Notification !== undefined) {
+    Notification.requestPermission()
+  }
 
   async function showNotification(text: string) {
     if (Notification.permission == 'granted') {
