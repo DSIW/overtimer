@@ -1,6 +1,7 @@
 import { saveAs } from "file-saver";
 import { formatISO, parseISO } from "date-fns";
 import TimeLog from "../domain/TimeLog";
+import * as Sentry from '@sentry/browser';
 
 interface Writable {
   write: (content: string) => void;
@@ -34,6 +35,7 @@ export default class TimeLogsFile {
       saveAs(blob, fileName);
     } catch(error) {
       console.error(error)
+      Sentry.captureException(error);
     }
   }
 
@@ -47,6 +49,7 @@ export default class TimeLogsFile {
       }))
     } catch(error) {
       console.error(error)
+      Sentry.captureException(error);
     }
 
     return []
