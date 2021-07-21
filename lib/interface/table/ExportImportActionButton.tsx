@@ -1,6 +1,5 @@
 import { IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core'
 import { GetApp, Publish, MoreVert } from '@material-ui/icons'
-import TimeLog from '../../domain/TimeLog'
 import {
   usePopupState,
   bindTrigger,
