@@ -1,7 +1,6 @@
 import { saveAs } from "file-saver";
 import { formatISO, parseISO } from "date-fns";
 import TimeLog from "../domain/TimeLog";
-import * as Sentry from '@sentry/browser';
 
 interface Writable {
   write: (content: string) => void;
@@ -30,28 +29,16 @@ export default class TimeLogsFile {
     }))
     const timeLogJson = JSON.stringify(timeLogRecords, null, 2)
 
-    try {
-      var blob = new Blob([timeLogJson], { type: "application/json;charset=utf-8" });
-      saveAs(blob, fileName);
-    } catch(error) {
-      console.error(error)
-      Sentry.captureException(error);
-    }
+    var blob = new Blob([timeLogJson], { type: "application/json;charset=utf-8" });
+    saveAs(blob, fileName);
   }
 
   async read(file: File): Promise<TimeLog[]> {
-    try {
-      const content = await file.text();
-      const json = JSON.parse(content) as TimeLogRecord[];
-      return json.map((record) => new TimeLog({
-        startTime: parseISO(record.startTime),
-        endTime: record.endTime !== undefined ? parseISO(record.endTime) : undefined,
-      }))
-    } catch(error) {
-      console.error(error)
-      Sentry.captureException(error);
-    }
-
-    return []
+    const content = await file.text();
+    const json = JSON.parse(content) as TimeLogRecord[];
+    return json.map((record) => new TimeLog({
+      startTime: parseISO(record.startTime),
+      endTime: record.endTime !== undefined ? parseISO(record.endTime) : undefined,
+    }))
   }
 }

@@ -10,6 +10,8 @@ import { format } from 'date-fns'
 import TimeLogsFile from '../../infrastructure/TimeLogsFile'
 import ImportButton from './ImportButton'
 import { ChangeEvent } from 'react'
+import { useSnackbar } from 'notistack';
+import * as Sentry from '@sentry/browser';
 
 export type Action = "export" | "import"
 
@@ -26,6 +28,8 @@ export default function ExportImportActionButton() {
 
   const popupState = usePopupState({ variant: 'popover', popupId: 'ActionMenu' })
 
+  const { enqueueSnackbar } = useSnackbar();
+
   async function handleExport() {
     const timeLogs = await exportImportApplicationService.getAllTimeLogs()
 
@@ -36,17 +40,26 @@ export default function ExportImportActionButton() {
       popupState.close()
     } catch(error) {
       console.error(error)
+      Sentry.captureException(error);
+      enqueueSnackbar('Export failed!', { variant: 'error' });
     }
   }
 
   async function handleImport(event: ChangeEvent) {
-    // @ts-ignore
-    const file = event.target.files[0]
-    const timeLogs = await new TimeLogsFile().read(file)
-    if (timeLogs.length > 0) {
-      await exportImportApplicationService.import(timeLogs)
+    try {
+      // @ts-ignore
+      const file = event.target.files[0]
+      const timeLogs = await new TimeLogsFile().read(file)
+      if (timeLogs.length > 0) {
+        await exportImportApplicationService.import(timeLogs)
+      }
+      enqueueSnackbar('Export was successful!', { variant: 'success' });
+      popupState.close()
+    } catch(error) {
+      console.error(error)
+      Sentry.captureException(error);
+      enqueueSnackbar('Import failed!', { variant: 'error' });
     }
-    popupState.close()
   }
 
   return (
