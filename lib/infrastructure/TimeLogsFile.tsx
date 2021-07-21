@@ -37,13 +37,21 @@ export default class TimeLogsFile {
     }
   }
 
-  async read(fileHandle: FileHandle): Promise<TimeLog[]> {
-    const file = await fileHandle.getFile();
-    const content = await file.text();
-    const json = JSON.parse(content) as TimeLogRecord[];
-    return json.map((record) => new TimeLog({
-      startTime: parseISO(record.startTime),
-      endTime: record.endTime !== undefined ? parseISO(record.endTime) : undefined,
-    }))
+  async read(): Promise<TimeLog[]> {
+    try {
+      // @ts-ignore
+      const [fileHandle] = await window.showOpenFilePicker()
+      const file = await fileHandle.getFile();
+      const content = await file.text();
+      const json = JSON.parse(content) as TimeLogRecord[];
+      return json.map((record) => new TimeLog({
+        startTime: parseISO(record.startTime),
+        endTime: record.endTime !== undefined ? parseISO(record.endTime) : undefined,
+      }))
+    } catch(error) {
+      console.error(error)
+    }
+
+    return []
   }
 }

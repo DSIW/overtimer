@@ -38,11 +38,10 @@ export default function ExportImportActionButton() {
   }
 
   async function handleImport() {
-    // @ts-ignore
-    const [fileHandle] = await window.showOpenFilePicker()
-    const timeLogs = await new TimeLogsFile().read(fileHandle)
-    console.log(timeLogs)
-    await exportImportApplicationService.import(timeLogs)
+    const timeLogs = await new TimeLogsFile().read()
+    if (timeLogs.length > 0) {
+      await exportImportApplicationService.import(timeLogs)
+    }
     popupState.close()
   }
 
