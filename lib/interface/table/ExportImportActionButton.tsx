@@ -1,5 +1,5 @@
 import { IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core'
-import { GetApp, Publish, MoreVert } from '@material-ui/icons'
+import { GetApp, MoreVert } from '@material-ui/icons'
 import {
   usePopupState,
   bindTrigger,
@@ -8,6 +8,8 @@ import {
 import { exportImportApplicationService } from '../../application/ExportImportApplicationService'
 import { format } from 'date-fns'
 import TimeLogsFile from '../../infrastructure/TimeLogsFile'
+import ImportButton from './ImportButton'
+import { ChangeEvent } from 'react'
 
 export type Action = "export" | "import"
 
@@ -37,8 +39,10 @@ export default function ExportImportActionButton() {
     }
   }
 
-  async function handleImport() {
-    const timeLogs = await new TimeLogsFile().read()
+  async function handleImport(event: ChangeEvent) {
+    // @ts-ignore
+    const file = event.target.files[0]
+    const timeLogs = await new TimeLogsFile().read(file)
     if (timeLogs.length > 0) {
       await exportImportApplicationService.import(timeLogs)
     }
@@ -57,12 +61,7 @@ export default function ExportImportActionButton() {
           </ListItemIcon>
           Export
         </MenuItem>
-        <MenuItem onClick={handleImport}>
-          <ListItemIcon>
-            <Publish fontSize="small" />
-          </ListItemIcon>
-          Import
-        </MenuItem>
+        <ImportButton onClick={handleImport} />
       </Menu>
     </>
   )
