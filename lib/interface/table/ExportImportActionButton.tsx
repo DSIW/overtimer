@@ -53,7 +53,7 @@ export default function ExportImportActionButton() {
       if (timeLogs.length > 0) {
         await exportImportApplicationService.import(timeLogs)
       }
-      enqueueSnackbar('Export was successful!', { variant: 'success' });
+      enqueueSnackbar('Import was successful!', { variant: 'success' });
       popupState.close()
     } catch(error) {
       console.error(error)
