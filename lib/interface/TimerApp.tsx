@@ -15,6 +15,15 @@ function useTimeLogs() {
 export default function TimerApp() {
   const timeLogs = useTimeLogs()
 
+  Notification.requestPermission()
+
+  async function showNotification(text: string) {
+    if (Notification.permission == 'granted') {
+      const reg = await navigator.serviceWorker.getRegistration()
+      reg && reg.showNotification(text)
+    }
+  }
+
   async function handleAction(action: Action, timeLog: TimeLog) {
     switch (action) {
       case 'delete':
@@ -30,6 +39,7 @@ export default function TimerApp() {
     <>
       <SnackbarProvider maxSnack={1}>
         <TimerContainer timeLogs={timeLogs} />
+        <button onClick={() => showNotification("test")}>Show notification</button>
         <TimeLogSummary timeLogs={timeLogs} />
         <TimeLogTable timeLogs={timeLogs} onAction={handleAction} />
       </SnackbarProvider>
