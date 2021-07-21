@@ -26,21 +26,11 @@ export default function ExportImportActionButton() {
 
   async function handleExport() {
     const timeLogs = await exportImportApplicationService.getAllTimeLogs()
+
+    const fileName = `${format(new Date(), 'yyyy-MM-dd_HH-mm')}_overtimer.json`;
+
     try {
-      const options = {
-        suggestedName: `${format(new Date(), 'yyyy-MM-dd-HH:mm')}_overtimer.json`,
-        types: [
-          {
-            description: 'JSON Files',
-            accept: {
-              'application/json': ['.json'],
-            },
-          },
-        ],
-      };
-      // @ts-ignore
-      const fileHandle = await window.showSaveFilePicker(options)
-      await new TimeLogsFile().write(fileHandle, timeLogs)
+      await new TimeLogsFile().write(fileName, timeLogs)
       popupState.close()
     } catch(error) {
       console.error(error)

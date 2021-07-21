@@ -1,3 +1,4 @@
+import { saveAs } from "file-saver";
 import { formatISO, parseISO } from "date-fns";
 import TimeLog from "../domain/TimeLog";
 
@@ -21,15 +22,16 @@ interface TimeLogRecord {
 }
 
 export default class TimeLogsFile {
-  async write(fileHandle: FileHandle, timeLogs: TimeLog[]) {
+  async write(fileName: string, timeLogs: TimeLog[]) {
+    const timeLogRecords = timeLogs.map(timeLog => ({
+      startTime: formatISO(timeLog.startTime),
+      endTime: timeLog.endTime && formatISO(timeLog.endTime),
+    }))
+    const timeLogJson = JSON.stringify(timeLogRecords, null, 2)
+
     try {
-      const writable = await fileHandle.createWritable();
-      const timeLogRecords = timeLogs.map(timeLog => ({
-        startTime: formatISO(timeLog.startTime),
-        endTime: timeLog.endTime && formatISO(timeLog.endTime),
-      }))
-      await writable.write(JSON.stringify(timeLogRecords, null, 2));
-      await writable.close();
+      var blob = new Blob([timeLogJson], { type: "application/json;charset=utf-8" });
+      saveAs(blob, fileName);
     } catch(error) {
       console.error(error)
     }
