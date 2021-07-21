@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import TimeLog from '../domain/TimeLog'
 import TimeLogTable from './table/TimeLogTable'
 import TimeLogSummary from './TimeLogSummary'
@@ -15,9 +15,9 @@ function useTimeLogs() {
 export default function TimerApp() {
   const timeLogs = useTimeLogs()
 
-  if (window.Notification !== undefined) {
+  useEffect(() => {
     Notification.requestPermission()
-  }
+  }, []);
 
   async function showNotification(text: string) {
     if (Notification.permission == 'granted') {
