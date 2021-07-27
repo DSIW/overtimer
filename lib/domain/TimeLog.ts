@@ -1,15 +1,18 @@
 import {isSameDay, isToday, setMilliseconds} from 'date-fns'
 
 interface Fields {
+  id?: number;
   startTime: Date;
   endTime?: Date
 }
 
 export default class TimeLog {
+  public readonly id: number | undefined;
   public readonly startTime: Date
   public readonly endTime?: Date
 
   constructor(fields: Fields) {
+    this.id = fields.id;
     this.startTime = this.reducePrecision(fields.startTime)
     this.endTime = fields.endTime && this.reducePrecision(fields.endTime)
   }
@@ -20,6 +23,7 @@ export default class TimeLog {
 
   clone() {
     return new TimeLog({
+      id: this.id,
       startTime: this.startTime,
       endTime: this.endTime
     })
