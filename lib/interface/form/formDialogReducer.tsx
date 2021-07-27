@@ -34,6 +34,7 @@ export function updateTime(state: State, payload: Payload) {
   }
 
   const updatedTimeLog = new TimeLog({
+    id: timeLog.id,
     startTime: resetSeconds(timeLog.startTime),
     endTime: timeLog.endTime && resetSeconds(timeLog.endTime),
     [name]: updatedTime
