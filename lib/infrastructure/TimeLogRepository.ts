@@ -23,11 +23,19 @@ export default class TimeLogRepository {
   }
 
   async update(timeLog: TimeLog): Promise<void> {
-    await this.db.timeLogs.put(timeLog)
+    if (timeLog.id === undefined) {
+      throw new Error("Only persisted time logs can be updated")
+    }
+
+    await this.db.timeLogs.put(timeLog, timeLog.id)
   }
 
   async delete(timeLog: TimeLog): Promise<void> {
-    await this.db.timeLogs.delete(timeLog.startTime)
+    if (timeLog.id === undefined) {
+      throw new Error("Only persisted time logs can be deleted")
+    }
+
+    await this.db.timeLogs.delete(timeLog.id)
   }
 
   async deleteAll(): Promise<void> {
