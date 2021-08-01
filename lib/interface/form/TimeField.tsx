@@ -1,9 +1,9 @@
-import {TextField} from "@material-ui/core";
-import {format} from "date-fns";
-import ChangeEvent, {TimeLogEventTargetName} from "./ChangeEvent";
+import { TextField } from "@material-ui/core";
+import { format } from "date-fns";
+import ChangeEvent, { TimeLogEventTargetName } from "./ChangeEvent";
 import * as React from "react";
 
-const TIME_FORMAT = "HH:mm"
+const TIME_FORMAT = "HH:mm";
 
 interface Props {
   name: TimeLogEventTargetName;
@@ -13,8 +13,15 @@ interface Props {
   onChange: (event: ChangeEvent) => void;
 }
 
-export function TimeField({defaultTime, error, label, name, onChange}: Props) {
-  return <TextField
+export function TimeField({
+  defaultTime,
+  error,
+  label,
+  name,
+  onChange,
+}: Props) {
+  return (
+    <TextField
       id={name}
       name={name}
       label={label}
@@ -31,5 +38,6 @@ export function TimeField({defaultTime, error, label, name, onChange}: Props) {
         step: 300, // 5 min
       }}
       onChange={onChange}
-  />;
+    />
+  );
 }

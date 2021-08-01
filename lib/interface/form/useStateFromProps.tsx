@@ -1,18 +1,20 @@
-import TimeLog from '../../domain/TimeLog'
-import {State} from './formDialogReducer';
-import {Dispatch, useEffect, useState} from "react";
+import TimeLog from "../../domain/TimeLog";
+import { State } from "./formDialogReducer";
+import { Dispatch, useEffect, useState } from "react";
 
-export default function useStateFromProps(timeLog: TimeLog): [State, Dispatch<State>] {
+export default function useStateFromProps(
+  timeLog: TimeLog
+): [State, Dispatch<State>] {
   const initial: State = {
     timeLog,
-    error: false
+    error: false,
   };
 
   const [state, setState] = useState(initial);
 
   useEffect(() => {
-    setState(initial)
+    setState(initial);
   }, [timeLog]);
 
-  return [state, setState]
+  return [state, setState];
 }
