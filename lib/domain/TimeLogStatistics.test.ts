@@ -1,7 +1,13 @@
 import TimeLog from "./TimeLog";
 import TimeLogStatistics from "./TimeLogStatistics";
-import { addHours, subDays } from "date-fns";
-import { HOUR, TODAY, YESTERDAY } from "./time-constants";
+import { addHours } from "date-fns";
+import {
+  HOUR,
+  lastMonday,
+  lastSunday,
+  TODAY,
+  YESTERDAY,
+} from "./time-constants";
 
 function testFulfilledTimeLog(date: Date, hours: number) {
   return new TimeLog({
@@ -124,6 +130,32 @@ describe("TimeLogStatistics", () => {
       ]);
 
       expect(statistics.getTotalOvertimeMs()).toBe(0);
+    });
+  });
+
+  describe("getWeeklyOvertimeMs()", () => {
+    it("returns 1h if this week's time log has duration of 9h", () => {
+      const currentTimeLog = testFulfilledTimeLog(TODAY, 8 + 1);
+
+      const statistics = new TimeLogStatistics([currentTimeLog]);
+
+      expect(statistics.getWeeklyOvertimeMs()).toBe(1 * HOUR);
+    });
+
+    it("returns 0h if last monday's time log has duration of 9h", () => {
+      const lastWeekTimeLog = testFulfilledTimeLog(lastMonday(), 8 + 1);
+
+      const statistics = new TimeLogStatistics([lastWeekTimeLog]);
+
+      expect(statistics.getWeeklyOvertimeMs()).toBe(1 * HOUR);
+    });
+
+    it("returns 0h if last sunday's time log has duration of 9h", () => {
+      const lastWeekTimeLog = testFulfilledTimeLog(lastSunday(), 8 + 1);
+
+      const statistics = new TimeLogStatistics([lastWeekTimeLog]);
+
+      expect(statistics.getWeeklyOvertimeMs()).toBe(0);
     });
   });
 });

@@ -1,7 +1,7 @@
 import React from "react";
 import TimeLog from "../domain/TimeLog";
 import TimeLogTable from "./table/TimeLogTable";
-import TimeLogSummary from "./TimeLogSummary";
+import TimeLogSummary from "./stats/TimeLogSummary";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Action } from "./table/TableRowActionButton";
 import TimerContainer from "./timer/TimerContainer";
