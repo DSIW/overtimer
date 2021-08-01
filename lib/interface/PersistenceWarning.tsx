@@ -1,19 +1,22 @@
-import { Button } from '@material-ui/core';
-import { AlertTitle } from '@material-ui/lab';
-import Alert from '@material-ui/lab/Alert';
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import TimeLog from '../domain/TimeLog';
-import { useSnackbar } from 'notistack';
-import { isPersisted, requestPersistence } from '../infrastructure/PersistencePermission';
+import { Button } from "@material-ui/core";
+import { AlertTitle } from "@material-ui/lab";
+import Alert from "@material-ui/lab/Alert";
+import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import TimeLog from "../domain/TimeLog";
+import { useSnackbar } from "notistack";
+import {
+  isPersisted,
+  requestPersistence,
+} from "../infrastructure/PersistencePermission";
 
 interface Props {
   timeLogs: TimeLog[];
 }
 
 const WARNING_MESSAGE =
-  'Time logs can be deleted in the future. Make backups on a regular basis e.g. every day.';
+  "Time logs can be deleted in the future. Make backups on a regular basis e.g. every day.";
 
 export default function PersistenceWarning({ timeLogs }: Props) {
   const [persisted, setPersisted] = useState<boolean | undefined>();
@@ -31,7 +34,9 @@ export default function PersistenceWarning({ timeLogs }: Props) {
   async function handleTrial() {
     const isPersisted = await requestPersistence();
     if (!isPersisted) {
-      enqueueSnackbar('Still no permission! Please go to your site settings.', { variant: 'error' });
+      enqueueSnackbar("Still no permission! Please go to your site settings.", {
+        variant: "error",
+      });
     }
   }
 
@@ -40,7 +45,7 @@ export default function PersistenceWarning({ timeLogs }: Props) {
   }
 
   return (
-    <div style={{ width: '100%', marginBottom: '2rem' }}>
+    <div style={{ width: "100%", marginBottom: "2rem" }}>
       <Alert
         severity="warning"
         action={

@@ -1,5 +1,5 @@
-import Button from '@material-ui/core/Button';
-import { Stop, PlayArrow } from '@material-ui/icons';
+import Button from "@material-ui/core/Button";
+import { Stop, PlayArrow } from "@material-ui/icons";
 
 interface Props {
   isRunning: boolean;
@@ -15,14 +15,14 @@ export default function StartStopButton({
   return (
     <Button
       variant="outlined"
-      color={isOverdue ? 'secondary' : 'primary'}
+      color={isOverdue ? "secondary" : "primary"}
       onClick={onClick}
       startIcon={
         isRunning ? <Stop fontSize="large" /> : <PlayArrow fontSize="large" />
       }
-      style={{ marginTop: '1rem', width: '6rem' }}
+      style={{ marginTop: "1rem", width: "6rem" }}
     >
-      {isRunning ? 'Stop' : 'Start'}
+      {isRunning ? "Stop" : "Start"}
     </Button>
   );
 }
