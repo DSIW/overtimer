@@ -8,6 +8,8 @@ import TimerContainer from "./timer/TimerContainer";
 import { timerApplicationService } from "../application/TimerApplicationService";
 import { SnackbarProvider } from "notistack";
 import PersistenceWarning from "./PersistenceWarning";
+import { format } from "date-fns";
+import useWindowFocus from "use-window-focus";
 
 function useTimeLogs() {
   return useLiveQuery(
@@ -19,6 +21,8 @@ function useTimeLogs() {
 
 export default function TimerApp() {
   const timeLogs = useTimeLogs();
+
+  const focussed = useWindowFocus();
 
   async function handleAction(action: Action, timeLog: TimeLog) {
     switch (action) {
@@ -33,7 +37,7 @@ export default function TimerApp() {
 
   return (
     <>
-      <SnackbarProvider maxSnack={1}>
+      <SnackbarProvider key={"" + focussed} maxSnack={1}>
         <TimerContainer timeLogs={timeLogs} />
         <TimeLogSummary timeLogs={timeLogs} />
         <PersistenceWarning timeLogs={timeLogs} />
