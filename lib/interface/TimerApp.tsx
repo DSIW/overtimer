@@ -9,7 +9,6 @@ import { SnackbarProvider } from "notistack";
 import PersistenceWarning from "./PersistenceWarning";
 import BackupReminder from "./BackupReminder";
 import { useTimeLogs } from "./useTimeLogs";
-import PersistenceWarning from "./PersistenceWarning";
 
 export default function TimerApp() {
   const timeLogs = useTimeLogs();
