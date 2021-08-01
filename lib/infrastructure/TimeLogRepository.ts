@@ -10,6 +10,15 @@ export default class TimeLogRepository {
     this.db.timeLogs.mapToClass(TimeLog);
   }
 
+  async getNewest(): Promise<TimeLog | undefined> {
+    const records = await this.db.timeLogs.orderBy("startTime").reverse().limit(1).toArray();
+    const record = records[0]
+    if (!record) {
+      return undefined
+    }
+    return new TimeLog({...record})
+  }
+
   async all(): Promise<TimeLog[]> {
     const records = await this.db.timeLogs.orderBy("startTime").reverse().toArray();
     return records.map(record => new TimeLog({...record}))

@@ -38,6 +38,10 @@ export default class IndexDb extends Dexie {
             timeLogsWithId: null
         });
 
+        this.version(6).stores({
+            backups: '++id,creationTime',
+        });
+
         this.timeLogs = this.table("timeLogs");
     }
 }

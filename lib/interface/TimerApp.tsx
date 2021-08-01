@@ -2,16 +2,13 @@ import React from 'react'
 import TimeLog from '../domain/TimeLog'
 import TimeLogTable from './table/TimeLogTable'
 import TimeLogSummary from './TimeLogSummary'
-import {useLiveQuery} from 'dexie-react-hooks'
 import {Action} from './table/TableRowActionButton'
 import TimerContainer from './timer/TimerContainer'
 import { timerApplicationService } from '../application/TimerApplicationService'
 import { SnackbarProvider } from 'notistack';
 import PersistenceWarning from './PersistenceWarning';
-
-function useTimeLogs() {
-  return useLiveQuery(() => timerApplicationService.getAllTimeLogs(), [], [] as TimeLog[])
-}
+import BackupReminder from './BackupReminder'
+import { useTimeLogs } from './useTimeLogs'
 
 export default function TimerApp() {
   const timeLogs = useTimeLogs()
@@ -30,6 +27,7 @@ export default function TimerApp() {
   return (
     <>
       <SnackbarProvider maxSnack={1}>
+        <BackupReminder timeLogs={timeLogs} />
         <TimerContainer timeLogs={timeLogs} />
         <TimeLogSummary timeLogs={timeLogs} />
         <PersistenceWarning timeLogs={timeLogs} />
