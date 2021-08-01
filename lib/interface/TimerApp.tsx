@@ -22,7 +22,7 @@ function useTimeLogs() {
 export default function TimerApp() {
   const timeLogs = useTimeLogs();
 
-  const focussed = useWindowFocus();
+  useWindowFocus();
 
   async function handleAction(action: Action, timeLog: TimeLog) {
     switch (action) {
@@ -37,7 +37,7 @@ export default function TimerApp() {
 
   return (
     <>
-      <SnackbarProvider key={"" + focussed} maxSnack={1}>
+      <SnackbarProvider maxSnack={1}>
         <TimerContainer timeLogs={timeLogs} />
         <TimeLogSummary timeLogs={timeLogs} />
         <PersistenceWarning timeLogs={timeLogs} />
