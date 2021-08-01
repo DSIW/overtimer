@@ -5,15 +5,19 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import TimeLog from '../domain/TimeLog';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   timeLogs: TimeLog[];
 }
 
-const WARNING_MESSAGE = "Time logs can be deleted in the future. Make backups on a regular basis e.g. every day."
+const WARNING_MESSAGE =
+  'Time logs can be deleted in the future. Make backups on a regular basis e.g. every day.';
 
 export default function PersistenceWarning({ timeLogs }: Props) {
   const [persisted, setPersisted] = useState<boolean | undefined>();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     async function fetch() {
@@ -26,7 +30,10 @@ export default function PersistenceWarning({ timeLogs }: Props) {
 
   async function requestPermission() {
     if (navigator.storage && navigator.storage.persist) {
-      await navigator.storage.persist();
+      const isPersisted = await navigator.storage.persist();
+      if (!isPersisted) {
+        enqueueSnackbar('Still no permission! Please go to your site settings.', { variant: 'error' });
+      }
     }
   }
 
@@ -36,14 +43,17 @@ export default function PersistenceWarning({ timeLogs }: Props) {
 
   return (
     <div style={{ width: '100%', marginBottom: '2rem' }}>
-      <Alert severity="warning" action={
-        <Button color="inherit" size="small" onClick={requestPermission}>
-          REQUEST
-        </Button>
-      }>
+      <Alert
+        severity="warning"
+        action={
+          <Button color="inherit" size="small" onClick={requestPermission}>
+            TRY AGAIN
+          </Button>
+        }
+      >
         <AlertTitle>Persistence not allowed!</AlertTitle>
         {WARNING_MESSAGE}
-        </Alert>
+      </Alert>
     </div>
   );
 }
