@@ -23,10 +23,10 @@ export default function TimeLogSummary({ timeLogs }: Props) {
         width: "100%",
       }}
     >
-      <StatisticsCard title="WEEKLY OVERVIEW">
+      <StatisticsCard title="WEEKLY OVERTIME">
         <Duration milliseconds={weeklyOvertimeMs} />
       </StatisticsCard>
-      <StatisticsCard title="TOTAL OVERVIEW">
+      <StatisticsCard title="TOTAL OVERTIME">
         <Duration milliseconds={totalOvertimeMs} />
       </StatisticsCard>
     </div>
