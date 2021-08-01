@@ -1,5 +1,6 @@
 import TimeLog from "../domain/TimeLog"
 import IndexDb from "./IndexDb";
+import { requestPersistence } from "./PersistencePermission";
 
 export default class TimeLogRepository {
   private db: IndexDb;
@@ -16,10 +17,12 @@ export default class TimeLogRepository {
 
   async save(timeLog: TimeLog): Promise<void> {
     await this.db.timeLogs.put(timeLog)
+    await requestPersistence();
   }
 
   async saveAll(timeLogs: TimeLog[]): Promise<void> {
     await this.db.timeLogs.bulkPut(timeLogs)
+    await requestPersistence();
   }
 
   async update(timeLog: TimeLog): Promise<void> {
@@ -28,6 +31,7 @@ export default class TimeLogRepository {
     }
 
     await this.db.timeLogs.put(timeLog, timeLog.id)
+    await requestPersistence();
   }
 
   async delete(timeLog: TimeLog): Promise<void> {
