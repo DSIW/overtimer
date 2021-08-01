@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import { AlertTitle } from '@material-ui/lab';
 import Alert from '@material-ui/lab/Alert';
 import React from 'react';
@@ -23,13 +24,23 @@ export default function PersistenceWarning({ timeLogs }: Props) {
     fetch();
   }, [timeLogs]);
 
+  async function requestPermission() {
+    if (navigator.storage && navigator.storage.persist) {
+      await navigator.storage.persist();
+    }
+  }
+
   if (timeLogs.length <= 0 || persisted) {
     return null;
   }
 
   return (
     <div style={{ width: '100%', marginBottom: '2rem' }}>
-      <Alert severity="warning">
+      <Alert severity="warning" action={
+        <Button color="inherit" size="small" onClick={requestPermission}>
+          REQUEST
+        </Button>
+      }>
         <AlertTitle>Persistence not allowed!</AlertTitle>
         {WARNING_MESSAGE}
         </Alert>
