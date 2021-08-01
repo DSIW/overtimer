@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import TimeLog from '../domain/TimeLog';
 import { useSnackbar } from 'notistack';
+import { isPersisted, requestPersistence } from '../infrastructure/PersistencePermission';
 
 interface Props {
   timeLogs: TimeLog[];
@@ -21,19 +22,16 @@ export default function PersistenceWarning({ timeLogs }: Props) {
 
   useEffect(() => {
     async function fetch() {
-      const persisted = await navigator.storage.persisted();
-      setPersisted(persisted);
+      setPersisted(await isPersisted());
     }
 
     fetch();
   }, [timeLogs]);
 
-  async function requestPermission() {
-    if (navigator.storage && navigator.storage.persist) {
-      const isPersisted = await navigator.storage.persist();
-      if (!isPersisted) {
-        enqueueSnackbar('Still no permission! Please go to your site settings.', { variant: 'error' });
-      }
+  async function handleTrial() {
+    const isPersisted = await requestPersistence();
+    if (!isPersisted) {
+      enqueueSnackbar('Still no permission! Please go to your site settings.', { variant: 'error' });
     }
   }
 
@@ -46,7 +44,7 @@ export default function PersistenceWarning({ timeLogs }: Props) {
       <Alert
         severity="warning"
         action={
-          <Button color="inherit" size="small" onClick={requestPermission}>
+          <Button color="inherit" size="small" onClick={handleTrial}>
             TRY AGAIN
           </Button>
         }
