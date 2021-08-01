@@ -7,6 +7,7 @@ import {Action} from './table/TableRowActionButton'
 import TimerContainer from './timer/TimerContainer'
 import { timerApplicationService } from '../application/TimerApplicationService'
 import { SnackbarProvider } from 'notistack';
+import PersistenceWarning from './PersistenceWarning';
 
 function useTimeLogs() {
   return useLiveQuery(() => timerApplicationService.getAllTimeLogs(), [], [] as TimeLog[])
@@ -31,6 +32,7 @@ export default function TimerApp() {
       <SnackbarProvider maxSnack={1}>
         <TimerContainer timeLogs={timeLogs} />
         <TimeLogSummary timeLogs={timeLogs} />
+        <PersistenceWarning timeLogs={timeLogs} />
         <TimeLogTable timeLogs={timeLogs} onAction={handleAction} />
       </SnackbarProvider>
     </>

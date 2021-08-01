@@ -2,20 +2,6 @@ import { saveAs } from "file-saver";
 import { formatISO, parseISO } from "date-fns";
 import TimeLog from "../domain/TimeLog";
 
-interface Writable {
-  write: (content: string) => void;
-  close: () => void;
-}
-
-interface GetFile {
-  text: () => Promise<string>;
-}
-
-interface FileHandle {
-  createWritable: () => Promise<Writable>;
-  getFile: () => Promise<GetFile>;
-}
-
 interface TimeLogRecord {
   startTime: string;
   endTime: string | undefined;

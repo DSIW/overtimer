@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import Timer from '../lib/interface/TimerApp'
+import TimerApp from '../lib/interface/TimerApp'
 import React from 'react'
 import theme from '../lib/interface/theme'
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -24,7 +24,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <ThemeProvider theme={theme}>
-          <Timer />
+          <TimerApp />
         </ThemeProvider>
       </main>
     </div>
