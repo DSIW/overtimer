@@ -1,5 +1,5 @@
 import TimeLog from "./TimeLog";
-import { format, isToday } from "date-fns";
+import { format, isThisWeek, isToday } from "date-fns";
 import { HOUR } from "./time-constants";
 
 const WORK_HOURS = 8;
@@ -24,6 +24,13 @@ export default class TimeLogStatistics {
     const todayOvertime = this.calcOvertimeMs(todayTimeLogs);
 
     return oldOvertime + Math.max(0, todayOvertime);
+  }
+
+  getWeeklyOvertimeMs() {
+    const thisWeekTimeLogs = this.timeLogs.filter((timeLog) =>
+      isThisWeek(timeLog.startTime, { weekStartsOn: 1 })
+    );
+    return new TimeLogStatistics(thisWeekTimeLogs).getTotalOvertimeMs();
   }
 
   getTotalWorkTimeMs() {
