@@ -14,6 +14,8 @@ export default function TimeLogSummary({ timeLogs }: Props) {
   ).getWeeklyOvertimeMs();
   const totalOvertimeMs = new TimeLogStatistics(timeLogs).getTotalOvertimeMs();
 
+  const showWeekly = weeklyOvertimeMs > 0 && totalOvertimeMs > 0;
+
   return (
     <div
       style={{
@@ -23,9 +25,11 @@ export default function TimeLogSummary({ timeLogs }: Props) {
         width: "100%",
       }}
     >
+      {showWeekly && (
       <StatisticsCard title="WEEKLY OVERTIME">
         <Duration milliseconds={weeklyOvertimeMs} />
       </StatisticsCard>
+      )}
       <StatisticsCard title="TOTAL OVERTIME">
         <Duration milliseconds={totalOvertimeMs} />
       </StatisticsCard>
