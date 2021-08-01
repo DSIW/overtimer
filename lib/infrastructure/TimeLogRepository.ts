@@ -16,10 +16,12 @@ export default class TimeLogRepository {
 
   async save(timeLog: TimeLog): Promise<void> {
     await this.db.timeLogs.put(timeLog)
+    await this._requestPersistence()
   }
 
   async saveAll(timeLogs: TimeLog[]): Promise<void> {
     await this.db.timeLogs.bulkPut(timeLogs)
+    await this._requestPersistence()
   }
 
   async update(timeLog: TimeLog): Promise<void> {
@@ -28,6 +30,7 @@ export default class TimeLogRepository {
     }
 
     await this.db.timeLogs.put(timeLog, timeLog.id)
+    await this._requestPersistence()
   }
 
   async delete(timeLog: TimeLog): Promise<void> {
@@ -40,6 +43,17 @@ export default class TimeLogRepository {
 
   async deleteAll(): Promise<void> {
     await this.db.timeLogs.clear()
+  }
+
+  private async _requestPersistence() {
+    let isPersisted = false;
+    if (navigator.storage && navigator.storage.persist) {
+      isPersisted = await navigator.storage.persist();
+    }
+
+    if (!isPersisted) {
+      throw new Error("Persistence not allowed and time logs can be deleted in the future! Make backups on a regular basis e.g. every day.");
+    }
   }
 }
 
