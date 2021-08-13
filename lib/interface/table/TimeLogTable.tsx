@@ -9,11 +9,11 @@ import {
 } from "@material-ui/core";
 import TimeLog from "../../domain/TimeLog";
 import EmptyTableRow from "./EmptyTableRow";
-import ExportImportActionButton from "./ExportImportActionButton";
+import ExportImportActionButton from "./backup/ExportImportActionButton";
 import { Action } from "./TableRowActionButton";
 import TimeLogTableRow from "./TimeLogTableRow";
 import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
-import BackupInfoTableRow from "./BackupInfoTableRow";
+import BackupInfoTableRow from "./backup/BackupInfoTableRow";
 import React from "react";
 
 interface Props {
