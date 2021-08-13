@@ -1,10 +1,10 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { timerApplicationService } from "../../application/TimerApplicationService";
 import TimeLog from "../../domain/TimeLog";
+import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
 
 export function useTimeLogs() {
   return useLiveQuery(
-    () => timerApplicationService.getAllTimeLogs(),
+    () => timeLogApplicationService.getAllTimeLogs(),
     [],
     [] as TimeLog[]
   );

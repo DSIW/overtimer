@@ -8,10 +8,6 @@ export default class TimerApplicationService {
     this.timeLogRepository = new TimeLogRepository();
   }
 
-  async getAllTimeLogs() {
-    return await this.timeLogRepository.all();
-  }
-
   async start() {
     const timeLog = TimeLog.startedNow();
     await this.timeLogRepository.save(timeLog);
@@ -22,15 +18,7 @@ export default class TimerApplicationService {
       ...currentTimeLog,
       endTime: new Date(),
     });
-    await this.update(updatedTimeLog);
-  }
-
-  async update(timeLog: TimeLog) {
-    await this.timeLogRepository.update(timeLog);
-  }
-
-  async delete(timeLog: TimeLog) {
-    await this.timeLogRepository.delete(timeLog);
+    await this.timeLogRepository.update(updatedTimeLog);
   }
 }
 
