@@ -12,13 +12,24 @@ import EmptyTableRow from "./EmptyTableRow";
 import ExportImportActionButton from "./ExportImportActionButton";
 import { Action } from "./TableRowActionButton";
 import TimeLogTableRow from "./TimeLogTableRow";
+import { timerApplicationService } from "../../application/TimerApplicationService";
 
 interface Props {
   timeLogs: TimeLog[];
-  onAction: (action: Action, timeLog: TimeLog) => void;
 }
 
-export default function TimerLogTable({ timeLogs, onAction }: Props) {
+export default function TimerLogTable({ timeLogs }: Props) {
+  async function handleAction(action: Action, timeLog: TimeLog) {
+    switch (action) {
+      case "delete":
+        await timerApplicationService.delete(timeLog);
+        return;
+      case "edit":
+        await timerApplicationService.update(timeLog);
+        return;
+    }
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table style={{ minWidth: 400, maxWidth: "95vw" }}>
@@ -37,7 +48,7 @@ export default function TimerLogTable({ timeLogs, onAction }: Props) {
             <TimeLogTableRow
               key={`${timeLog.startTime}-${timeLog.endTime}`}
               timeLog={timeLog}
-              onAction={onAction}
+              onAction={handleAction}
             />
           ))}
         </TableBody>
