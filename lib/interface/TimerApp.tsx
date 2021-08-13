@@ -8,7 +8,6 @@ import TimerContainer from "./timer/TimerContainer";
 import { timerApplicationService } from "../application/TimerApplicationService";
 import { SnackbarProvider } from "notistack";
 import PersistenceWarning from "./PersistenceWarning";
-import { format } from "date-fns";
 import useWindowFocus from "use-window-focus";
 
 function useTimeLogs() {

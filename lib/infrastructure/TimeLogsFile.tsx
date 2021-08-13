@@ -15,7 +15,7 @@ export default class TimeLogsFile {
     }));
     const timeLogJson = JSON.stringify(timeLogRecords, null, 2);
 
-    var blob = new Blob([timeLogJson], {
+    const blob = new Blob([timeLogJson], {
       type: "application/json;charset=utf-8",
     });
     saveAs(blob, fileName);

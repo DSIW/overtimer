@@ -13,17 +13,6 @@ import { ChangeEvent } from "react";
 import { useSnackbar } from "notistack";
 import * as Sentry from "@sentry/browser";
 
-export type Action = "export" | "import";
-
-interface Writable {
-  write: (content: string) => void;
-  close: () => void;
-}
-
-interface FileHandle {
-  createWritable: () => Promise<Writable>;
-}
-
 export default function ExportImportActionButton() {
   const popupState = usePopupState({
     variant: "popover",
@@ -49,6 +38,7 @@ export default function ExportImportActionButton() {
 
   async function handleImport(event: ChangeEvent) {
     try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const file = event.target.files[0];
       const timeLogs = await new TimeLogsFile().read(file);

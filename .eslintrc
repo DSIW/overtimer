@@ -1,10 +1,16 @@
 {
-  "extends": ["next", "next/core-web-vitals", "prettier"],
-  "plugins": ["prettier"],
+  "extends": ["next", "next/core-web-vitals", "prettier", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["prettier", "@typescript-eslint"],
   "env": {
-    "jest": true
+    "jest": true,
+    "browser": true
   },
+  "parser": "@typescript-eslint/parser",
   "rules": {
-    "prettier/prettier": ["error"]
+    "@next/next/no-page-custom-font": "off",
+    "prettier/prettier": ["error"],
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   }
 }
