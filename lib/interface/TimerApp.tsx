@@ -1,21 +1,11 @@
 import React from "react";
-import TimeLog from "../domain/TimeLog";
 import TimeLogTable from "./table/TimeLogTable";
 import TimeLogSummary from "./stats/TimeLogSummary";
-import { useLiveQuery } from "dexie-react-hooks";
 import TimerContainer from "./timer/TimerContainer";
-import { timerApplicationService } from "../application/TimerApplicationService";
 import { SnackbarProvider } from "notistack";
 import PersistenceWarning from "./PersistenceWarning";
 import useWindowFocus from "use-window-focus";
-
-function useTimeLogs() {
-  return useLiveQuery(
-    () => timerApplicationService.getAllTimeLogs(),
-    [],
-    [] as TimeLog[]
-  );
-}
+import { useTimeLogs } from "./hooks/useTimeLogs";
 
 export default function TimerApp() {
   const timeLogs = useTimeLogs();
