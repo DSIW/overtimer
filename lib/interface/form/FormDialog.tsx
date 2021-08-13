@@ -10,16 +10,27 @@ import { TimeField } from "./TimeField";
 import ChangeEvent, { TimeLogEventTarget } from "./ChangeEvent";
 import { updateTime } from "./formDialogReducer";
 import useStateFromProps from "./useStateFromProps";
+import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
+import { usePopupState } from "material-ui-popup-state/hooks";
+import { useEffect } from "react";
 
 interface Props {
   open: boolean;
   timeLog: TimeLog;
-  onCancel: () => void;
-  onSubmit: (timeLog: TimeLog) => void;
 }
 
 export default function FormDialog(props: Props) {
-  const { open, onCancel, onSubmit } = props;
+  const dialogState = usePopupState({ variant: "popover", popupId: "Dialog" });
+
+  const { open } = props;
+
+  useEffect(() => {
+    if (open) {
+      dialogState.open();
+    } else {
+      dialogState.close();
+    }
+  }, [open]);
 
   const [state, setState] = useStateFromProps(props.timeLog);
 
@@ -34,17 +45,22 @@ export default function FormDialog(props: Props) {
   }
 
   function handleCancel() {
-    onCancel();
+    dialogState.close();
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (timeLog.isValid()) {
-      onSubmit(timeLog);
+      await timeLogApplicationService.update(timeLog);
+      dialogState.close();
     }
   }
 
   return (
-    <Dialog open={open} onClose={onCancel} aria-labelledby="form-dialog-title">
+    <Dialog
+      open={dialogState.isOpen}
+      onClose={dialogState.close}
+      aria-labelledby="form-dialog-title"
+    >
       <DialogTitle id="form-dialog-title">Edit</DialogTitle>
       <DialogContent>
         <TimeField
