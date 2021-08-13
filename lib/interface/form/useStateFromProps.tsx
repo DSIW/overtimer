@@ -14,6 +14,7 @@ export default function useStateFromProps(
 
   useEffect(() => {
     setState(initial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLog]);
 
   return [state, setState];

@@ -8,7 +8,7 @@ interface Props {
 export default function Duration({ milliseconds, zero = "0 s" }: Props) {
   const { hours, minutes, seconds } = parseMs(milliseconds);
 
-  let parts = [];
+  const parts = [];
 
   if (hours !== 0) {
     parts.push(`${hours} h`);
