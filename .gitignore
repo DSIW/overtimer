@@ -39,4 +39,4 @@ yarn-error.log*
 .idea
 .aliasrc
 
-fix-author.sh
+fix-git-author.sh
