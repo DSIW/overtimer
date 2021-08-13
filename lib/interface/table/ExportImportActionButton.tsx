@@ -6,8 +6,6 @@ import {
   bindMenu,
 } from "material-ui-popup-state/hooks";
 import { exportImportApplicationService } from "../../application/ExportImportApplicationService";
-import { format } from "date-fns";
-import TimeLogsFile from "../../infrastructure/TimeLogsFile";
 import ImportButton from "./ImportButton";
 import { ChangeEvent } from "react";
 import { useSnackbar } from "notistack";
@@ -22,12 +20,8 @@ export default function ExportImportActionButton() {
   const { enqueueSnackbar } = useSnackbar();
 
   async function handleExport() {
-    const timeLogs = await exportImportApplicationService.getAllTimeLogs();
-
-    const fileName = `${format(new Date(), "yyyy-MM-dd_HH-mm")}_overtimer.json`;
-
     try {
-      await new TimeLogsFile().write(fileName, timeLogs);
+      await exportImportApplicationService.exportAllTimeLogs();
       popupState.close();
     } catch (error) {
       console.error(error);
@@ -41,10 +35,7 @@ export default function ExportImportActionButton() {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const file = event.target.files[0];
-      const timeLogs = await new TimeLogsFile().read(file);
-      if (timeLogs.length > 0) {
-        await exportImportApplicationService.import(timeLogs);
-      }
+      await exportImportApplicationService.importFile(file);
       enqueueSnackbar("Import was successful!", { variant: "success" });
       popupState.close();
     } catch (error) {
