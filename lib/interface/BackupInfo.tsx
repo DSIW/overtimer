@@ -1,4 +1,3 @@
-import { AlertTitle } from "@material-ui/lab";
 import Alert from "@material-ui/lab/Alert";
 import React from "react";
 import TimeLog from "../domain/TimeLog";
@@ -18,10 +17,8 @@ export default function BackupInfo({ timeLogs }: Props) {
   }
 
   return (
-    <div style={{ width: "100%", marginBottom: "2rem" }}>
-      <Alert severity="info">
-        {WARNING_MESSAGE}
-      </Alert>
-    </div>
+    <Alert severity="info" style={{ borderRadius: "0" }}>
+      {WARNING_MESSAGE}
+    </Alert>
   );
 }

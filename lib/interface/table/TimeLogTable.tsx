@@ -13,6 +13,8 @@ import ExportImportActionButton from "./ExportImportActionButton";
 import { Action } from "./TableRowActionButton";
 import TimeLogTableRow from "./TimeLogTableRow";
 import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
+import BackupInfo from "../BackupInfo";
+import React from "react";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -39,6 +41,11 @@ export default function TimerLogTable({ timeLogs }: Props) {
             <TableCell align="right">DURATION</TableCell>
             <TableCell align="right">
               <ExportImportActionButton />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={3} style={{ padding: "0" }}>
+              <BackupInfo timeLogs={timeLogs} />
             </TableCell>
           </TableRow>
         </TableHead>
