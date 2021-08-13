@@ -12,7 +12,7 @@ import EmptyTableRow from "./EmptyTableRow";
 import ExportImportActionButton from "./ExportImportActionButton";
 import { Action } from "./TableRowActionButton";
 import TimeLogTableRow from "./TimeLogTableRow";
-import { timerApplicationService } from "../../application/TimerApplicationService";
+import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -22,10 +22,10 @@ export default function TimerLogTable({ timeLogs }: Props) {
   async function handleAction(action: Action, timeLog: TimeLog) {
     switch (action) {
       case "delete":
-        await timerApplicationService.delete(timeLog);
+        await timeLogApplicationService.delete(timeLog);
         return;
       case "edit":
-        await timerApplicationService.update(timeLog);
+        await timeLogApplicationService.update(timeLog);
         return;
     }
   }
