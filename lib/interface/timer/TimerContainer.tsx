@@ -4,6 +4,7 @@ import { useStopwatch } from "react-timer-hook";
 import React, { useEffect } from "react";
 import Timer from "./Timer";
 import { timerApplicationService } from "../../application/TimerApplicationService";
+import useWindowFocus from "use-window-focus";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -11,6 +12,9 @@ interface Props {
 
 export default function TimerContainer({ timeLogs }: Props) {
   const currentTimeLog = timeLogs[0];
+
+  // Update on focus for reset after midnight
+  useWindowFocus();
 
   const { start, pause } = useStopwatch({ autoStart: false });
 
