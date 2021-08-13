@@ -1,6 +1,7 @@
 import TimeLogRepository from "../infrastructure/TimeLogRepository";
 import TimeLogsFile from "../infrastructure/TimeLogsFile";
-import { format } from "date-fns";
+import { format, isAfter } from "date-fns";
+import { todayWorkdayEnd } from "../domain/time-constants";
 
 export default class ExportImportApplicationService {
   private readonly timeLogRepository: TimeLogRepository;
@@ -21,6 +22,13 @@ export default class ExportImportApplicationService {
     const timeLogs = await this.timeLogRepository.all();
     const fileName = `${format(new Date(), "yyyy-MM-dd_HH-mm")}_overtimer.json`;
     await new TimeLogsFile().write(fileName, timeLogs);
+  }
+
+  async exportAllTimeLogsAfterWorkdayEnd(date: Date) {
+    const afterWorkday = isAfter(date, todayWorkdayEnd());
+    if (afterWorkday) {
+      await this.exportAllTimeLogs();
+    }
   }
 }
 

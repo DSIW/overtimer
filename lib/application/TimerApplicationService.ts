@@ -1,5 +1,6 @@
 import TimeLog from "../domain/TimeLog";
 import TimeLogRepository from "../infrastructure/TimeLogRepository";
+import { exportImportApplicationService } from "./ExportImportApplicationService";
 
 export default class TimerApplicationService {
   private readonly timeLogRepository: TimeLogRepository;
@@ -14,11 +15,17 @@ export default class TimerApplicationService {
   }
 
   async stop(currentTimeLog: TimeLog) {
+    const endTime = new Date();
+
     const updatedTimeLog = new TimeLog({
       ...currentTimeLog,
-      endTime: new Date(),
+      endTime,
     });
     await this.timeLogRepository.update(updatedTimeLog);
+
+    await exportImportApplicationService.exportAllTimeLogsAfterWorkdayEnd(
+      endTime
+    );
   }
 }
 

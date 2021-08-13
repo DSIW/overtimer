@@ -1,4 +1,14 @@
-import { getDay, nextMonday, nextSunday, subDays, subWeeks } from "date-fns";
+import {
+  getDay,
+  nextMonday,
+  nextSunday,
+  setHours,
+  setMilliseconds,
+  setMinutes,
+  setSeconds,
+  subDays,
+  subWeeks,
+} from "date-fns";
 
 export const SEC = 1000;
 export const MIN = 60 * SEC;
@@ -15,6 +25,10 @@ export function lastSunday() {
   return lastWeekday(0, nextSunday);
 }
 
+export function todayWorkdayEnd() {
+  return _setTime(new Date(), "17:00:00");
+}
+
 function lastWeekday(dayIndex: number, nextMethod: (date: Date) => Date) {
   if (getDay(TODAY) === dayIndex) {
     return subWeeks(TODAY, 1);
@@ -27,4 +41,15 @@ function lastWeekday(dayIndex: number, nextMethod: (date: Date) => Date) {
   }
 
   return day;
+}
+
+function _setTime(date: Date, formattedTime: string) {
+  const [hours, minutes, seconds] = formattedTime.split(":");
+
+  let dateWithNewTime = date;
+  dateWithNewTime = setHours(dateWithNewTime, +hours);
+  dateWithNewTime = setMinutes(dateWithNewTime, +minutes);
+  dateWithNewTime = setSeconds(dateWithNewTime, +seconds);
+  dateWithNewTime = setMilliseconds(dateWithNewTime, 0);
+  return dateWithNewTime;
 }
