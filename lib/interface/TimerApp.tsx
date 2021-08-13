@@ -4,13 +4,10 @@ import TimeLogSummary from "./stats/TimeLogSummary";
 import TimerContainer from "./timer/TimerContainer";
 import { SnackbarProvider } from "notistack";
 import PersistenceWarning from "./PersistenceWarning";
-import useWindowFocus from "use-window-focus";
 import { useTimeLogs } from "./hooks/useTimeLogs";
 
 export default function TimerApp() {
   const timeLogs = useTimeLogs();
-
-  useWindowFocus();
 
   return (
     <>
