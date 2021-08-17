@@ -11,26 +11,16 @@ import ChangeEvent, { TimeLogEventTarget } from "./ChangeEvent";
 import { updateTime } from "./formDialogReducer";
 import useStateFromProps from "./useStateFromProps";
 import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
-import { usePopupState } from "material-ui-popup-state/hooks";
-import { useEffect } from "react";
 
 interface Props {
   open: boolean;
   timeLog: TimeLog;
+  onCancel?: () => void;
+  onSubmit?: () => void;
 }
 
 export default function FormDialog(props: Props) {
-  const dialogState = usePopupState({ variant: "popover", popupId: "Dialog" });
-
-  const { open } = props;
-
-  useEffect(() => {
-    if (open) {
-      dialogState.open();
-    } else {
-      dialogState.close();
-    }
-  }, [open]);
+  const { open, onCancel, onSubmit } = props;
 
   const [state, setState] = useStateFromProps(props.timeLog);
 
@@ -44,23 +34,19 @@ export default function FormDialog(props: Props) {
     setState(updateTime(state, { name, hours: +hours, minutes: +minutes }));
   }
 
-  function handleCancel() {
-    dialogState.close();
-  }
-
   async function handleSubmit() {
     if (timeLog.isValid()) {
       await timeLogApplicationService.update(timeLog);
-      dialogState.close();
+      onSubmit && onSubmit();
     }
   }
 
+  function cancel() {
+    onCancel && onCancel();
+  }
+
   return (
-    <Dialog
-      open={dialogState.isOpen}
-      onClose={dialogState.close}
-      aria-labelledby="form-dialog-title"
-    >
+    <Dialog open={open} onClose={cancel} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit</DialogTitle>
       <DialogContent>
         <TimeField
@@ -81,7 +67,7 @@ export default function FormDialog(props: Props) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel} color="primary">
+        <Button onClick={cancel} color="primary">
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="primary">
