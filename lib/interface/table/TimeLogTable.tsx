@@ -10,9 +10,7 @@ import {
 import TimeLog from "../../domain/TimeLog";
 import EmptyTableRow from "./EmptyTableRow";
 import ExportImportActionButton from "./backup/ExportImportActionButton";
-import { Action } from "./TableRowActionButton";
 import TimeLogTableRow from "./TimeLogTableRow";
-import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
 import BackupInfoTableRow from "./backup/BackupInfoTableRow";
 import React from "react";
 
