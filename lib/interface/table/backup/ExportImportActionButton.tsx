@@ -14,7 +14,7 @@ import * as Sentry from "@sentry/browser";
 export default function ExportImportActionButton() {
   const popupState = usePopupState({
     variant: "popover",
-    popupId: "ActionMenu",
+    popupId: "ExportImportActionButton",
   });
 
   const { enqueueSnackbar } = useSnackbar();

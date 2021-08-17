@@ -1,7 +1,7 @@
-import { TableRow, TableCell } from "@material-ui/core";
+import { TableCell, TableRow } from "@material-ui/core";
 import { format } from "date-fns";
 import TimeLog from "../../domain/TimeLog";
-import TableRowActionButton, { Action } from "./TableRowActionButton";
+import TableRowActionButton from "./TableRowActionButton";
 import Duration from "../Duration";
 import TitleDescription from "./TitleDescription";
 import DateCell from "./DateCell";
@@ -10,10 +10,9 @@ const TIME_FORMAT = "HH:mm";
 
 interface Props {
   timeLog: TimeLog;
-  onAction: (action: Action, timeLog: TimeLog) => void;
 }
 
-export default function TimerLogTableRow({ timeLog, onAction }: Props) {
+export default function TimerLogTableRow({ timeLog }: Props) {
   const duration = timeLog.getDurationMs();
 
   const formattedStartTime = format(timeLog.startTime, TIME_FORMAT);
@@ -37,7 +36,7 @@ export default function TimerLogTableRow({ timeLog, onAction }: Props) {
         />
       </TableCell>
       <TableCell align="right">
-        <TableRowActionButton timeLog={timeLog} onAction={onAction} />
+        <TableRowActionButton timeLog={timeLog} />
       </TableCell>
     </TableRow>
   );

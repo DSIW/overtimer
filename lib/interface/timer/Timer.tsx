@@ -11,7 +11,7 @@ import { useTheme } from "@material-ui/core";
 
 interface Props {
   timeLogs: TimeLog[];
-  onClick: () => void;
+  onClick: () => Promise<void>;
 }
 
 const GRAY = "#dddddd";

@@ -10,16 +10,16 @@ import { TimeField } from "./TimeField";
 import ChangeEvent, { TimeLogEventTarget } from "./ChangeEvent";
 import { updateTime } from "./formDialogReducer";
 import useStateFromProps from "./useStateFromProps";
+import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
 
 interface Props {
   open: boolean;
   timeLog: TimeLog;
-  onCancel: () => void;
-  onSubmit: (timeLog: TimeLog) => void;
+  onClose?: () => void;
 }
 
 export default function FormDialog(props: Props) {
-  const { open, onCancel, onSubmit } = props;
+  const { open, onClose } = props;
 
   const [state, setState] = useStateFromProps(props.timeLog);
 
@@ -33,18 +33,19 @@ export default function FormDialog(props: Props) {
     setState(updateTime(state, { name, hours: +hours, minutes: +minutes }));
   }
 
-  function handleCancel() {
-    onCancel();
-  }
-
-  function handleSubmit() {
+  async function handleSubmit() {
     if (timeLog.isValid()) {
-      onSubmit(timeLog);
+      await timeLogApplicationService.update(timeLog);
+      close();
     }
   }
 
+  function close() {
+    onClose && onClose();
+  }
+
   return (
-    <Dialog open={open} onClose={onCancel} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit</DialogTitle>
       <DialogContent>
         <TimeField
@@ -65,7 +66,7 @@ export default function FormDialog(props: Props) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel} color="primary">
+        <Button onClick={close} color="primary">
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="primary">
