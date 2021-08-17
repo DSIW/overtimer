@@ -5,8 +5,8 @@ import {
   bindTrigger,
   bindMenu,
 } from "material-ui-popup-state/hooks";
-import { exportImportApplicationService } from "../../application/ExportImportApplicationService";
-import ImportButton from "./ImportButton";
+import { exportImportApplicationService } from "../../../application/ExportImportApplicationService";
+import ImportButton from "../ImportButton";
 import { ChangeEvent } from "react";
 import { useSnackbar } from "notistack";
 import * as Sentry from "@sentry/browser";
