@@ -17,7 +17,7 @@ interface Props {
 export default function TableRowActionButton({ timeLog }: Props) {
   const popupState = usePopupState({
     variant: "popover",
-    popupId: "ActionMenu",
+    popupId: "TableRowActionButton",
   });
   const [open, setOpen] = useState(false);
 

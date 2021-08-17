@@ -34,7 +34,7 @@ export default function ButtonWithOptions({
 }: Props) {
   const popupState = usePopupState({
     variant: "popover",
-    popupId: "ActionMenu",
+    popupId: "ButtonWithOptions",
   });
 
   async function handleMenuItemClick(option: Option) {

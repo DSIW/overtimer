@@ -16,7 +16,10 @@ export default function StartStopButton({
   isOverdue,
   onClick,
 }: Props) {
-  const dialogState = usePopupState({ variant: "popover", popupId: "Dialog" });
+  const dialogState = usePopupState({
+    variant: "popover",
+    popupId: "StartStopButton",
+  });
 
   const color = isOverdue ? "secondary" : "primary";
   const timeLog = useTimeLogs()[0];
