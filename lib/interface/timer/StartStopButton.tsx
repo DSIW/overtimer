@@ -49,8 +49,7 @@ export default function StartStopButton({
         <FormDialog
           open={dialogState.isOpen}
           timeLog={timeLog}
-          onSubmit={close}
-          onCancel={close}
+          onClose={close}
         />
       )}
     </div>

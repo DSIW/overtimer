@@ -15,12 +15,11 @@ import { timeLogApplicationService } from "../../application/TimeLogApplicationS
 interface Props {
   open: boolean;
   timeLog: TimeLog;
-  onCancel?: () => void;
-  onSubmit?: () => void;
+  onClose?: () => void;
 }
 
 export default function FormDialog(props: Props) {
-  const { open, onCancel, onSubmit } = props;
+  const { open, onClose } = props;
 
   const [state, setState] = useStateFromProps(props.timeLog);
 
@@ -37,16 +36,16 @@ export default function FormDialog(props: Props) {
   async function handleSubmit() {
     if (timeLog.isValid()) {
       await timeLogApplicationService.update(timeLog);
-      onSubmit && onSubmit();
+      close();
     }
   }
 
-  function cancel() {
-    onCancel && onCancel();
+  function close() {
+    onClose && onClose();
   }
 
   return (
-    <Dialog open={open} onClose={cancel} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit</DialogTitle>
       <DialogContent>
         <TimeField
@@ -67,7 +66,7 @@ export default function FormDialog(props: Props) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={cancel} color="primary">
+        <Button onClick={close} color="primary">
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="primary">
