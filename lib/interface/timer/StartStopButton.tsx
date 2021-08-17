@@ -25,7 +25,7 @@ export default function StartStopButton({
     await onClick();
   }
 
-  async function handleStartWithTime() {
+  async function handleExtendedStart() {
     await onClick();
     dialogState.open();
   }
@@ -42,7 +42,7 @@ export default function StartStopButton({
         <StartButton
           color={color}
           onStart={handleStart}
-          onStartWithTime={handleStartWithTime}
+          onExtendedStart={handleExtendedStart}
         />
       )}
       {timeLog && (

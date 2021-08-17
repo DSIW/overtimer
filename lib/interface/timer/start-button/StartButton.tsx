@@ -13,19 +13,19 @@ import { PlayArrow } from "@material-ui/icons";
 interface Props {
   color: "primary" | "secondary";
   onStart: () => void;
-  onStartWithTime: () => void;
+  onExtendedStart: () => void;
 }
 
 export default function StartButton({
   color,
   onStart,
-  onStartWithTime,
+  onExtendedStart,
 }: Props) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
 
   function handleMenuItemClick() {
-    onStartWithTime();
+    onExtendedStart();
     setOpen(false);
   }
 
