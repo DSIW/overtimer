@@ -6,9 +6,13 @@ interface Props {
 }
 
 export default function Duration({ milliseconds, zero = "0 s" }: Props) {
-  const { hours, minutes, seconds } = parseMs(milliseconds);
+  const { days, hours, minutes, seconds } = parseMs(milliseconds);
 
   const parts = [];
+
+  if (days !== 0) {
+    parts.push(`${days} d`);
+  }
 
   if (hours !== 0) {
     parts.push(`${hours} h`);

@@ -44,4 +44,10 @@ describe("<Duration />", () => {
 
     expect(await screen.findByText("1 h 1 m")).toBeInTheDocument();
   });
+
+  it("renders days", async () => {
+    render(<Duration milliseconds={25 * HOUR + 1 * MIN} />);
+
+    expect(await screen.findByText("1 d 1 h 1 m")).toBeInTheDocument();
+  });
 });
