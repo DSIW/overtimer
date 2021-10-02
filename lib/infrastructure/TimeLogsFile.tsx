@@ -24,13 +24,18 @@ export default class TimeLogsFile {
   async read(file: File): Promise<TimeLog[]> {
     const content = await file.text();
     const json = JSON.parse(content) as TimeLogRecord[];
-    return json.map(
-      (record) =>
-        new TimeLog({
-          startTime: parseISO(record.startTime),
-          endTime:
-            record.endTime !== undefined ? parseISO(record.endTime) : undefined,
-        })
-    );
+    return json.map((record) => {
+      const timeLog = new TimeLog({
+        startTime: parseISO(record.startTime),
+        endTime:
+          record.endTime !== undefined ? parseISO(record.endTime) : undefined,
+      });
+      if (!timeLog.isValid()) {
+        throw new Error(
+          `Timelog [${timeLog.startTime}, ${timeLog.endTime}] is invalid!`
+        );
+      }
+      return timeLog;
+    });
   }
 }
