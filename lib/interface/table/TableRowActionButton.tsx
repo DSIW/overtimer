@@ -31,6 +31,10 @@ export default function TableRowActionButton({ timeLog }: Props) {
     popupState.close();
   }
 
+  function handleClose() {
+    setOpen(false);
+  }
+
   return (
     <>
       <IconButton {...bindTrigger(popupState)}>
@@ -50,7 +54,7 @@ export default function TableRowActionButton({ timeLog }: Props) {
           Delete
         </MenuItem>
       </Menu>
-      <FormDialog open={open} timeLog={timeLog} />
+      <FormDialog open={open} timeLog={timeLog} onClose={handleClose} />
     </>
   );
 }
