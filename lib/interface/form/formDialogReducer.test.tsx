@@ -1,6 +1,6 @@
 import { Payload, updateTime } from "./formDialogReducer";
 import TimeLog from "../../domain/TimeLog";
-import { getHours, getMinutes, getSeconds } from "date-fns";
+import { getDay, getHours, getMinutes, getSeconds, subDays } from "date-fns";
 
 describe("formDialogReducer", () => {
   it("updates valid start time", () => {
@@ -53,6 +53,30 @@ describe("formDialogReducer", () => {
     const endTime = newState.timeLog.endTime as Date;
     expect(getMinutes(endTime)).toEqual(2);
     expect(getHours(endTime)).toEqual(hours);
+    expect(getSeconds(endTime)).toEqual(0);
+  });
+
+  it("uses day of startTime for endTime if days are different", () => {
+    const timeLog = new TimeLog({
+      startTime: subDays(new Date(), 1),
+      endTime: new Date(),
+    });
+
+    const hours = getHours(timeLog.startTime) + 1;
+
+    const payload: Payload = {
+      name: "endTime",
+      hours,
+      minutes: 0,
+    };
+
+    const newState = updateTime({ timeLog, error: false }, payload);
+
+    expect(newState.error).toBe(false);
+    const endTime = newState.timeLog.endTime as Date;
+    expect(getDay(endTime)).toEqual(getDay(timeLog.startTime));
+    expect(getHours(endTime)).toEqual(hours);
+    expect(getMinutes(endTime)).toEqual(0);
     expect(getSeconds(endTime)).toEqual(0);
   });
 

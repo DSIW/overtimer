@@ -23,7 +23,8 @@ export function updateTime(state: State, payload: Payload) {
     return state;
   }
 
-  let updatedTime = setHours(updateAttribute, hours);
+  let updatedTime = state.timeLog.startTime;
+  updatedTime = setHours(updatedTime, hours);
   updatedTime = setMinutes(updatedTime, minutes);
   updatedTime = setSeconds(updatedTime, 0);
 
