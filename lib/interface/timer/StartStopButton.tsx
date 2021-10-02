@@ -37,6 +37,9 @@ export default function StartStopButton({
     dialogState.close();
   }
 
+  // Wait for persisted running timeLog
+  const isExtendedStartFormOpen = dialogState.isOpen && timeLog.isRunning();
+
   return (
     <div style={{ marginTop: "1rem", width: "143px" }}>
       {isRunning ? (
@@ -50,7 +53,7 @@ export default function StartStopButton({
       )}
       {timeLog && (
         <FormDialog
-          open={dialogState.isOpen}
+          open={isExtendedStartFormOpen}
           timeLog={timeLog}
           onClose={close}
         />
