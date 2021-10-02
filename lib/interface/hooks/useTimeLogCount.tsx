@@ -1,11 +1,10 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import TimeLog from "../../domain/TimeLog";
 import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
 
-export function useTimeLogs() {
+export function useTimeLogCount() {
   return useLiveQuery(
-    () => timeLogApplicationService.getAllRecentTimeLogs(),
+    () => timeLogApplicationService.getAllCount(),
     [],
-    [] as TimeLog[]
+    0
   );
 }

@@ -1,6 +1,7 @@
 import TimeLog from "../domain/TimeLog";
 import IndexDb from "./IndexDb";
 import { requestPersistence } from "./PersistencePermission";
+import { isAfter } from "date-fns";
 
 export default class TimeLogRepository {
   private db: IndexDb;
@@ -13,6 +14,19 @@ export default class TimeLogRepository {
   async all(): Promise<TimeLog[]> {
     const records = await this.db.timeLogs
       .orderBy("startTime")
+      .reverse()
+      .toArray();
+    return records.map((record) => new TimeLog({ ...record }));
+  }
+
+  async count(): Promise<number> {
+    return await this.db.timeLogs.count();
+  }
+
+  async allBefore(limitDate: Date): Promise<TimeLog[]> {
+    const records = await this.db.timeLogs
+      .orderBy("startTime")
+      .filter((timeLog) => isAfter(timeLog.startTime, limitDate))
       .reverse()
       .toArray();
     return records.map((record) => new TimeLog({ ...record }));

@@ -13,12 +13,18 @@ import ExportImportActionButton from "./backup/ExportImportActionButton";
 import TimeLogTableRow from "./TimeLogTableRow";
 import BackupInfoTableRow from "./backup/BackupInfoTableRow";
 import React from "react";
+import { useTimeLogCount } from "../hooks/useTimeLogCount";
+import MoreEntriesTableRow from "./MoreEntriesTableRow";
 
 interface Props {
   timeLogs: TimeLog[];
 }
 
 export default function TimerLogTable({ timeLogs }: Props) {
+  const totalCount = useTimeLogCount();
+  const hiddenTimeLogCount = totalCount - timeLogs.length;
+  const moreTimeLogs = hiddenTimeLogCount > 0;
+
   return (
     <TableContainer component={Paper}>
       <Table style={{ minWidth: 400, maxWidth: "95vw" }}>
@@ -40,6 +46,7 @@ export default function TimerLogTable({ timeLogs }: Props) {
               timeLog={timeLog}
             />
           ))}
+          {moreTimeLogs && <MoreEntriesTableRow count={hiddenTimeLogCount} />}
         </TableBody>
       </Table>
     </TableContainer>

@@ -1,11 +1,5 @@
-import { TableRow, TableCell } from "@material-ui/core";
+import SpannedTableRow from "./SpannedTableRow";
 
 export default function EmptyTableRow() {
-  return (
-    <TableRow>
-      <TableCell>No entries</TableCell>
-      <TableCell></TableCell>
-      <TableCell></TableCell>
-    </TableRow>
-  );
+  return <SpannedTableRow>No entries</SpannedTableRow>;
 }
