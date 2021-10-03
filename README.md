@@ -12,7 +12,7 @@ A lot of other apps are too sufisticated and contain too many features which mak
 * Start timer with setting start time when you're already working 
 * Show weekly and total overtime for last 8 weeks
 * Export/import time logs in JSON format
-* Daily backups after 17:00 after stopping the timer
+* Daily backups after 17:00 when stopping the timer
 
 ## Getting started
 
