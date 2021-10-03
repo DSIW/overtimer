@@ -10,6 +10,7 @@ import MenuList from "@material-ui/core/MenuList";
 import { bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { bindPopper } from "material-ui-popup-state";
 import { anchorRef } from "material-ui-popup-state/core";
+import { ClickAwayListener } from "@material-ui/core";
 
 interface Props {
   color: "primary" | "secondary";
@@ -38,8 +39,12 @@ export default function ButtonWithOptions({
   });
 
   async function handleMenuItemClick(option: Option) {
-    popupState.close();
+    handleClose();
     await option.onClick();
+  }
+
+  function handleClose() {
+    popupState.close();
   }
 
   return (
@@ -67,16 +72,18 @@ export default function ButtonWithOptions({
             }}
           >
             <Paper>
-              <MenuList id="split-button-menu">
-                {options.map((option) => (
-                  <MenuItem
-                    key={option.key}
-                    onClick={() => handleMenuItemClick(option)}
-                  >
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </MenuList>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList id="split-button-menu">
+                  {options.map((option) => (
+                    <MenuItem
+                      key={option.key}
+                      onClick={() => handleMenuItemClick(option)}
+                    >
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </ClickAwayListener>
             </Paper>
           </Grow>
         )}
