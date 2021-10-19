@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  color: gray;
+  padding: 2rem;
+}
+
+.root a:hover {
+  color: #3f51b5;
+}

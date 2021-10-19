@@ -5,6 +5,7 @@ import TimerContainer from "./timer/TimerContainer";
 import { SnackbarProvider } from "notistack";
 import PersistenceWarning from "./PersistenceWarning";
 import { useTimeLogs } from "./hooks/useTimeLogs";
+import Footer from "./footer/Footer";
 
 export default function TimerApp() {
   const timeLogs = useTimeLogs();
@@ -16,6 +17,7 @@ export default function TimerApp() {
         <TimeLogSummary timeLogs={timeLogs} />
         <PersistenceWarning timeLogs={timeLogs} />
         <TimeLogTable timeLogs={timeLogs} />
+        <Footer />
       </SnackbarProvider>
     </>
   );
