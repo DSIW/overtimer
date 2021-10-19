@@ -13,6 +13,7 @@ A lot of other apps are too sophisticated and contain too many features which ma
 * Show weekly and total overtime for last 8 weeks
 * Export/import time logs in JSON format
 * Daily backups after 17:00 when stopping the timer
+* Limit timelogs to 8 full weeks
 
 ## Getting started
 
