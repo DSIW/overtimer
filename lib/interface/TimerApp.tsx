@@ -22,11 +22,7 @@ export default function TimerApp() {
         <TimeLogSummary timeLogs={timeLogs} />
         <PersistenceWarning timeLogs={timeLogs} />
         <TimeLogTable timeLogs={timeLogs} weekLimit={weekLimit} />
-        <WeekLimitSetting
-          weekLimit={weekLimit}
-          onChange={setWeekLimit}
-          enabledWeekLimit={DEFAULT_WEEK_LIMIT}
-        />
+        <WeekLimitSetting weekLimit={weekLimit} onChange={setWeekLimit} />
         <Footer />
       </SnackbarProvider>
     </>
