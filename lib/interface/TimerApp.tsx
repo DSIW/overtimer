@@ -6,7 +6,7 @@ import { SnackbarProvider } from "notistack";
 import PersistenceWarning from "./PersistenceWarning";
 import { useTimeLogs } from "./hooks/useTimeLogs";
 import Footer from "./footer/Footer";
-import WeekLimitSetting from "./WeekLimitSetting";
+import WeekLimitSetting from "./settings/WeekLimitSetting";
 
 const DEFAULT_WEEK_LIMIT = 8;
 
