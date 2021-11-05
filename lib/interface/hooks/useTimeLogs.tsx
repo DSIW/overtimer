@@ -5,7 +5,7 @@ import { timeLogApplicationService } from "../../application/TimeLogApplicationS
 export function useTimeLogs(weekLimit: number) {
   return useLiveQuery(
     () => timeLogApplicationService.getAllRecentTimeLogs(weekLimit),
-    [],
+    [weekLimit],
     [] as TimeLog[]
   );
 }
