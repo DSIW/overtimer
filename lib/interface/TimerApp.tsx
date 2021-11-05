@@ -7,8 +7,10 @@ import PersistenceWarning from "./PersistenceWarning";
 import { useTimeLogs } from "./hooks/useTimeLogs";
 import Footer from "./footer/Footer";
 
+const WEEK_LIMIT = 8;
+
 export default function TimerApp() {
-  const timeLogs = useTimeLogs();
+  const timeLogs = useTimeLogs(WEEK_LIMIT);
 
   return (
     <>
@@ -16,7 +18,7 @@ export default function TimerApp() {
         <TimerContainer timeLogs={timeLogs} />
         <TimeLogSummary timeLogs={timeLogs} />
         <PersistenceWarning timeLogs={timeLogs} />
-        <TimeLogTable timeLogs={timeLogs} />
+        <TimeLogTable timeLogs={timeLogs} weekLimit={WEEK_LIMIT} />
         <Footer />
       </SnackbarProvider>
     </>

@@ -1,6 +1,6 @@
 import TimeLog from "../domain/TimeLog";
 import TimeLogRepository from "../infrastructure/TimeLogRepository";
-import { startOfLastWeeks, WEEK_LIMIT } from "../domain/time-constants";
+import { startOfLastWeeks } from "../domain/time-constants";
 
 export default class TimeLogApplicationService {
   private readonly timeLogRepository: TimeLogRepository;
@@ -13,8 +13,8 @@ export default class TimeLogApplicationService {
     return await this.timeLogRepository.count();
   }
 
-  async getAllRecentTimeLogs() {
-    const recentLimitDate = startOfLastWeeks(WEEK_LIMIT);
+  async getAllRecentTimeLogs(weekLimit: number) {
+    const recentLimitDate = startOfLastWeeks(weekLimit);
     return await this.timeLogRepository.allBefore(recentLimitDate);
   }
 
