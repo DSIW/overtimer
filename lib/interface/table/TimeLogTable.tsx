@@ -18,9 +18,10 @@ import MoreEntriesTableRow from "./MoreEntriesTableRow";
 
 interface Props {
   timeLogs: TimeLog[];
+  weekLimit: number;
 }
 
-export default function TimerLogTable({ timeLogs }: Props) {
+export default function TimerLogTable({ timeLogs, weekLimit }: Props) {
   const totalCount = useTimeLogCount();
   const hiddenTimeLogCount = totalCount - timeLogs.length;
   const moreTimeLogs = hiddenTimeLogCount > 0;
@@ -46,7 +47,12 @@ export default function TimerLogTable({ timeLogs }: Props) {
               timeLog={timeLog}
             />
           ))}
-          {moreTimeLogs && <MoreEntriesTableRow count={hiddenTimeLogCount} />}
+          {moreTimeLogs && (
+            <MoreEntriesTableRow
+              count={hiddenTimeLogCount}
+              weekLimit={weekLimit}
+            />
+          )}
         </TableBody>
       </Table>
     </TableContainer>

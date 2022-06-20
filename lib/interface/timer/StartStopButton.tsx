@@ -22,7 +22,7 @@ export default function StartStopButton({
   });
 
   const color = isOverdue ? "secondary" : "primary";
-  const timeLog = useTimeLogs()[0];
+  const timeLog = useTimeLogs(1)[0];
 
   async function handleStart() {
     await onClick();

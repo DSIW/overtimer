@@ -17,7 +17,6 @@ export const HOUR = 60 * MIN;
 export const TODAY = new Date();
 export const NOW = new Date();
 export const YESTERDAY = subDays(TODAY, 1);
-export const WEEK_LIMIT = 8;
 
 export function lastMonday() {
   return lastWeekday(1, nextMonday);
