@@ -45,18 +45,20 @@ export default function ExportImportActionButton() {
     }
   }
 
-  return <>
-    <IconButton {...bindTrigger(popupState)} size="large">
-      <MoreVert />
-    </IconButton>
-    <Menu {...bindMenu(popupState)}>
-      <MenuItem onClick={handleExport}>
-        <ListItemIcon>
-          <GetApp fontSize="small" />
-        </ListItemIcon>
-        Export
-      </MenuItem>
-      <ImportButton onClick={handleImport} />
-    </Menu>
-  </>;
+  return (
+    <>
+      <IconButton {...bindTrigger(popupState)} size="large">
+        <MoreVert />
+      </IconButton>
+      <Menu {...bindMenu(popupState)}>
+        <MenuItem onClick={handleExport}>
+          <ListItemIcon>
+            <GetApp fontSize="small" />
+          </ListItemIcon>
+          Export
+        </MenuItem>
+        <ImportButton onClick={handleImport} />
+      </Menu>
+    </>
+  );
 }

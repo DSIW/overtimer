@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
-import { AlertTitle } from '@mui/material';
-import Alert from '@mui/material/Alert';
+import { AlertTitle } from "@mui/material";
+import Alert from "@mui/material/Alert";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";

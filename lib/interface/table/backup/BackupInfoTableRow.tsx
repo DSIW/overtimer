@@ -1,4 +1,4 @@
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 import React from "react";
 import TimeLog from "../../../domain/TimeLog";
 import { todayWorkdayEnd } from "../../../domain/time-constants";

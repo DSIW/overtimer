@@ -35,24 +35,26 @@ export default function TableRowActionButton({ timeLog }: Props) {
     setOpen(false);
   }
 
-  return <>
-    <IconButton {...bindTrigger(popupState)} size="large">
-      <MoreVert />
-    </IconButton>
-    <Menu {...bindMenu(popupState)}>
-      <MenuItem onClick={handleEdit}>
-        <ListItemIcon>
-          <EditOutlined fontSize="small" />
-        </ListItemIcon>
-        Edit
-      </MenuItem>
-      <MenuItem onClick={handleDelete} disabled={!timeLog.isDeletable()}>
-        <ListItemIcon>
-          <DeleteOutlined fontSize="small" />
-        </ListItemIcon>
-        Delete
-      </MenuItem>
-    </Menu>
-    <FormDialog open={open} timeLog={timeLog} onClose={handleClose} />
-  </>;
+  return (
+    <>
+      <IconButton {...bindTrigger(popupState)} size="large">
+        <MoreVert />
+      </IconButton>
+      <Menu {...bindMenu(popupState)}>
+        <MenuItem onClick={handleEdit}>
+          <ListItemIcon>
+            <EditOutlined fontSize="small" />
+          </ListItemIcon>
+          Edit
+        </MenuItem>
+        <MenuItem onClick={handleDelete} disabled={!timeLog.isDeletable()}>
+          <ListItemIcon>
+            <DeleteOutlined fontSize="small" />
+          </ListItemIcon>
+          Delete
+        </MenuItem>
+      </Menu>
+      <FormDialog open={open} timeLog={timeLog} onClose={handleClose} />
+    </>
+  );
 }
