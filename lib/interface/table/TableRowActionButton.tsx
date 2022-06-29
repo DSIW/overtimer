@@ -1,5 +1,5 @@
-import { IconButton, ListItemIcon, Menu, MenuItem } from "@material-ui/core";
-import { DeleteOutlined, EditOutlined, MoreVert } from "@material-ui/icons";
+import { IconButton, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { DeleteOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
 import TimeLog from "../../domain/TimeLog";
 import FormDialog from "../form/FormDialog";
 import {
@@ -35,26 +35,24 @@ export default function TableRowActionButton({ timeLog }: Props) {
     setOpen(false);
   }
 
-  return (
-    <>
-      <IconButton {...bindTrigger(popupState)}>
-        <MoreVert />
-      </IconButton>
-      <Menu {...bindMenu(popupState)}>
-        <MenuItem onClick={handleEdit}>
-          <ListItemIcon>
-            <EditOutlined fontSize="small" />
-          </ListItemIcon>
-          Edit
-        </MenuItem>
-        <MenuItem onClick={handleDelete} disabled={!timeLog.isDeletable()}>
-          <ListItemIcon>
-            <DeleteOutlined fontSize="small" />
-          </ListItemIcon>
-          Delete
-        </MenuItem>
-      </Menu>
-      <FormDialog open={open} timeLog={timeLog} onClose={handleClose} />
-    </>
-  );
+  return <>
+    <IconButton {...bindTrigger(popupState)} size="large">
+      <MoreVert />
+    </IconButton>
+    <Menu {...bindMenu(popupState)}>
+      <MenuItem onClick={handleEdit}>
+        <ListItemIcon>
+          <EditOutlined fontSize="small" />
+        </ListItemIcon>
+        Edit
+      </MenuItem>
+      <MenuItem onClick={handleDelete} disabled={!timeLog.isDeletable()}>
+        <ListItemIcon>
+          <DeleteOutlined fontSize="small" />
+        </ListItemIcon>
+        Delete
+      </MenuItem>
+    </Menu>
+    <FormDialog open={open} timeLog={timeLog} onClose={handleClose} />
+  </>;
 }

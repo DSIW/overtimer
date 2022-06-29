@@ -1,4 +1,4 @@
-import { TableRow, TableCell } from "@material-ui/core";
+import { TableRow, TableCell } from "@mui/material";
 import { ReactNode } from "react";
 
 interface Props {

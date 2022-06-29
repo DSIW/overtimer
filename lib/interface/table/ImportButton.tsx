@@ -1,5 +1,5 @@
-import { MenuItem, ListItemIcon } from "@material-ui/core";
-import { Publish } from "@material-ui/icons";
+import { MenuItem, ListItemIcon } from "@mui/material";
+import { Publish } from "@mui/icons-material";
 import ChangeEvent from "../form/ChangeEvent";
 
 interface Props {

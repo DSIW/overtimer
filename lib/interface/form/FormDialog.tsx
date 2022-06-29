@@ -4,7 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import TimeLog from "../../domain/TimeLog";
 import { TimeField } from "./TimeField";
 import ChangeEvent, { TimeLogEventTarget } from "./ChangeEvent";

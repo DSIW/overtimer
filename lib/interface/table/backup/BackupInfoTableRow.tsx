@@ -1,9 +1,9 @@
-import Alert from "@material-ui/lab/Alert";
+import Alert from '@mui/material/Alert';
 import React from "react";
 import TimeLog from "../../../domain/TimeLog";
 import { todayWorkdayEnd } from "../../../domain/time-constants";
 import { format } from "date-fns";
-import { TableCell, TableRow } from "@material-ui/core";
+import { TableCell, TableRow } from "@mui/material";
 
 interface Props {
   timeLogs: TimeLog[];

@@ -1,5 +1,5 @@
-import Button from "@material-ui/core/Button";
-import { Stop } from "@material-ui/icons";
+import Button from "@mui/material/Button";
+import { Stop } from "@mui/icons-material";
 import React from "react";
 
 interface Props {

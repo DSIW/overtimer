@@ -6,7 +6,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from "@mui/material";
 import TimeLog from "../../domain/TimeLog";
 import EmptyTableRow from "./EmptyTableRow";
 import ExportImportActionButton from "./backup/ExportImportActionButton";

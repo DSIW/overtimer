@@ -13,9 +13,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.4",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "*",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "*",
+    "@mui/material": "^5.8.6",
+    "@mui/styles": "^5.8.6",
     "@sentry/nextjs": "^7.3.1",
     "@types/file-saver": "^2.0.5",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
