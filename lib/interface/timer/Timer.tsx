@@ -7,7 +7,7 @@ import TimeLog from "../../domain/TimeLog";
 import Time from "./Time";
 import StartStopButton from "./StartStopButton";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
-import { useTheme } from "@material-ui/core";
+import { useTheme } from "@mui/material";
 
 interface Props {
   timeLogs: TimeLog[];

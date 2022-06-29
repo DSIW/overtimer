@@ -1,5 +1,5 @@
-import { IconButton, ListItemIcon, Menu, MenuItem } from "@material-ui/core";
-import { DeleteOutlined, EditOutlined, MoreVert } from "@material-ui/icons";
+import { IconButton, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { DeleteOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
 import TimeLog from "../../domain/TimeLog";
 import FormDialog from "../form/FormDialog";
 import {
@@ -37,7 +37,7 @@ export default function TableRowActionButton({ timeLog }: Props) {
 
   return (
     <>
-      <IconButton {...bindTrigger(popupState)}>
+      <IconButton {...bindTrigger(popupState)} size="large">
         <MoreVert />
       </IconButton>
       <Menu {...bindMenu(popupState)}>

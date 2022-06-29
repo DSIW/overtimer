@@ -1,6 +1,6 @@
 import React from "react";
 import ButtonWithOptions from "./ButtonWithOptions";
-import { PlayArrow } from "@material-ui/icons";
+import { PlayArrow } from "@mui/icons-material";
 
 interface Props {
   color: "primary" | "secondary";

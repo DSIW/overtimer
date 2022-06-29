@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Footer.module.css";
-import GitHubIcon from "@material-ui/icons/GitHub";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 export default function Footer() {
   return (

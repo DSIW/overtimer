@@ -1,5 +1,5 @@
-import { IconButton, Menu, MenuItem, ListItemIcon } from "@material-ui/core";
-import { GetApp, MoreVert } from "@material-ui/icons";
+import { IconButton, Menu, MenuItem, ListItemIcon } from "@mui/material";
+import { GetApp, MoreVert } from "@mui/icons-material";
 import {
   usePopupState,
   bindTrigger,
@@ -47,7 +47,7 @@ export default function ExportImportActionButton() {
 
   return (
     <>
-      <IconButton {...bindTrigger(popupState)}>
+      <IconButton {...bindTrigger(popupState)} size="large">
         <MoreVert />
       </IconButton>
       <Menu {...bindMenu(popupState)}>
