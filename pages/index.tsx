@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import TimerApp from "../lib/interface/TimerApp";
 import React from "react";
 import theme from "../lib/interface/theme";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@mui/material/styles";
 
 export default function Home() {
   return (
