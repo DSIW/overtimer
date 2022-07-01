@@ -17,6 +17,6 @@ describe("Home", () => {
     cy.get("button").first().should("have.text", "Start").click();
     cy.wait(1000);
     cy.get("button").first().should("have.text", "Stop").click();
-    cy.contains("07:59:59");
+    cy.contains("07:59");
   });
 });
