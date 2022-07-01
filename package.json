@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "test": "npm-run-all typecheck lint jest",
+    "test": "npm-run-all typecheck lint jest test:e2e:headless",
     "test:e2e": "start-server-and-test start http://localhost:3000 cypress",
     "test:e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless",
     "jest": "jest",
