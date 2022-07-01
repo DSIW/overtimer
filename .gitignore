@@ -40,3 +40,7 @@ yarn-error.log*
 .aliasrc
 
 fix-git-author.sh
+
+/cypress/downloads
+/cypress/videos
+/cypress/screenshots
