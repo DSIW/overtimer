@@ -21,12 +21,10 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-, "cypress/e2e/Home.cy.js"  ],
+    "lib/**/*.ts",
+    "lib/**/*.tsx"
+  ],
   "exclude": [
-    "node_modules",
-    "**/*.test.tsx",
-    "**/*.test.ts"
+    "node_modules"
   ]
 }
