@@ -30,7 +30,7 @@
     "dexie-react-hooks": "1.1.1",
     "file-saver": "2.0.5",
     "material-ui-popup-state": "4.0.2",
-    "next": "12.2.4",
+    "next": "12.2.5",
     "next-pwa": "5.5.5",
     "notistack": "2.0.5",
     "react": "17.0.2",
