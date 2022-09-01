@@ -2,9 +2,15 @@ import { Payload, updateTime } from "./formDialogReducer";
 import TimeLog from "../../domain/TimeLog";
 import { getDay, getHours, getMinutes, getSeconds, subDays } from "date-fns";
 
+function testDate(): Date {
+  const date = new Date();
+  date.setHours(12);
+  return date;
+}
+
 describe("formDialogReducer", () => {
   it("updates valid start time", () => {
-    const timeLog = new TimeLog({ startTime: new Date() });
+    const timeLog = new TimeLog({ startTime: testDate() });
 
     const payload: Payload = {
       name: "startTime",
@@ -22,7 +28,7 @@ describe("formDialogReducer", () => {
   });
 
   it("does not update running time log", () => {
-    const timeLog = new TimeLog({ startTime: new Date() });
+    const timeLog = new TimeLog({ startTime: testDate() });
 
     const payload: Payload = {
       name: "endTime",
@@ -37,7 +43,7 @@ describe("formDialogReducer", () => {
   });
 
   it("updates endTime", () => {
-    const timeLog = new TimeLog({ startTime: new Date(), endTime: new Date() });
+    const timeLog = new TimeLog({ startTime: testDate(), endTime: testDate() });
 
     const hours = getHours(timeLog.startTime) + 1;
 
@@ -58,8 +64,8 @@ describe("formDialogReducer", () => {
 
   it("uses day of startTime for endTime if days are different", () => {
     const timeLog = new TimeLog({
-      startTime: subDays(new Date(), 1),
-      endTime: new Date(),
+      startTime: subDays(testDate(), 1),
+      endTime: testDate(),
     });
 
     const hours = getHours(timeLog.startTime) + 1;
@@ -81,7 +87,7 @@ describe("formDialogReducer", () => {
   });
 
   it("does not update if time log is invalid", () => {
-    const timeLog = new TimeLog({ startTime: new Date(), endTime: new Date() });
+    const timeLog = new TimeLog({ startTime: testDate(), endTime: testDate() });
 
     const payload: Payload = {
       name: "endTime",
