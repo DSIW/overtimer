@@ -24,7 +24,7 @@
     "@mui/material": "5.10.3",
     "@sentry/nextjs": "7.12.1",
     "@types/file-saver": "2.0.5",
-    "@typescript-eslint/eslint-plugin": "5.35.1",
+    "@typescript-eslint/eslint-plugin": "5.36.1",
     "date-fns": "2.29.2",
     "dexie": "3.2.2",
     "dexie-react-hooks": "1.1.1",
