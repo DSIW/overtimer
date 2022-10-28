@@ -7,17 +7,14 @@ import {
   setMinutes,
   setSeconds,
   startOfWeek,
-  subDays,
   subWeeks,
 } from "date-fns";
 
 export const SEC = 1000;
 export const MIN = 60 * SEC;
 export const HOUR = 60 * MIN;
-export const TODAY = new Date();
-export const NOW = new Date();
-export const YESTERDAY = subDays(TODAY, 1);
 export const WEEK_LIMIT = 8;
+const TODAY = new Date();
 
 export function lastMonday() {
   return lastWeekday(1, nextMonday);
@@ -31,6 +28,10 @@ export function startOfLastWeeks(weeks: number, today = TODAY): Date {
   const recentLimitDate = subWeeks(today, weeks);
   const MONDAY = 1;
   return startOfWeek(recentLimitDate, { weekStartsOn: MONDAY });
+}
+
+export function todayWorkdayStart() {
+  return _setTime(new Date(), "09:00:00");
 }
 
 export function todayWorkdayEnd() {

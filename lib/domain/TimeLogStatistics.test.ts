@@ -1,13 +1,14 @@
 import TimeLog from "./TimeLog";
 import TimeLogStatistics from "./TimeLogStatistics";
-import { addHours } from "date-fns";
+import { addHours, subDays } from "date-fns";
 import {
   HOUR,
   lastMonday,
   lastSunday,
-  TODAY,
-  YESTERDAY,
+  todayWorkdayStart,
 } from "./time-constants";
+
+export const YESTERDAY = subDays(todayWorkdayStart(), 1);
 
 function testFulfilledTimeLog(date: Date, hours: number) {
   return new TimeLog({
@@ -29,7 +30,7 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 1 if one running time log", () => {
-      const currentTimeLog = testRunningTimeLog(TODAY);
+      const currentTimeLog = testRunningTimeLog(todayWorkdayStart());
 
       const timeLogStatistics = new TimeLogStatistics([currentTimeLog]);
 
@@ -37,7 +38,7 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 1 if two time logs at the same day", () => {
-      const currentTimeLog = testRunningTimeLog(TODAY);
+      const currentTimeLog = testRunningTimeLog(todayWorkdayStart());
 
       const timeLogStatistics = new TimeLogStatistics([
         currentTimeLog,
@@ -48,7 +49,7 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 2 if two time logs at different days", () => {
-      const currentTimeLog = testRunningTimeLog(TODAY);
+      const currentTimeLog = testRunningTimeLog(todayWorkdayStart());
 
       const yesterdayTimeLog = testRunningTimeLog(YESTERDAY);
 
@@ -69,7 +70,7 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 0 if today's time log is running", () => {
-      const currentTimeLog = testRunningTimeLog(TODAY);
+      const currentTimeLog = testRunningTimeLog(todayWorkdayStart());
 
       const statistics = new TimeLogStatistics([currentTimeLog]);
 
@@ -77,7 +78,7 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 0h if todays's time log has duration of 7h", () => {
-      const currentTimeLog = testFulfilledTimeLog(TODAY, 8 - 1);
+      const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 - 1);
 
       const statistics = new TimeLogStatistics([currentTimeLog]);
 
@@ -85,7 +86,7 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 1h if todays's time log has duration of 9h", () => {
-      const currentTimeLog = testFulfilledTimeLog(TODAY, 8 + 1);
+      const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 + 1);
 
       const statistics = new TimeLogStatistics([currentTimeLog]);
 
@@ -110,7 +111,7 @@ describe("TimeLogStatistics", () => {
 
     it("returns 2h if yesterday's and todays's time log has duration of 9h", () => {
       const yesterdayTimeLog = testFulfilledTimeLog(YESTERDAY, 8 + 1);
-      const currentTimeLog = testFulfilledTimeLog(TODAY, 8 + 1);
+      const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 + 1);
 
       const statistics = new TimeLogStatistics([
         currentTimeLog,
@@ -135,7 +136,7 @@ describe("TimeLogStatistics", () => {
 
   describe("getWeeklyOvertimeMs()", () => {
     it("returns 1h if this week's time log has duration of 9h", () => {
-      const currentTimeLog = testFulfilledTimeLog(TODAY, 8 + 1);
+      const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 + 1);
 
       const statistics = new TimeLogStatistics([currentTimeLog]);
 

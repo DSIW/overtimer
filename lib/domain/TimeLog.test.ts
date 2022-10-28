@@ -1,6 +1,8 @@
 import TimeLog from "./TimeLog";
 import { addDays, addHours, addSeconds, getMilliseconds } from "date-fns";
-import { HOUR, NOW } from "./time-constants";
+import { HOUR } from "./time-constants";
+
+export const NOW = new Date(2022, 1, 1, 12);
 
 describe("TimeLog", () => {
   describe("constructor", () => {
