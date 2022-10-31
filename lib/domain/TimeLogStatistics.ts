@@ -1,10 +1,9 @@
 import TimeLog from "./TimeLog";
 import { format, isSameDay, isSameWeek } from "date-fns";
-import { HOUR } from "./time-constants";
+import { HOUR, MONDAY } from "./time-constants";
 
 const WORK_HOURS = 8;
 const WORK_HOURS_MS = WORK_HOURS * HOUR;
-const MONDAY = 1;
 
 export default class TimeLogStatistics {
   constructor(

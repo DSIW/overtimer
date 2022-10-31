@@ -13,11 +13,11 @@ export const SEC = 1000;
 export const MIN = 60 * SEC;
 export const HOUR = 60 * MIN;
 export const WEEK_LIMIT = 8;
+export const MONDAY = 1;
 const TODAY = new Date();
 
 export function startOfLastWeeks(weeks: number, today = TODAY): Date {
   const recentLimitDate = subWeeks(today, weeks);
-  const MONDAY = 1;
   return startOfWeek(recentLimitDate, { weekStartsOn: MONDAY });
 }
 
