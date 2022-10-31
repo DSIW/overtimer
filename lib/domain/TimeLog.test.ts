@@ -92,12 +92,12 @@ describe("TimeLog", () => {
   describe("getElapsedMs()", () => {
     it("returns 0 if done", () => {
       const timeLog = new TimeLog({ startTime: TODAY, endTime: TODAY });
-      expect(timeLog.getElapsedMs()).toBe(0);
+      expect(timeLog.getElapsedMs(TODAY)).toBe(0);
     });
 
-    it("returns current milliseconds if running for at least 1 second", () => {
-      const timeLog = new TimeLog({ startTime: subSeconds(new Date(), 1) });
-      expect(timeLog.getElapsedMs()).toBeGreaterThanOrEqual(1000);
+    it("returns milliseconds until provided time", () => {
+      const timeLog = new TimeLog({ startTime: subSeconds(TODAY, 1) });
+      expect(timeLog.getElapsedMs(TODAY)).toEqual(1000);
     });
   });
 

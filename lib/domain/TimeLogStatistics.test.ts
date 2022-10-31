@@ -1,7 +1,7 @@
 import TimeLog from "./TimeLog";
 import TimeLogStatistics from "./TimeLogStatistics";
-import { addHours, parseISO, subDays, subWeeks } from "date-fns";
-import { HOUR, withTime } from "./time-constants";
+import { addHours, parseISO, subDays, subHours, subWeeks } from "date-fns";
+import { HOUR, todayWorkdayEnd, withTime } from "./time-constants";
 
 // test week: Mon, 2022-08-01 .. Sun, 2022-08-07
 const TODAY = parseISO("2022-08-01");
@@ -143,6 +143,45 @@ describe("TimeLogStatistics", () => {
       const statistics = new TimeLogStatistics([lastWeekTimeLog], TODAY);
 
       expect(statistics.getWeeklyOvertimeMs()).toBe(0);
+    });
+  });
+
+  describe("getTimerStatistics()", () => {
+    it("returns remaining 8h when timer has not been started", () => {
+      const statistics = new TimeLogStatistics([], TODAY);
+
+      expect(statistics.getTimerValues()).toEqual({
+        isRunning: false,
+        value: 8 * HOUR,
+        percentage: 100,
+        isOverdue: false,
+      });
+    });
+
+    it("returns remaining 4h if timer runs for 4 hours", () => {
+      const today = withTime(new Date(), "17:00:00");
+      const timeLog = testRunningTimeLog(subHours(today, 4));
+      const statistics = new TimeLogStatistics([timeLog], today);
+
+      expect(statistics.getTimerValues()).toEqual({
+        isRunning: true,
+        value: 4 * HOUR,
+        percentage: 50,
+        isOverdue: false,
+      });
+    });
+
+    it("returns overtime of 1h if timer runs for 9 hours", () => {
+      const today = withTime(new Date(), "17:00:00");
+      const timeLog = testRunningTimeLog(subHours(today, 9));
+      const statistics = new TimeLogStatistics([timeLog], today);
+
+      expect(statistics.getTimerValues()).toEqual({
+        isRunning: true,
+        value: 1 * HOUR,
+        percentage: 100,
+        isOverdue: true,
+      });
     });
   });
 });
