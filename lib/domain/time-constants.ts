@@ -1,12 +1,12 @@
 import {
-  formatISO, getDay,
-  parseISO, previousMonday, previousSunday,
+  formatISO,
+  parseISO,
   setHours,
   setMilliseconds,
   setMinutes,
   setSeconds,
   startOfWeek,
-  subWeeks
+  subWeeks,
 } from "date-fns";
 
 export const SEC = 1000;

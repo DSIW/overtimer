@@ -1,5 +1,5 @@
 import TimeLog from "./TimeLog";
-import { format, isThisWeek, isToday } from "date-fns";
+import { format, isSameDay, isSameWeek } from "date-fns";
 import { HOUR } from "./time-constants";
 
 const WORK_HOURS = 8;
@@ -7,21 +7,22 @@ const WORK_HOURS_MS = WORK_HOURS * HOUR;
 const MONDAY = 1;
 
 export default class TimeLogStatistics {
-  private readonly timeLogs: TimeLog[];
-
-  constructor(timeLogs: TimeLog[]) {
-    this.timeLogs = timeLogs;
+  constructor(
+    private readonly timeLogs: TimeLog[],
+    private readonly todayDate: Date = new Date()
+  ) {
+    this.isToday = this.isToday.bind(this);
+    this.isNotToday = this.isNotToday.bind(this);
   }
 
   getTotalOvertimeMs() {
-    const oldTimeLogs = this.timeLogs.filter(
-      (timeLog) => !isToday(timeLog.startTime)
-    );
+    // return this.calcOvertimeMs(this.timeLogs.filter(this.isDone));
+    const oldTimeLogs = this.timeLogs
+      .filter(this.isDone)
+      .filter(this.isNotToday);
     const oldOvertime = this.calcOvertimeMs(oldTimeLogs);
 
-    const todayTimeLogs = this.timeLogs.filter((timeLog) =>
-      isToday(timeLog.startTime)
-    );
+    const todayTimeLogs = this.timeLogs.filter(this.isToday);
     const todayOvertime = this.calcOvertimeMs(todayTimeLogs);
 
     return oldOvertime + Math.max(0, todayOvertime);
@@ -29,7 +30,7 @@ export default class TimeLogStatistics {
 
   getWeeklyOvertimeMs() {
     const thisWeekTimeLogs = this.timeLogs.filter((timeLog) =>
-      isThisWeek(timeLog.startTime, { weekStartsOn: MONDAY })
+      this.isThisWeek(timeLog)
     );
     return new TimeLogStatistics(thisWeekTimeLogs).getTotalOvertimeMs();
   }
@@ -71,6 +72,10 @@ export default class TimeLogStatistics {
     return new Set(formattedTimeLogs).size;
   }
 
+  private isDone(timeLog: TimeLog): boolean {
+    return timeLog.isDone();
+  }
+
   private calcOvertimeMs(timeLogs: TimeLog[]) {
     const todayTimeLogs = timeLogs;
     const todayTimeLogStatistics = new TimeLogStatistics(todayTimeLogs);
@@ -94,7 +99,7 @@ export default class TimeLogStatistics {
 
   private getTodayTotalMs() {
     const durations = this.timeLogs
-      .filter((timeLog) => isToday(timeLog.startTime))
+      .filter(this.isToday)
       .map((timeLog) => timeLog.getDurationMs());
 
     return this.sum(durations);
@@ -102,5 +107,19 @@ export default class TimeLogStatistics {
 
   private sum(nums: number[]): number {
     return nums.reduce((sum, val) => sum + val, 0);
+  }
+
+  private isNotToday(timeLog: TimeLog): boolean {
+    return !this.isToday(timeLog);
+  }
+
+  private isToday(timeLog: TimeLog): boolean {
+    return isSameDay(timeLog.startTime, this.todayDate);
+  }
+
+  private isThisWeek(timeLog: TimeLog): boolean {
+    return isSameWeek(timeLog.startTime, this.todayDate, {
+      weekStartsOn: MONDAY,
+    });
   }
 }

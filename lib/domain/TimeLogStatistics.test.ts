@@ -1,15 +1,16 @@
 import TimeLog from "./TimeLog";
 import TimeLogStatistics from "./TimeLogStatistics";
-import { addHours, previousMonday, previousSunday, subDays } from "date-fns";
+import { addHours, parseISO, subDays, subWeeks } from "date-fns";
 import { HOUR, withTime } from "./time-constants";
 
-const TODAY = new Date();
+// test week: Mon, 2022-08-01 .. Sun, 2022-08-07
+const TODAY = parseISO("2022-08-01");
 const YESTERDAY = subDays(todayWorkdayStart(), 1);
 
 describe("TimeLogStatistics", () => {
   describe("getDays()", () => {
     it("returns 0 if no time logs", () => {
-      const timeLogStatistics = new TimeLogStatistics([]);
+      const timeLogStatistics = new TimeLogStatistics([], TODAY);
 
       expect(timeLogStatistics.getDays()).toBe(0);
     });
@@ -17,7 +18,7 @@ describe("TimeLogStatistics", () => {
     it("returns 1 if one running time log", () => {
       const currentTimeLog = testRunningTimeLog(todayWorkdayStart());
 
-      const timeLogStatistics = new TimeLogStatistics([currentTimeLog]);
+      const timeLogStatistics = new TimeLogStatistics([currentTimeLog], TODAY);
 
       expect(timeLogStatistics.getDays()).toBe(1);
     });
@@ -25,10 +26,10 @@ describe("TimeLogStatistics", () => {
     it("returns 1 if two time logs at the same day", () => {
       const currentTimeLog = testRunningTimeLog(todayWorkdayStart());
 
-      const timeLogStatistics = new TimeLogStatistics([
-        currentTimeLog,
-        currentTimeLog,
-      ]);
+      const timeLogStatistics = new TimeLogStatistics(
+        [currentTimeLog, currentTimeLog],
+        TODAY
+      );
 
       expect(timeLogStatistics.getDays()).toBe(1);
     });
@@ -38,10 +39,10 @@ describe("TimeLogStatistics", () => {
 
       const yesterdayTimeLog = testRunningTimeLog(YESTERDAY);
 
-      const timeLogStatistics = new TimeLogStatistics([
-        currentTimeLog,
-        yesterdayTimeLog,
-      ]);
+      const timeLogStatistics = new TimeLogStatistics(
+        [currentTimeLog, yesterdayTimeLog],
+        TODAY
+      );
 
       expect(timeLogStatistics.getDays()).toBe(2);
     });
@@ -49,7 +50,7 @@ describe("TimeLogStatistics", () => {
 
   describe("getTotalOvertimeMs()", () => {
     it("returns 0 if no time logs", () => {
-      const overtimeMs = new TimeLogStatistics([]).getTotalOvertimeMs();
+      const overtimeMs = new TimeLogStatistics([], TODAY).getTotalOvertimeMs();
 
       expect(overtimeMs).toBe(0);
     });
@@ -57,7 +58,7 @@ describe("TimeLogStatistics", () => {
     it("returns 0 if time log is running", () => {
       const currentTimeLog = testRunningTimeLog(todayWorkdayStart());
 
-      const statistics = new TimeLogStatistics([currentTimeLog]);
+      const statistics = new TimeLogStatistics([currentTimeLog], TODAY);
 
       expect(statistics.getTotalOvertimeMs()).toBe(0);
     });
@@ -65,7 +66,7 @@ describe("TimeLogStatistics", () => {
     it("returns 0h if today's time log has duration of 7h", () => {
       const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 - 1);
 
-      const statistics = new TimeLogStatistics([currentTimeLog]);
+      const statistics = new TimeLogStatistics([currentTimeLog], TODAY);
 
       expect(statistics.getTotalOvertimeMs()).toBe(0);
     });
@@ -73,7 +74,7 @@ describe("TimeLogStatistics", () => {
     it("returns 1h if today's time log has duration of 9h", () => {
       const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 + 1);
 
-      const statistics = new TimeLogStatistics([currentTimeLog]);
+      const statistics = new TimeLogStatistics([currentTimeLog], TODAY);
 
       expect(statistics.getTotalOvertimeMs()).toBe(1 * HOUR);
     });
@@ -81,7 +82,7 @@ describe("TimeLogStatistics", () => {
     it("returns 1h if yesterday's time log has duration of 9h", () => {
       const currentTimeLog = testFulfilledTimeLog(YESTERDAY, 8 + 1);
 
-      const statistics = new TimeLogStatistics([currentTimeLog]);
+      const statistics = new TimeLogStatistics([currentTimeLog], TODAY);
 
       expect(statistics.getTotalOvertimeMs()).toBe(1 * HOUR);
     });
@@ -89,7 +90,7 @@ describe("TimeLogStatistics", () => {
     it("returns -1h if yesterday's time log has duration of 7h", () => {
       const currentTimeLog = testFulfilledTimeLog(YESTERDAY, 8 - 1);
 
-      const statistics = new TimeLogStatistics([currentTimeLog]);
+      const statistics = new TimeLogStatistics([currentTimeLog], TODAY);
 
       expect(statistics.getTotalOvertimeMs()).toBe(-1 * HOUR);
     });
@@ -98,10 +99,10 @@ describe("TimeLogStatistics", () => {
       const yesterdayTimeLog = testFulfilledTimeLog(YESTERDAY, 8 + 1);
       const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 + 1);
 
-      const statistics = new TimeLogStatistics([
-        currentTimeLog,
-        yesterdayTimeLog,
-      ]);
+      const statistics = new TimeLogStatistics(
+        [currentTimeLog, yesterdayTimeLog],
+        TODAY
+      );
 
       expect(statistics.getTotalOvertimeMs()).toBe(2 * HOUR);
     });
@@ -110,10 +111,10 @@ describe("TimeLogStatistics", () => {
       const yesterdayTimeLog = testFulfilledTimeLog(YESTERDAY, 4);
       const yesterdayTimeLog2 = testFulfilledTimeLog(YESTERDAY, 4);
 
-      const statistics = new TimeLogStatistics([
-        yesterdayTimeLog,
-        yesterdayTimeLog2,
-      ]);
+      const statistics = new TimeLogStatistics(
+        [yesterdayTimeLog, yesterdayTimeLog2],
+        TODAY
+      );
 
       expect(statistics.getTotalOvertimeMs()).toBe(0);
     });
@@ -123,23 +124,23 @@ describe("TimeLogStatistics", () => {
     it("returns 1h if this week's time log has duration of 9h", () => {
       const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 + 1);
 
-      const statistics = new TimeLogStatistics([currentTimeLog]);
+      const statistics = new TimeLogStatistics([currentTimeLog], TODAY);
 
       expect(statistics.getWeeklyOvertimeMs()).toBe(1 * HOUR);
     });
 
-    it("returns 0h if previous monday's time log has duration of 9h", () => {
-      const lastWeekTimeLog = testFulfilledTimeLog(previousMonday(TODAY), 8 + 1);
+    it("returns 0h if previous week's time log has duration of 9h", () => {
+      const lastWeekTimeLog = testFulfilledTimeLog(subWeeks(TODAY, 1), 8 + 1);
 
-      const statistics = new TimeLogStatistics([lastWeekTimeLog]);
+      const statistics = new TimeLogStatistics([lastWeekTimeLog], TODAY);
 
       expect(statistics.getWeeklyOvertimeMs()).toBe(0);
     });
 
-    it("returns 0h if previous sunday's time log has duration of 9h", () => {
-      const lastWeekTimeLog = testFulfilledTimeLog(previousSunday(TODAY), 8 + 1);
+    it("returns 0h if previous week's time log has overtime but is Sunday", () => {
+      const lastWeekTimeLog = testFulfilledTimeLog(YESTERDAY, 8 + 1);
 
-      const statistics = new TimeLogStatistics([lastWeekTimeLog]);
+      const statistics = new TimeLogStatistics([lastWeekTimeLog], TODAY);
 
       expect(statistics.getWeeklyOvertimeMs()).toBe(0);
     });
