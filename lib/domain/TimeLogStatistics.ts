@@ -18,34 +18,11 @@ export default class TimeLogStatistics {
     return this.getOvertimeUntilYesterday() + this.getOvertimeFromToday();
   }
 
-  private getOvertimeUntilYesterday(): number {
-    const oldTimeLogs = this.timeLogs
-      .filter(this.isDone)
-      .filter(this.isNotToday);
-
-    return this.calcOvertimeMs(oldTimeLogs);
-  }
-
-  private getOvertimeFromToday(): number {
-    const todayTimeLogs = this.timeLogs.filter(this.isToday);
-    const todayOvertime = this.calcOvertimeMs(todayTimeLogs);
-
-    return Math.max(0, todayOvertime);
-  }
-
   getWeeklyOvertimeMs() {
     const thisWeekTimeLogs = this.timeLogs.filter((timeLog) =>
       this.isThisWeek(timeLog)
     );
     return new TimeLogStatistics(thisWeekTimeLogs).getTotalOvertimeMs();
-  }
-
-  getTotalWorkTimeMs() {
-    return WORK_HOURS_MS;
-  }
-
-  getTotalDuration() {
-    return this.timeLogs.map((timeLog) => timeLog.getDurationMs());
   }
 
   getTimerValues() {
@@ -75,6 +52,29 @@ export default class TimeLogStatistics {
       format(timeLog.startTime, "yyyy-MM-dd")
     );
     return new Set(formattedTimeLogs).size;
+  }
+
+  private getOvertimeUntilYesterday(): number {
+    const oldTimeLogs = this.timeLogs
+      .filter(this.isDone)
+      .filter(this.isNotToday);
+
+    return this.calcOvertimeMs(oldTimeLogs);
+  }
+
+  private getOvertimeFromToday(): number {
+    const todayTimeLogs = this.timeLogs.filter(this.isToday);
+    const todayOvertime = this.calcOvertimeMs(todayTimeLogs);
+
+    return Math.max(0, todayOvertime);
+  }
+
+  private getTotalWorkTimeMs() {
+    return WORK_HOURS_MS;
+  }
+
+  private getTotalDuration() {
+    return this.timeLogs.map((timeLog) => timeLog.getDurationMs());
   }
 
   private isDone(timeLog: TimeLog): boolean {
