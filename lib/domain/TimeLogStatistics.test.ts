@@ -4,7 +4,7 @@ import { addHours, previousMonday, previousSunday, subDays } from "date-fns";
 import { HOUR, withTime } from "./time-constants";
 
 const TODAY = new Date();
-export const YESTERDAY = subDays(todayWorkdayStart(), 1);
+const YESTERDAY = subDays(todayWorkdayStart(), 1);
 
 describe("TimeLogStatistics", () => {
   describe("getDays()", () => {
@@ -54,7 +54,7 @@ describe("TimeLogStatistics", () => {
       expect(overtimeMs).toBe(0);
     });
 
-    it("returns 0 if today's time log is running", () => {
+    it("returns 0 if time log is running", () => {
       const currentTimeLog = testRunningTimeLog(todayWorkdayStart());
 
       const statistics = new TimeLogStatistics([currentTimeLog]);
@@ -62,7 +62,7 @@ describe("TimeLogStatistics", () => {
       expect(statistics.getTotalOvertimeMs()).toBe(0);
     });
 
-    it("returns 0h if todays's time log has duration of 7h", () => {
+    it("returns 0h if today's time log has duration of 7h", () => {
       const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 - 1);
 
       const statistics = new TimeLogStatistics([currentTimeLog]);
@@ -70,7 +70,7 @@ describe("TimeLogStatistics", () => {
       expect(statistics.getTotalOvertimeMs()).toBe(0);
     });
 
-    it("returns 1h if todays's time log has duration of 9h", () => {
+    it("returns 1h if today's time log has duration of 9h", () => {
       const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 + 1);
 
       const statistics = new TimeLogStatistics([currentTimeLog]);
@@ -94,7 +94,7 @@ describe("TimeLogStatistics", () => {
       expect(statistics.getTotalOvertimeMs()).toBe(-1 * HOUR);
     });
 
-    it("returns 2h if yesterday's and todays's time log has duration of 9h", () => {
+    it("returns 2h if yesterday's and today's time log has duration of 9h", () => {
       const yesterdayTimeLog = testFulfilledTimeLog(YESTERDAY, 8 + 1);
       const currentTimeLog = testFulfilledTimeLog(todayWorkdayStart(), 8 + 1);
 
@@ -146,8 +146,8 @@ describe("TimeLogStatistics", () => {
   });
 });
 
-export function todayWorkdayStart() {
-  return withTime(new Date(), "09:00:00");
+function todayWorkdayStart() {
+  return withTime(TODAY, "09:00:00");
 }
 
 function testFulfilledTimeLog(date: Date, hours: number) {
