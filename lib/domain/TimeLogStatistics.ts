@@ -4,6 +4,7 @@ import { HOUR } from "./time-constants";
 
 const WORK_HOURS = 8;
 const WORK_HOURS_MS = WORK_HOURS * HOUR;
+const MONDAY = 1;
 
 export default class TimeLogStatistics {
   private readonly timeLogs: TimeLog[];
@@ -28,7 +29,7 @@ export default class TimeLogStatistics {
 
   getWeeklyOvertimeMs() {
     const thisWeekTimeLogs = this.timeLogs.filter((timeLog) =>
-      isThisWeek(timeLog.startTime, { weekStartsOn: 1 })
+      isThisWeek(timeLog.startTime, { weekStartsOn: MONDAY })
     );
     return new TimeLogStatistics(thisWeekTimeLogs).getTotalOvertimeMs();
   }

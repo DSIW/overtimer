@@ -1,13 +1,6 @@
 import TimeLog from "./TimeLog";
 import TimeLogStatistics from "./TimeLogStatistics";
-import {
-  addHours,
-  getDay,
-  nextMonday,
-  nextSunday,
-  subDays,
-  subWeeks,
-} from "date-fns";
+import { addHours, previousMonday, previousSunday, subDays } from "date-fns";
 import { HOUR, withTime } from "./time-constants";
 
 const TODAY = new Date();
@@ -135,16 +128,16 @@ describe("TimeLogStatistics", () => {
       expect(statistics.getWeeklyOvertimeMs()).toBe(1 * HOUR);
     });
 
-    it("returns 0h if last monday's time log has duration of 9h", () => {
-      const lastWeekTimeLog = testFulfilledTimeLog(lastMonday(), 8 + 1);
+    it("returns 0h if previous monday's time log has duration of 9h", () => {
+      const lastWeekTimeLog = testFulfilledTimeLog(previousMonday(TODAY), 8 + 1);
 
       const statistics = new TimeLogStatistics([lastWeekTimeLog]);
 
-      expect(statistics.getWeeklyOvertimeMs()).toBe(1 * HOUR);
+      expect(statistics.getWeeklyOvertimeMs()).toBe(0);
     });
 
-    it("returns 0h if last sunday's time log has duration of 9h", () => {
-      const lastWeekTimeLog = testFulfilledTimeLog(lastSunday(), 8 + 1);
+    it("returns 0h if previous sunday's time log has duration of 9h", () => {
+      const lastWeekTimeLog = testFulfilledTimeLog(previousSunday(TODAY), 8 + 1);
 
       const statistics = new TimeLogStatistics([lastWeekTimeLog]);
 
@@ -153,30 +146,8 @@ describe("TimeLogStatistics", () => {
   });
 });
 
-export function lastMonday() {
-  return lastWeekday(1, nextMonday);
-}
-
-export function lastSunday() {
-  return lastWeekday(0, nextSunday);
-}
-
 export function todayWorkdayStart() {
   return withTime(new Date(), "09:00:00");
-}
-
-function lastWeekday(dayIndex: number, nextMethod: (date: Date) => Date) {
-  if (getDay(TODAY) === dayIndex) {
-    return subWeeks(TODAY, 1);
-  }
-
-  const day = subWeeks(nextMethod(TODAY), 1);
-
-  if (getDay(day) !== dayIndex) {
-    throw new Error("no correct week day");
-  }
-
-  return day;
 }
 
 function testFulfilledTimeLog(date: Date, hours: number) {
