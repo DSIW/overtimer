@@ -8,7 +8,7 @@ const WORK_HOURS_MS = WORK_HOURS * HOUR;
 export default class TimeLogStatistics {
   constructor(
     private readonly timeLogs: TimeLog[],
-    private readonly todayDate: Date = new Date()
+    private readonly nowDate: Date = new Date()
   ) {
     this.isToday = this.isToday.bind(this);
     this.isNotToday = this.isNotToday.bind(this);
@@ -93,7 +93,7 @@ export default class TimeLogStatistics {
 
   private getCurrentWorkTimeMs() {
     const currentTimeLog = this.timeLogs[0];
-    const elapsedMs = currentTimeLog?.getElapsedMs() || 0;
+    const elapsedMs = currentTimeLog?.getElapsedMs(this.nowDate) || 0;
 
     const todayTotalMs = this.getTodayTotalMs();
     const totalWorkMs = this.getTotalWorkTimeMs();
@@ -119,11 +119,11 @@ export default class TimeLogStatistics {
   }
 
   private isToday(timeLog: TimeLog): boolean {
-    return isSameDay(timeLog.startTime, this.todayDate);
+    return isSameDay(timeLog.startTime, this.nowDate);
   }
 
   private isThisWeek(timeLog: TimeLog): boolean {
-    return isSameWeek(timeLog.startTime, this.todayDate, {
+    return isSameWeek(timeLog.startTime, this.nowDate, {
       weekStartsOn: MONDAY,
     });
   }

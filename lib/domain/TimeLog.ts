@@ -47,13 +47,13 @@ export default class TimeLog {
     return !(this.isRunning() && isToday(this.startTime));
   }
 
-  getElapsedMs(): number {
+  getElapsedMs(nowDate: Date): number {
     if (this.isDone()) {
       return 0;
     }
 
-    const end = this.endTime || new Date();
-    return +end - +this.startTime;
+    const now = this.reducePrecision(nowDate);
+    return +now - +this.startTime;
   }
 
   getDurationMs(): number {
