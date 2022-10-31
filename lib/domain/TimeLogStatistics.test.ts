@@ -1,7 +1,7 @@
 import TimeLog from "./TimeLog";
 import TimeLogStatistics from "./TimeLogStatistics";
 import { addHours, parseISO, subDays, subHours, subWeeks } from "date-fns";
-import { HOUR, todayWorkdayEnd, withTime } from "./time-constants";
+import { HOUR, withTime } from "./time-constants";
 
 // test week: Mon, 2022-08-01 .. Sun, 2022-08-07
 const TODAY = parseISO("2022-08-01");
