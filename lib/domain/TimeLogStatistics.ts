@@ -15,16 +15,22 @@ export default class TimeLogStatistics {
   }
 
   getTotalOvertimeMs() {
-    // return this.calcOvertimeMs(this.timeLogs.filter(this.isDone));
+    return this.getOvertimeUntilYesterday() + this.getOvertimeFromToday();
+  }
+
+  private getOvertimeUntilYesterday(): number {
     const oldTimeLogs = this.timeLogs
       .filter(this.isDone)
       .filter(this.isNotToday);
-    const oldOvertime = this.calcOvertimeMs(oldTimeLogs);
 
+    return this.calcOvertimeMs(oldTimeLogs);
+  }
+
+  private getOvertimeFromToday(): number {
     const todayTimeLogs = this.timeLogs.filter(this.isToday);
     const todayOvertime = this.calcOvertimeMs(todayTimeLogs);
 
-    return oldOvertime + Math.max(0, todayOvertime);
+    return Math.max(0, todayOvertime);
   }
 
   getWeeklyOvertimeMs() {
