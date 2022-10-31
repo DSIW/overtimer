@@ -2,7 +2,7 @@ import TimeLog from "./TimeLog";
 import { addDays, addHours, addSeconds, getMilliseconds } from "date-fns";
 import { HOUR, todayWorkdayEnd } from "./time-constants";
 
-export const dateTime = todayWorkdayEnd()
+export const dateTime = todayWorkdayEnd();
 
 describe("TimeLog", () => {
   describe("constructor", () => {
@@ -31,7 +31,10 @@ describe("TimeLog", () => {
     });
 
     it("returns false if start time and end time have different date", () => {
-      const timeLog = new TimeLog({ startTime: dateTime, endTime: addDays(dateTime, 1) });
+      const timeLog = new TimeLog({
+        startTime: dateTime,
+        endTime: addDays(dateTime, 1),
+      });
 
       expect(timeLog.isValid()).toBe(false);
     });
