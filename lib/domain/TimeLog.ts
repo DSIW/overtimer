@@ -52,8 +52,8 @@ export default class TimeLog {
       return 0;
     }
 
-    const end = this.endTime || new Date();
-    return +end - +this.startTime;
+    const now = this.reducePrecision(new Date());
+    return +now - +this.startTime;
   }
 
   getDurationMs(): number {
