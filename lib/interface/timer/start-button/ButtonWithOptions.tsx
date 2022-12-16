@@ -7,9 +7,8 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import { bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
-import { bindPopper } from "material-ui-popup-state";
-import { anchorRef } from "material-ui-popup-state/core";
+import { usePopupState } from "material-ui-popup-state/hooks";
+import { bindPopper, anchorRef, bindTrigger } from "material-ui-popup-state";
 import { ClickAwayListener } from "@mui/material";
 
 interface Props {
