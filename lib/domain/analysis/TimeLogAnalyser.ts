@@ -29,12 +29,16 @@ export default class TimeLogAnalyser {
       const startTimes = workdays.map(workday => workday.getStartTime());
       const statistics = new TimeStatistic(startTimes).getTimeStatistics();
       result[weekday] = {
-        min: format(statistics.min, "HH:mm:SS"),
-        median: format(statistics.median, "HH:mm:SS"),
-        max: format(statistics.max, "HH:mm:SS")
+        min: this.formatTime(statistics.min),
+        median: this.formatTime(statistics.median),
+        max: this.formatTime(statistics.max)
       };
     });
 
     return result;
+  }
+
+  private formatTime(date: Date) {
+    return format(date, "HH:mm:SS")
   }
 }
