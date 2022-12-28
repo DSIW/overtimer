@@ -1,5 +1,5 @@
 import TimeLog from "./TimeLog";
-import { addHours, parseISO } from "date-fns";
+import { addDays, addHours, parseISO } from "date-fns";
 import { withTime } from "./time-constants";
 import Workday from "./Workday";
 
@@ -44,6 +44,32 @@ describe("Workday", () => {
       expect(timeLogStatistics.getFormattedStartTime()).toEqual("09:00:00");
     });
   });
+
+  describe("validation", () => {
+    it("throws error if any timelog is running", () => {
+      const timeLog = testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog2 = testRunningTimeLog(DAY);
+
+      expect(() => {
+        new Workday([timeLog, timeLog2]);
+      }).toThrow();
+    });
+
+    it("throws error if timelog are at multiple days", () => {
+      const timeLog = testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog2 = testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1);
+
+      expect(() => {
+        new Workday([timeLog, timeLog2]);
+      }).toThrow();
+    });
+
+    it("throws error if timelogs are empty", () => {
+      expect(() => {
+        new Workday([]);
+      }).toThrow();
+    });
+  });
 });
 
 function testFulfilledTimeLog(date: Date, formattedStartTime: string, hours: number) {
@@ -52,4 +78,8 @@ function testFulfilledTimeLog(date: Date, formattedStartTime: string, hours: num
     startTime: startTime,
     endTime: addHours(startTime, hours),
   });
+}
+
+function testRunningTimeLog(date: Date) {
+  return new TimeLog({ startTime: date });
 }
