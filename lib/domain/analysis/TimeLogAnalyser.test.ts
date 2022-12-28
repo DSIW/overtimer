@@ -23,6 +23,7 @@ describe("TimeLogAnalyser", () => {
       expect(timeLogAnalyser.getAverageStartTimePerWeekday()).toEqual({
         "Monday": {
           min: "09:00:00",
+          median: "09:00:00",
           max: "09:00:00"
         }
       });
@@ -37,21 +38,24 @@ describe("TimeLogAnalyser", () => {
       expect(timeLogAnalyser.getAverageStartTimePerWeekday()).toEqual({
         "Monday": {
           min: "09:00:00",
+          median: "09:00:00",
           max: "09:00:00"
         }
       });
     });
 
-    it("returns max start time of 2 different days", () => {
+    it("returns min, median and max start time of 2 different days", () => {
       const timeLogAnalyser = new TimeLogAnalyser([
         testFulfilledTimeLog(DAY, "09:00:00", 1),
-        testFulfilledTimeLog(addWeeks(DAY, 1), "10:00:00", 1)
+        testFulfilledTimeLog(addWeeks(DAY, 1), "10:00:00", 1),
+        testFulfilledTimeLog(addWeeks(DAY, 2), "11:00:00", 1)
       ]);
 
       expect(timeLogAnalyser.getAverageStartTimePerWeekday()).toEqual({
         "Monday": {
           min: "09:00:00",
-          max: "10:00:00"
+          median: "10:00:00",
+          max: "11:00:00"
         },
       });
     });
@@ -68,14 +72,4 @@ function testFulfilledTimeLog(date: Date, formattedStartTime: string, hours: num
 
 function testRunningTimeLog(date: Date) {
   return new TimeLog({ startTime: date });
-}
-
-function mapOf(record: Record<string, any>) {
-  const map = new Map();
-
-  Object.entries(record).forEach(([key, value]) => {
-    map.set(key, value);
-  });
-
-  return map;
 }
