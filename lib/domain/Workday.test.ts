@@ -7,6 +7,22 @@ import Workday from "./Workday";
 const DAY = parseISO("2022-08-01");
 
 describe("Workday", () => {
+  describe("fromTimelogs", () => {
+    it("returns workdays grouped by day", () => {
+      const timeLog = testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog2 = testFulfilledTimeLog(DAY, "13:00:00", 1);
+      const timeLogNextDay = testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1);
+
+      const workdays = Workday.fromTimeLogs([
+        timeLog,
+        timeLog2,
+        timeLogNextDay
+      ])
+
+      expect(workdays.length).toBe(2);
+    });
+  });
+
   describe("getWeekday", () => {
     it("returns weekday as string", () => {
       const timeLogStatistics = new Workday([testFulfilledTimeLog(DAY, "09:00:00", 1)]);

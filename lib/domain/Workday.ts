@@ -1,9 +1,20 @@
 import TimeLog from "./TimeLog";
 import { format, isSameDay, min } from "date-fns";
+import { groupBy } from "lodash";
 
 export default class Workday {
   constructor(private readonly timeLogs: TimeLog[]) {
     this.validate(timeLogs);
+  }
+
+  static fromTimeLogs(timeLogs: TimeLog[]): Workday[] {
+    const groups = groupBy(timeLogs, (timeLog) => {
+      return format(timeLog.startTime, "yyyy-MM-dd")
+    })
+
+    return Object.entries(groups).map(([_date, timeLogs]) => {
+      return new Workday(timeLogs);
+    })
   }
 
   getWeekday() {
