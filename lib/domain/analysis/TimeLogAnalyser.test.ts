@@ -6,13 +6,13 @@ import TimeLogAnalyser from "./TimeLogAnalyser";
 const DAY = parseISO("2022-08-01");
 
 describe("TimeLogAnalyser", () => {
-  describe("getAverageStartTimePerWeekday()", () => {
+  describe("getStartTimeStatisticsPerWeekday()", () => {
     it("returns 0 if no fulfilled time logs", () => {
       const timeLogAnalyser = new TimeLogAnalyser([
         testRunningTimeLog(DAY)
       ]);
 
-      expect(timeLogAnalyser.getAverageStartTimePerWeekday()).toEqual({});
+      expect(timeLogAnalyser.getStartTimeStatisticsPerWeekday()).toEqual({});
     });
 
     it("returns map of day and time if one time log", () => {
@@ -20,7 +20,7 @@ describe("TimeLogAnalyser", () => {
         testFulfilledTimeLog(DAY, "09:00:00", 1)
       ]);
 
-      expect(timeLogAnalyser.getAverageStartTimePerWeekday()).toEqual({
+      expect(timeLogAnalyser.getStartTimeStatisticsPerWeekday()).toEqual({
         "Monday": {
           min: "09:00:00",
           median: "09:00:00",
@@ -35,7 +35,7 @@ describe("TimeLogAnalyser", () => {
         testFulfilledTimeLog(DAY, "13:00:00", 1)
       ]);
 
-      expect(timeLogAnalyser.getAverageStartTimePerWeekday()).toEqual({
+      expect(timeLogAnalyser.getStartTimeStatisticsPerWeekday()).toEqual({
         "Monday": {
           min: "09:00:00",
           median: "09:00:00",
@@ -51,7 +51,7 @@ describe("TimeLogAnalyser", () => {
         testFulfilledTimeLog(addWeeks(DAY, 2), "11:00:00", 1)
       ]);
 
-      expect(timeLogAnalyser.getAverageStartTimePerWeekday()).toEqual({
+      expect(timeLogAnalyser.getStartTimeStatisticsPerWeekday()).toEqual({
         "Monday": {
           min: "09:00:00",
           median: "10:00:00",

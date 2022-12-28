@@ -15,7 +15,7 @@ export default class TimeLogAnalyser {
   ) {
   }
 
-  getAverageStartTimePerWeekday() {
+  getStartTimeStatisticsPerWeekday() {
     const doneTimeLogs = this.timeLogs
       .filter((timeLog) => timeLog.isDone())
 
