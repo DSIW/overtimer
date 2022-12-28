@@ -3,7 +3,11 @@ import TimeLog from "./TimeLog";
 import { addHours } from "date-fns";
 
 export default class TimeLogTestFactory {
-  static testFulfilledTimeLog(date: Date, formattedStartTime: string, hours: number) {
+  static testFulfilledTimeLog(
+    date: Date,
+    formattedStartTime: string,
+    hours: number
+  ) {
     const startTime = withTime(date, formattedStartTime);
     return new TimeLog({
       startTime: startTime,

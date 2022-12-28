@@ -9,12 +9,12 @@ export default class Workday {
 
   static fromTimeLogs(timeLogs: TimeLog[]): Workday[] {
     const groups = groupBy(timeLogs, (timeLog) => {
-      return format(timeLog.startTime, "yyyy-MM-dd")
-    })
+      return format(timeLog.startTime, "yyyy-MM-dd");
+    });
 
     return Object.entries(groups).map(([_date, timeLogs]) => {
       return new Workday(timeLogs);
-    })
+    });
   }
 
   getWeekday() {
@@ -35,16 +35,22 @@ export default class Workday {
 
   private validate(timeLogs: TimeLog[]) {
     if (timeLogs.length === 0) {
-      throw new Error(`Workday can't be created, because timelogs are empty`)
+      throw new Error(`Workday can't be created, because timelogs are empty`);
     }
 
     if (!timeLogs.every((timeLog) => timeLog.isDone())) {
-      throw new Error(`Workday can't be created, because some timelog is running`)
+      throw new Error(
+        `Workday can't be created, because some timelog is running`
+      );
     }
 
-    const startTimes = this.timeLogs.map(timeLogs => timeLogs.startTime);
-    if (!startTimes.every(timeLog => isSameDay(timeLog, timeLogs[0].startTime))) {
-      throw new Error(`Workday can't be created, because multiple days are used`)
+    const startTimes = this.timeLogs.map((timeLogs) => timeLogs.startTime);
+    if (
+      !startTimes.every((timeLog) => isSameDay(timeLog, timeLogs[0].startTime))
+    ) {
+      throw new Error(
+        `Workday can't be created, because multiple days are used`
+      );
     }
   }
 }

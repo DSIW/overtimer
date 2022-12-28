@@ -7,10 +7,7 @@ export interface TimeStatistics {
 }
 
 export default class TimeStatistic {
-  constructor(
-    private readonly times: Date[]
-  ) {
-  }
+  constructor(private readonly times: Date[]) {}
 
   getTimeStatistics(): TimeStatistics {
     const minStartTime = min(this.times);
@@ -24,7 +21,7 @@ export default class TimeStatistic {
   }
 
   private median(times: Date[]) {
-    const sorted = times.sort((a, b) => isBefore(a, b) ? -1 : 1);
+    const sorted = times.sort((a, b) => (isBefore(a, b) ? -1 : 1));
     const middleIndex = Math.floor(times.length / 2);
     return sorted[middleIndex];
   }

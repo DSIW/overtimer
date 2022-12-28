@@ -8,15 +8,27 @@ const DAY = parseISO("2022-08-01");
 describe("Workday", () => {
   describe("fromTimelogs", () => {
     it("returns workdays grouped by day", () => {
-      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
-      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(DAY, "13:00:00", 1);
-      const timeLogNextDay = TimeLogTestFactory.testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "13:00:00",
+        1
+      );
+      const timeLogNextDay = TimeLogTestFactory.testFulfilledTimeLog(
+        addDays(DAY, 1),
+        "09:00:00",
+        1
+      );
 
       const workdays = Workday.fromTimeLogs([
         timeLog,
         timeLog2,
-        timeLogNextDay
-      ])
+        timeLogNextDay,
+      ]);
 
       expect(workdays.length).toBe(2);
     });
@@ -24,7 +36,9 @@ describe("Workday", () => {
 
   describe("getWeekday", () => {
     it("returns weekday as string", () => {
-      const timeLogStatistics = new Workday([TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1)]);
+      const timeLogStatistics = new Workday([
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
+      ]);
 
       expect(timeLogStatistics.getWeekday()).toBe("Monday");
     });
@@ -32,7 +46,11 @@ describe("Workday", () => {
 
   describe("getStartTime", () => {
     it("returns start time if one timelog", () => {
-      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
 
       const timeLogStatistics = new Workday([timeLog]);
 
@@ -40,8 +58,16 @@ describe("Workday", () => {
     });
 
     it("returns min start time if multiple timelogs", () => {
-      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
-      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(DAY, "13:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "13:00:00",
+        1
+      );
 
       const timeLogStatistics = new Workday([timeLog, timeLog2]);
 
@@ -51,8 +77,16 @@ describe("Workday", () => {
 
   describe("getFormattedStartTime", () => {
     it("returns min start time if multiple timelogs", () => {
-      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
-      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(DAY, "13:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "13:00:00",
+        1
+      );
 
       const timeLogStatistics = new Workday([timeLog, timeLog2]);
 
@@ -62,7 +96,11 @@ describe("Workday", () => {
 
   describe("validation", () => {
     it("throws error if any timelog is running", () => {
-      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
       const timeLog2 = TimeLogTestFactory.testRunningTimeLog(DAY);
 
       expect(() => {
@@ -71,8 +109,16 @@ describe("Workday", () => {
     });
 
     it("throws error if timelog are at multiple days", () => {
-      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
-      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
+        addDays(DAY, 1),
+        "09:00:00",
+        1
+      );
 
       expect(() => {
         new Workday([timeLog, timeLog2]);

@@ -11,27 +11,25 @@ interface FormattedTimeStatistics {
 }
 
 export default class TimeLogAnalyser {
-  constructor(
-    private readonly timeLogs: TimeLog[]
-  ) {
-  }
+  constructor(private readonly timeLogs: TimeLog[]) {}
 
   getStartTimeStatisticsPerWeekday() {
-    const doneTimeLogs = this.timeLogs
-      .filter((timeLog) => timeLog.isDone())
+    const doneTimeLogs = this.timeLogs.filter((timeLog) => timeLog.isDone());
 
     const workdays = Workday.fromTimeLogs(doneTimeLogs);
-    const groupedByWeekday = groupBy(workdays, (workday) => workday.getWeekday());
+    const groupedByWeekday = groupBy(workdays, (workday) =>
+      workday.getWeekday()
+    );
 
     const result: Record<string, FormattedTimeStatistics> = {};
 
     Object.entries(groupedByWeekday).forEach(([weekday, workdays]) => {
-      const startTimes = workdays.map(workday => workday.getStartTime());
+      const startTimes = workdays.map((workday) => workday.getStartTime());
       const statistics = new TimeStatistic(startTimes).getTimeStatistics();
       result[weekday] = {
         min: this.formatTime(statistics.min),
         median: this.formatTime(statistics.median),
-        max: this.formatTime(statistics.max)
+        max: this.formatTime(statistics.max),
       };
     });
 
@@ -39,6 +37,6 @@ export default class TimeLogAnalyser {
   }
 
   private formatTime(date: Date) {
-    return format(date, "HH:mm:SS")
+    return format(date, "HH:mm:SS");
   }
 }
