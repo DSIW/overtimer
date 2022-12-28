@@ -9,7 +9,10 @@ export default class TimeLogAnalyser {
   constructor(private readonly timeLogs: TimeLog[]) {}
 
   getStartTimeStatisticsPerWeekday() {
-    return this.getTimeStatisticsPerWeekday("getStartTime", new TimeStatistic());
+    return this.getTimeStatisticsPerWeekday(
+      "getStartTime",
+      new TimeStatistic()
+    );
   }
 
   getEndTimeStatisticsPerWeekday() {
@@ -17,10 +20,16 @@ export default class TimeLogAnalyser {
   }
 
   getPauseStatisticsPerWeekday() {
-    return this.getTimeStatisticsPerWeekday("getPauseMs", new DurationStatistic());
+    return this.getTimeStatisticsPerWeekday(
+      "getPauseMs",
+      new DurationStatistic()
+    );
   }
 
-  getTimeStatisticsPerWeekday(type: "getStartTime" | "getEndTime" | "getPauseMs", statisticMethod: TimeStatistic | DurationStatistic) {
+  getTimeStatisticsPerWeekday(
+    type: "getStartTime" | "getEndTime" | "getPauseMs",
+    statisticMethod: TimeStatistic | DurationStatistic
+  ) {
     const doneTimeLogs = this.timeLogs.filter((timeLog) => timeLog.isDone());
 
     const workdays = Workday.fromTimeLogs(doneTimeLogs);

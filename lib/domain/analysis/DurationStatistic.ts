@@ -2,9 +2,7 @@ import { max, min } from "lodash";
 import Statistic, { Statistics } from "./Statistic";
 import Duration from "./Duration";
 
-export default class DurationStatistic implements Statistic<number>{
-  constructor() {}
-
+export default class DurationStatistic implements Statistic<number> {
   getStatistics(durationMsList: number[]): Statistics {
     return {
       min: this.formatDuration(min(durationMsList)),

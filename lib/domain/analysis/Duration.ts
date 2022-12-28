@@ -1,8 +1,7 @@
 import parseMs from "../../interface/parse-ms";
 
 export default class Duration {
-  constructor(private milliseconds: number) {
-  }
+  constructor(private milliseconds: number) {}
 
   getFormatted(): string {
     const { days, hours, minutes, seconds } = parseMs(this.milliseconds);

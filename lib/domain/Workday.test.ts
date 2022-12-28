@@ -121,9 +121,7 @@ describe("Workday", () => {
     });
 
     it("throws error if previous time log is running", () => {
-      const runningTimeLog = TimeLogTestFactory.testRunningTimeLog(
-        DAY,
-      );
+      const runningTimeLog = TimeLogTestFactory.testRunningTimeLog(DAY);
       const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
         DAY,
         "09:00:00",
@@ -132,7 +130,9 @@ describe("Workday", () => {
 
       const workday = new Workday([runningTimeLog, timeLog]);
 
-      expect(() => { workday.getPauseMs() }).toThrow();
+      expect(() => {
+        workday.getPauseMs();
+      }).toThrow();
     });
 
     it("returns time between time logs", () => {
@@ -154,9 +154,13 @@ describe("Workday", () => {
         1
       );
 
-      const workday = new Workday([timeLog, timeLogAfterBreak, timeLogAfterSecBreak]);
+      const workday = new Workday([
+        timeLog,
+        timeLogAfterBreak,
+        timeLogAfterSecBreak,
+      ]);
 
-      expect(workday.getPauseMs()).toEqual(2*HOUR);
+      expect(workday.getPauseMs()).toEqual(2 * HOUR);
     });
   });
 

@@ -1,7 +1,7 @@
 import { format, isBefore, max, min } from "date-fns";
 import Statistic, { Statistics } from "./Statistic";
 
-export default class TimeStatistic implements Statistic<Date>{
+export default class TimeStatistic implements Statistic<Date> {
   getStatistics(times: Date[]): Statistics {
     const minStartTime = min(times);
     const medianStartTime = this.median(times);

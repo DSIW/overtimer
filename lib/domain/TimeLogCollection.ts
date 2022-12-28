@@ -3,8 +3,7 @@ import { groupBy } from "lodash";
 import { format, isBefore } from "date-fns";
 
 export default class TimeLogCollection {
-  constructor(private readonly timeLogs: TimeLog[]) {
-  }
+  constructor(private readonly timeLogs: TimeLog[]) {}
 
   getStartTimes() {
     return this.timeLogs.map((timeLog) => timeLog.startTime);
@@ -21,6 +20,8 @@ export default class TimeLogCollection {
   }
 
   sorted() {
-    return this.timeLogs.sort((a, b) => (isBefore(a.startTime, b.startTime) ? -1 : 1));
+    return this.timeLogs.sort((a, b) =>
+      isBefore(a.startTime, b.startTime) ? -1 : 1
+    );
   }
 }

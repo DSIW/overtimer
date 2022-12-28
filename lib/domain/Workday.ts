@@ -1,7 +1,6 @@
 import TimeLog from "./TimeLog";
 import { format, isSameDay, max, min } from "date-fns";
 import TimeLogCollection from "./TimeLogCollection";
-import { zip } from "lodash";
 
 export default class Workday {
   private collection: TimeLogCollection;
@@ -37,11 +36,13 @@ export default class Workday {
     let sum = 0;
     for (let i = 1; i < sorted.length; i++) {
       const currentTimeLog = sorted[i];
-      const prevTimeLog = sorted[i-1];
+      const prevTimeLog = sorted[i - 1];
 
       const endTime = prevTimeLog.endTime;
       if (endTime === undefined) {
-        throw new Error("Pause can only be calculated if previous timelog is done");
+        throw new Error(
+          "Pause can only be calculated if previous timelog is done"
+        );
       }
 
       sum = sum + +currentTimeLog.startTime - +endTime;
