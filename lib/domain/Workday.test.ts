@@ -75,6 +75,37 @@ describe("Workday", () => {
     });
   });
 
+  describe("getEndTime", () => {
+    it("returns end time if one timelog", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+
+      const timeLogStatistics = new Workday([timeLog]);
+
+      expect(timeLogStatistics.getEndTime()).toEqual(timeLog.endTime);
+    });
+
+    it("returns max end time if multiple timelogs", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "13:00:00",
+        1
+      );
+
+      const timeLogStatistics = new Workday([timeLog, timeLog2]);
+
+      expect(timeLogStatistics.getEndTime()).toEqual(timeLog2.endTime);
+    });
+  });
+
   describe("getFormattedStartTime", () => {
     it("returns min start time if multiple timelogs", () => {
       const timeLog = TimeLogTestFactory.testFulfilledTimeLog(

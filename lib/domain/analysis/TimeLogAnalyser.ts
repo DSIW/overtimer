@@ -14,6 +14,14 @@ export default class TimeLogAnalyser {
   constructor(private readonly timeLogs: TimeLog[]) {}
 
   getStartTimeStatisticsPerWeekday() {
+    return this.getTimeStatisticsPerWeekday("getStartTime");
+  }
+
+  getEndTimeStatisticsPerWeekday() {
+    return this.getTimeStatisticsPerWeekday("getEndTime");
+  }
+
+  getTimeStatisticsPerWeekday(type: "getStartTime" | "getEndTime") {
     const doneTimeLogs = this.timeLogs.filter((timeLog) => timeLog.isDone());
 
     const workdays = Workday.fromTimeLogs(doneTimeLogs);
@@ -24,7 +32,7 @@ export default class TimeLogAnalyser {
     const result: Record<string, FormattedTimeStatistics> = {};
 
     Object.entries(groupedByWeekday).forEach(([weekday, workdays]) => {
-      const startTimes = workdays.map((workday) => workday.getStartTime());
+      const startTimes = workdays.map((workday) => workday[type]());
       const statistics = new TimeStatistic(startTimes).getTimeStatistics();
       result[weekday] = {
         min: this.formatTime(statistics.min),

@@ -67,4 +67,38 @@ describe("TimeLogAnalyser", () => {
       });
     });
   });
+
+  describe("getEndTimeStatisticsPerWeekday()", () => {
+    it("returns 0 if no fulfilled time logs", () => {
+      const timeLogAnalyser = new TimeLogAnalyser([
+        TimeLogTestFactory.testRunningTimeLog(DAY),
+      ]);
+
+      expect(timeLogAnalyser.getEndTimeStatisticsPerWeekday()).toEqual({});
+    });
+
+    it("returns min, median and max start time of 2 different days", () => {
+      const timeLogAnalyser = new TimeLogAnalyser([
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
+        TimeLogTestFactory.testFulfilledTimeLog(
+          addWeeks(DAY, 1),
+          "10:00:00",
+          1
+        ),
+        TimeLogTestFactory.testFulfilledTimeLog(
+          addWeeks(DAY, 2),
+          "11:00:00",
+          1
+        ),
+      ]);
+
+      expect(timeLogAnalyser.getEndTimeStatisticsPerWeekday()).toEqual({
+        Monday: {
+          min: "10:00:00",
+          median: "11:00:00",
+          max: "12:00:00",
+        },
+      });
+    });
+  });
 });

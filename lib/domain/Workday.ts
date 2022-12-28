@@ -1,5 +1,5 @@
 import TimeLog from "./TimeLog";
-import { format, isSameDay, min } from "date-fns";
+import { format, isSameDay, max, min } from "date-fns";
 import { groupBy } from "lodash";
 
 export default class Workday {
@@ -25,12 +25,20 @@ export default class Workday {
     return min(this.getStartTimes());
   }
 
+  getEndTime() {
+    return max(this.getEndTimes());
+  }
+
   getFormattedStartTime() {
     return format(this.getStartTime(), "HH:mm:ss");
   }
 
   private getStartTimes() {
     return this.timeLogs.map((timeLog) => timeLog.startTime);
+  }
+
+  private getEndTimes() {
+    return this.timeLogs.map((timeLog) => timeLog.endTime);
   }
 
   private validate(timeLogs: TimeLog[]) {
