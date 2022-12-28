@@ -38,7 +38,7 @@ export default class Workday {
   }
 
   private getEndTimes() {
-    return this.timeLogs.map((timeLog) => timeLog.endTime);
+    return this.timeLogs.map((timeLog) => timeLog.endTime || 0);
   }
 
   private validate(timeLogs: TimeLog[]) {
