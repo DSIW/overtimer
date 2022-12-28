@@ -1,7 +1,6 @@
-import TimeLog from "./TimeLog";
-import { addDays, addHours, parseISO } from "date-fns";
-import { withTime } from "./time-constants";
+import { addDays, parseISO } from "date-fns";
 import Workday from "./Workday";
+import TimeLogTestFactory from "./TimeLogTestFactory";
 
 // test week: Mon, 2022-08-01 .. Sun, 2022-08-07
 const DAY = parseISO("2022-08-01");
@@ -9,9 +8,9 @@ const DAY = parseISO("2022-08-01");
 describe("Workday", () => {
   describe("fromTimelogs", () => {
     it("returns workdays grouped by day", () => {
-      const timeLog = testFulfilledTimeLog(DAY, "09:00:00", 1);
-      const timeLog2 = testFulfilledTimeLog(DAY, "13:00:00", 1);
-      const timeLogNextDay = testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(DAY, "13:00:00", 1);
+      const timeLogNextDay = TimeLogTestFactory.testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1);
 
       const workdays = Workday.fromTimeLogs([
         timeLog,
@@ -25,7 +24,7 @@ describe("Workday", () => {
 
   describe("getWeekday", () => {
     it("returns weekday as string", () => {
-      const timeLogStatistics = new Workday([testFulfilledTimeLog(DAY, "09:00:00", 1)]);
+      const timeLogStatistics = new Workday([TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1)]);
 
       expect(timeLogStatistics.getWeekday()).toBe("Monday");
     });
@@ -33,7 +32,7 @@ describe("Workday", () => {
 
   describe("getStartTime", () => {
     it("returns start time if one timelog", () => {
-      const timeLog = testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
 
       const timeLogStatistics = new Workday([timeLog]);
 
@@ -41,8 +40,8 @@ describe("Workday", () => {
     });
 
     it("returns min start time if multiple timelogs", () => {
-      const timeLog = testFulfilledTimeLog(DAY, "09:00:00", 1);
-      const timeLog2 = testFulfilledTimeLog(DAY, "13:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(DAY, "13:00:00", 1);
 
       const timeLogStatistics = new Workday([timeLog, timeLog2]);
 
@@ -52,8 +51,8 @@ describe("Workday", () => {
 
   describe("getFormattedStartTime", () => {
     it("returns min start time if multiple timelogs", () => {
-      const timeLog = testFulfilledTimeLog(DAY, "09:00:00", 1);
-      const timeLog2 = testFulfilledTimeLog(DAY, "13:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(DAY, "13:00:00", 1);
 
       const timeLogStatistics = new Workday([timeLog, timeLog2]);
 
@@ -63,8 +62,8 @@ describe("Workday", () => {
 
   describe("validation", () => {
     it("throws error if any timelog is running", () => {
-      const timeLog = testFulfilledTimeLog(DAY, "09:00:00", 1);
-      const timeLog2 = testRunningTimeLog(DAY);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog2 = TimeLogTestFactory.testRunningTimeLog(DAY);
 
       expect(() => {
         new Workday([timeLog, timeLog2]);
@@ -72,8 +71,8 @@ describe("Workday", () => {
     });
 
     it("throws error if timelog are at multiple days", () => {
-      const timeLog = testFulfilledTimeLog(DAY, "09:00:00", 1);
-      const timeLog2 = testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1);
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1);
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1);
 
       expect(() => {
         new Workday([timeLog, timeLog2]);
@@ -87,15 +86,3 @@ describe("Workday", () => {
     });
   });
 });
-
-function testFulfilledTimeLog(date: Date, formattedStartTime: string, hours: number) {
-  const startTime = withTime(date, formattedStartTime);
-  return new TimeLog({
-    startTime: startTime,
-    endTime: addHours(startTime, hours),
-  });
-}
-
-function testRunningTimeLog(date: Date) {
-  return new TimeLog({ startTime: date });
-}

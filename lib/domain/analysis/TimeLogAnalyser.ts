@@ -4,7 +4,7 @@ import Workday from "../Workday";
 import { groupBy } from "lodash";
 import TimeStatistic from "./TimeStatistic";
 
-interface TimeStatistics {
+interface FormattedTimeStatistics {
   min: string;
   median: string;
   max: string;
@@ -23,7 +23,7 @@ export default class TimeLogAnalyser {
     const workdays = Workday.fromTimeLogs(doneTimeLogs);
     const groupedByWeekday = groupBy(workdays, (workday) => workday.getWeekday());
 
-    const result: Record<string, TimeStatistics> = {};
+    const result: Record<string, FormattedTimeStatistics> = {};
 
     Object.entries(groupedByWeekday).forEach(([weekday, workdays]) => {
       const startTimes = workdays.map(workday => workday.getStartTime());
