@@ -26,17 +26,26 @@ export default class TimeLogAnalyser {
 
     Object.entries(groupedByWeekday).forEach(([weekday, workdays]) => {
       const startTimes = workdays.map(workday => workday.getStartTime());
-      const minStartTime = min(startTimes);
-      const medianStartTime = this.median(startTimes);
-      const maxStartTime = max(startTimes);
+      const statistics = this.getTimeStatistics(startTimes);
       result[weekday] = {
-        min: format(minStartTime, "HH:mm:SS"),
-        median: format(medianStartTime, "HH:mm:SS"),
-        max: format(maxStartTime, "HH:mm:SS")
+        min: format(statistics.min, "HH:mm:SS"),
+        median: format(statistics.median, "HH:mm:SS"),
+        max: format(statistics.max, "HH:mm:SS")
       };
     });
 
     return result;
+  }
+
+  private getTimeStatistics(times: Date[]) {
+    const minStartTime = min(times);
+    const medianStartTime = this.median(times);
+    const maxStartTime = max(times);
+    return {
+      min: minStartTime,
+      median: medianStartTime,
+      max: maxStartTime,
+    };
   }
 
   private median(times: Date[]) {
