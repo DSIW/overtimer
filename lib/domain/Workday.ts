@@ -1,16 +1,18 @@
 import TimeLog from "./TimeLog";
 import { format, isSameDay, max, min } from "date-fns";
-import { groupBy } from "lodash";
+import TimeLogCollection from "./TimeLogCollection";
+import { zip } from "lodash";
 
 export default class Workday {
+  private collection: TimeLogCollection;
+
   constructor(private readonly timeLogs: TimeLog[]) {
     this.validate(timeLogs);
+    this.collection = new TimeLogCollection(timeLogs);
   }
 
   static fromTimeLogs(timeLogs: TimeLog[]): Workday[] {
-    const groups = groupBy(timeLogs, (timeLog) => {
-      return format(timeLog.startTime, "yyyy-MM-dd");
-    });
+    const groups = new TimeLogCollection(timeLogs).groupedByDay();
 
     return Object.entries(groups).map(([_date, timeLogs]) => {
       return new Workday(timeLogs);
@@ -22,19 +24,30 @@ export default class Workday {
   }
 
   getStartTime() {
-    return min(this.getStartTimes());
+    return min(this.collection.getStartTimes());
   }
 
   getEndTime() {
-    return max(this.getEndTimes());
+    return max(this.collection.getEndTimes());
   }
 
-  private getStartTimes() {
-    return this.timeLogs.map((timeLog) => timeLog.startTime);
-  }
+  getPauseMs() {
+    const sorted = this.collection.sorted();
 
-  private getEndTimes() {
-    return this.timeLogs.map((timeLog) => timeLog.endTime || 0);
+    let sum = 0;
+    for (let i = 1; i < sorted.length; i++) {
+      const currentTimeLog = sorted[i];
+      const prevTimeLog = sorted[i-1];
+
+      const endTime = prevTimeLog.endTime;
+      if (endTime === undefined) {
+        throw new Error("Pause can only be calculated if previous timelog is done");
+      }
+
+      sum = sum + +currentTimeLog.startTime - +endTime;
+    }
+
+    return sum;
   }
 
   private validate(timeLogs: TimeLog[]) {

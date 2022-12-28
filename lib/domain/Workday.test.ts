@@ -1,6 +1,7 @@
 import { addDays, parseISO } from "date-fns";
 import Workday from "./Workday";
 import TimeLogTestFactory from "./TimeLogTestFactory";
+import { HOUR } from "./time-constants";
 
 // test week: Mon, 2022-08-01 .. Sun, 2022-08-07
 const DAY = parseISO("2022-08-01");
@@ -36,11 +37,11 @@ describe("Workday", () => {
 
   describe("getWeekday", () => {
     it("returns weekday as string", () => {
-      const timeLogStatistics = new Workday([
+      const workday = new Workday([
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
       ]);
 
-      expect(timeLogStatistics.getWeekday()).toBe("Monday");
+      expect(workday.getWeekday()).toBe("Monday");
     });
   });
 
@@ -52,9 +53,9 @@ describe("Workday", () => {
         1
       );
 
-      const timeLogStatistics = new Workday([timeLog]);
+      const workday = new Workday([timeLog]);
 
-      expect(timeLogStatistics.getStartTime()).toEqual(timeLog.startTime);
+      expect(workday.getStartTime()).toEqual(timeLog.startTime);
     });
 
     it("returns min start time if multiple timelogs", () => {
@@ -69,9 +70,9 @@ describe("Workday", () => {
         1
       );
 
-      const timeLogStatistics = new Workday([timeLog, timeLog2]);
+      const workday = new Workday([timeLog, timeLog2]);
 
-      expect(timeLogStatistics.getStartTime()).toEqual(timeLog.startTime);
+      expect(workday.getStartTime()).toEqual(timeLog.startTime);
     });
   });
 
@@ -83,9 +84,9 @@ describe("Workday", () => {
         1
       );
 
-      const timeLogStatistics = new Workday([timeLog]);
+      const workday = new Workday([timeLog]);
 
-      expect(timeLogStatistics.getEndTime()).toEqual(timeLog.endTime);
+      expect(workday.getEndTime()).toEqual(timeLog.endTime);
     });
 
     it("returns max end time if multiple timelogs", () => {
@@ -100,9 +101,62 @@ describe("Workday", () => {
         1
       );
 
-      const timeLogStatistics = new Workday([timeLog, timeLog2]);
+      const workday = new Workday([timeLog, timeLog2]);
 
-      expect(timeLogStatistics.getEndTime()).toEqual(timeLog2.endTime);
+      expect(workday.getEndTime()).toEqual(timeLog2.endTime);
+    });
+  });
+
+  describe("getPauseMs", () => {
+    it("returns 0 if one timelog", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+
+      const workday = new Workday([timeLog]);
+
+      expect(workday.getPauseMs()).toEqual(0);
+    });
+
+    it("throws error if previous time log is running", () => {
+      const runningTimeLog = TimeLogTestFactory.testRunningTimeLog(
+        DAY,
+      );
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+
+      const workday = new Workday([runningTimeLog, timeLog]);
+
+      expect(() => { workday.getPauseMs() }).toThrow();
+    });
+
+    it("returns time between time logs", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+
+      const timeLogAfterBreak = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "11:00:00",
+        1
+      );
+
+      const timeLogAfterSecBreak = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "13:00:00",
+        1
+      );
+
+      const workday = new Workday([timeLog, timeLogAfterBreak, timeLogAfterSecBreak]);
+
+      expect(workday.getPauseMs()).toEqual(2*HOUR);
     });
   });
 
