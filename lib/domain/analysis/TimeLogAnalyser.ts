@@ -1,27 +1,26 @@
 import TimeLog from "../TimeLog";
-import { format } from "date-fns";
 import Workday from "../Workday";
 import { groupBy } from "lodash";
 import TimeStatistic from "./TimeStatistic";
-
-interface FormattedTimeStatistics {
-  min: string;
-  median: string;
-  max: string;
-}
+import DurationStatistic from "./DurationStatistic";
+import { Statistics } from "./Statistic";
 
 export default class TimeLogAnalyser {
   constructor(private readonly timeLogs: TimeLog[]) {}
 
   getStartTimeStatisticsPerWeekday() {
-    return this.getTimeStatisticsPerWeekday("getStartTime");
+    return this.getTimeStatisticsPerWeekday("getStartTime", new TimeStatistic());
   }
 
   getEndTimeStatisticsPerWeekday() {
-    return this.getTimeStatisticsPerWeekday("getEndTime");
+    return this.getTimeStatisticsPerWeekday("getEndTime", new TimeStatistic());
   }
 
-  getTimeStatisticsPerWeekday(type: "getStartTime" | "getEndTime") {
+  getPauseStatisticsPerWeekday() {
+    return this.getTimeStatisticsPerWeekday("getPauseMs", new DurationStatistic());
+  }
+
+  getTimeStatisticsPerWeekday(type: "getStartTime" | "getEndTime" | "getPauseMs", statisticMethod: TimeStatistic | DurationStatistic) {
     const doneTimeLogs = this.timeLogs.filter((timeLog) => timeLog.isDone());
 
     const workdays = Workday.fromTimeLogs(doneTimeLogs);
@@ -29,22 +28,15 @@ export default class TimeLogAnalyser {
       workday.getWeekday()
     );
 
-    const result: Record<string, FormattedTimeStatistics> = {};
+    const result: Record<string, Statistics> = {};
 
     Object.entries(groupedByWeekday).forEach(([weekday, workdays]) => {
-      const startTimes = workdays.map((workday) => workday[type]());
-      const statistics = new TimeStatistic(startTimes).getTimeStatistics();
-      result[weekday] = {
-        min: this.formatTime(statistics.min),
-        median: this.formatTime(statistics.median),
-        max: this.formatTime(statistics.max),
-      };
+      const values = workdays.map((workday) => workday[type]());
+      // @ts-ignore
+      const statistics = statisticMethod.getStatistics(values);
+      result[weekday] = statistics;
     });
 
     return result;
-  }
-
-  private formatTime(date: Date) {
-    return format(date, "HH:mm:SS");
   }
 }

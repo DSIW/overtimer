@@ -77,7 +77,7 @@ describe("TimeLogAnalyser", () => {
       expect(timeLogAnalyser.getEndTimeStatisticsPerWeekday()).toEqual({});
     });
 
-    it("returns min, median and max start time of 2 different days", () => {
+    it("returns min, median and max end time of 2 different days", () => {
       const timeLogAnalyser = new TimeLogAnalyser([
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
         TimeLogTestFactory.testFulfilledTimeLog(
@@ -97,6 +97,41 @@ describe("TimeLogAnalyser", () => {
           min: "10:00:00",
           median: "11:00:00",
           max: "12:00:00",
+        },
+      });
+    });
+  });
+
+  describe("getPauseTimeStatisticsPerWeekday()", () => {
+    it("returns 0 if no fulfilled time logs", () => {
+      const timeLogAnalyser = new TimeLogAnalyser([
+        TimeLogTestFactory.testRunningTimeLog(DAY),
+      ]);
+
+      expect(timeLogAnalyser.getEndTimeStatisticsPerWeekday()).toEqual({});
+    });
+
+    it("returns min, median and max end time of 2 different days", () => {
+      const timeLogAnalyser = new TimeLogAnalyser([
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "11:00:00", 1),
+        TimeLogTestFactory.testFulfilledTimeLog(
+          addWeeks(DAY, 1),
+          "09:00:00",
+          1
+        ),
+        TimeLogTestFactory.testFulfilledTimeLog(
+          addWeeks(DAY, 1),
+          "13:00:00",
+          1
+        ),
+      ]);
+
+      expect(timeLogAnalyser.getPauseStatisticsPerWeekday()).toEqual({
+        Monday: {
+          min: "1 h",
+          median: "1 h",
+          max: "3 h",
         },
       });
     });

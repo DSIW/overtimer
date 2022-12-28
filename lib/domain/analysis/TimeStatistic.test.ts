@@ -9,24 +9,24 @@ const TEN = withTime(DAY, "10:00:00");
 const ELEVEN = withTime(DAY, "11:00:00");
 
 describe("TimeStatistic", () => {
-  describe("getTimeStatistics()", () => {
+  describe("getStatistics()", () => {
     it("returns min, median and max", () => {
-      const timeStatistic = new TimeStatistic([NINE, TEN, ELEVEN]);
+      const timeStatistic = new TimeStatistic();
 
-      expect(timeStatistic.getTimeStatistics()).toEqual({
-        min: NINE,
-        median: TEN,
-        max: ELEVEN,
+      expect(timeStatistic.getStatistics([NINE, TEN, ELEVEN])).toEqual({
+        min: "09:00:00",
+        median: "10:00:00",
+        max: "11:00:00",
       });
     });
 
     it("returns min, median and max of 2 same numbers", () => {
-      const timeStatistic = new TimeStatistic([NINE, ELEVEN, ELEVEN]);
+      const timeStatistic = new TimeStatistic();
 
-      expect(timeStatistic.getTimeStatistics()).toEqual({
-        min: NINE,
-        median: ELEVEN,
-        max: ELEVEN,
+      expect(timeStatistic.getStatistics([NINE, ELEVEN, ELEVEN])).toEqual({
+        min: "09:00:00",
+        median: "11:00:00",
+        max: "11:00:00",
       });
     });
   });
