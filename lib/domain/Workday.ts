@@ -29,10 +29,6 @@ export default class Workday {
     return max(this.getEndTimes());
   }
 
-  getFormattedStartTime() {
-    return format(this.getStartTime(), "HH:mm:ss");
-  }
-
   private getStartTimes() {
     return this.timeLogs.map((timeLog) => timeLog.startTime);
   }

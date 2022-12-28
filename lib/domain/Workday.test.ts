@@ -106,25 +106,6 @@ describe("Workday", () => {
     });
   });
 
-  describe("getFormattedStartTime", () => {
-    it("returns min start time if multiple timelogs", () => {
-      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
-        DAY,
-        "09:00:00",
-        1
-      );
-      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
-        DAY,
-        "13:00:00",
-        1
-      );
-
-      const timeLogStatistics = new Workday([timeLog, timeLog2]);
-
-      expect(timeLogStatistics.getFormattedStartTime()).toEqual("09:00:00");
-    });
-  });
-
   describe("validation", () => {
     it("throws error if any timelog is running", () => {
       const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
