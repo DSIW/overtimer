@@ -13,6 +13,7 @@ export default class DurationStatistic implements Statistic<number> {
   }
 
   private formatDuration(milliseconds: number | undefined) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return new Duration(milliseconds!).getFormatted();
   }
 }

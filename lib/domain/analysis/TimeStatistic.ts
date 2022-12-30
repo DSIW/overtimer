@@ -1,4 +1,5 @@
-import { format, isBefore, max, min } from "date-fns";
+import { format, max, min } from "date-fns";
+import median from "./median";
 import Statistic, { Statistics } from "./Statistic";
 
 export default class TimeStatistic implements Statistic<Date> {
@@ -14,9 +15,7 @@ export default class TimeStatistic implements Statistic<Date> {
   }
 
   private median(times: Date[]) {
-    const sorted = times.sort((a, b) => (isBefore(a, b) ? -1 : 1));
-    const middleIndex = Math.floor(times.length / 2);
-    return sorted[middleIndex];
+    return new Date(median(times.map((t) => +t)));
   }
 
   private formatTime(date: Date) {
