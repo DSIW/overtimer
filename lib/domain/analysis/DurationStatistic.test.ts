@@ -31,7 +31,7 @@ describe("DurationStatistic", () => {
         ])
       ).toEqual({
         min: `9 h`,
-        median: `10 h`,
+        median: `10 h 30 m`,
         max: `12 h`,
       });
     });

@@ -1,6 +1,10 @@
 import median from "./median";
 
 describe("median()", () => {
+  it("returns number if only one element", () => {
+    expect(median([1])).toEqual(1);
+  });
+
   it("returns same number", () => {
     expect(median([1, 1])).toEqual(1);
   });
