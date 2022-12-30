@@ -6,29 +6,37 @@ import DurationStatistic from "./DurationStatistic";
 import { Statistics } from "./Statistic";
 
 export default class TimeLogAnalyser {
+  private timeStatistic = new TimeStatistic();
+  private durationStatistic = new DurationStatistic();
+
   constructor(private readonly timeLogs: TimeLog[]) {}
 
   getStartTimeStatisticsPerWeekday() {
-    return this.getTimeStatisticsPerWeekday(
-      "getStartTime",
-      new TimeStatistic()
-    );
+    return this.getTimeStatisticsPerWeekday((workdays) => {
+      return this.timeStatistic.getStatistics(
+        workdays.map((workday) => workday.getStartTime())
+      );
+    });
   }
 
   getEndTimeStatisticsPerWeekday() {
-    return this.getTimeStatisticsPerWeekday("getEndTime", new TimeStatistic());
+    return this.getTimeStatisticsPerWeekday((workdays) => {
+      return this.timeStatistic.getStatistics(
+        workdays.map((workday) => workday.getEndTime())
+      );
+    });
   }
 
   getPauseStatisticsPerWeekday() {
-    return this.getTimeStatisticsPerWeekday(
-      "getPauseMs",
-      new DurationStatistic()
-    );
+    return this.getTimeStatisticsPerWeekday((workdays) => {
+      return this.durationStatistic.getStatistics(
+        workdays.map((workday) => workday.getPauseMs())
+      );
+    });
   }
 
-  getTimeStatisticsPerWeekday(
-    type: "getStartTime" | "getEndTime" | "getPauseMs",
-    statisticMethod: TimeStatistic | DurationStatistic
+  private getTimeStatisticsPerWeekday(
+    callback: (workdays: Workday[]) => Statistics
   ) {
     const doneTimeLogs = this.timeLogs.filter((timeLog) => timeLog.isDone());
 
@@ -40,10 +48,7 @@ export default class TimeLogAnalyser {
     const result: Record<string, Statistics> = {};
 
     Object.entries(groupedByWeekday).forEach(([weekday, workdays]) => {
-      const values = workdays.map((workday) => workday[type]());
-      // @ts-ignore
-      const statistics = statisticMethod.getStatistics(values);
-      result[weekday] = statistics;
+      result[weekday] = callback(workdays);
     });
 
     return result;
