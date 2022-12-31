@@ -1,4 +1,4 @@
-import parseMs from "./parse-ms";
+import DomainDuration from "../domain/analysis/Duration";
 
 interface Props {
   milliseconds: number;
@@ -6,25 +6,11 @@ interface Props {
 }
 
 export default function Duration({ milliseconds, zero = "0 s" }: Props) {
-  const { days, hours, minutes, seconds } = parseMs(milliseconds);
-
-  const parts = [];
-
-  if (days !== 0) {
-    parts.push(`${days} d`);
+  if (milliseconds < 1000) {
+    return <span>{zero}</span>;
   }
 
-  if (hours !== 0) {
-    parts.push(`${hours} h`);
-  }
+  const formatted = new DomainDuration(milliseconds).getFormatted();
 
-  if (minutes !== 0) {
-    parts.push(`${minutes} m`);
-  }
-
-  if (seconds !== 0 && hours === 0 && minutes === 0) {
-    parts.push(`${seconds} s`);
-  }
-
-  return <span>{parts.join(" ") || zero}</span>;
+  return <span>{formatted}</span>;
 }
