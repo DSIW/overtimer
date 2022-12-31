@@ -19,15 +19,5 @@ describe("TimeStatistic", () => {
         max: "11:00:00",
       });
     });
-
-    it("returns min, median and max of 2 same numbers", () => {
-      const timeStatistic = new TimeStatistic();
-
-      expect(timeStatistic.getStatistics([NINE, ELEVEN, ELEVEN])).toEqual({
-        min: "09:00:00",
-        median: "11:00:00",
-        max: "11:00:00",
-      });
-    });
   });
 });
