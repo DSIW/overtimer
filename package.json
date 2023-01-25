@@ -22,7 +22,7 @@
     "@mui/icons-material": "5.11.0",
     "@mui/lab": "*",
     "@mui/material": "5.10.15",
-    "@sentry/nextjs": "7.32.1",
+    "@sentry/nextjs": "7.33.0",
     "@types/file-saver": "2.0.5",
     "@typescript-eslint/eslint-plugin": "5.49.0",
     "date-fns": "2.29.3",
