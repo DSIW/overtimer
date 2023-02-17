@@ -5,7 +5,7 @@ import { HOUR } from "../time-constants";
 
 const DAY = parseISO("2022-08-01");
 
-describe("TimeLogDiagram", () => {
+describe("WeekdayDiagramDataFactory", () => {
   describe("getData()", () => {
     it("returns 0 if no fulfilled time logs", () => {
       const timeLogDiagram = new WeekdayDiagramDataFactory([
@@ -15,7 +15,7 @@ describe("TimeLogDiagram", () => {
       expect(timeLogDiagram.createData()).toEqual([]);
     });
 
-    it("returns map of day and time if one time log", () => {
+    it("returns correct values if one time log", () => {
       const timeLogDiagram = new WeekdayDiagramDataFactory([
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
       ]);
@@ -23,12 +23,14 @@ describe("TimeLogDiagram", () => {
       expect(timeLogDiagram.createData()).toEqual([
         {
           weekday: "Monday",
-          pauseMs: 0,
+          pause: 0,
+          overtime: 0,
+          work: 1 * HOUR,
         },
       ]);
     });
 
-    it("returns first start time of day and time if time logs are at same day", () => {
+    it("returns correct values if time logs are at same day", () => {
       const timeLogDiagram = new WeekdayDiagramDataFactory([
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "11:00:00", 1),
@@ -37,27 +39,34 @@ describe("TimeLogDiagram", () => {
       expect(timeLogDiagram.createData()).toEqual([
         {
           weekday: "Monday",
-          pauseMs: 1 * HOUR,
+          pause: 1 * HOUR,
+          overtime: 0,
+          work: 2 * HOUR,
         },
       ]);
     });
 
-    it("returns min, median and max start time of 2 different days", () => {
+    it("returns correct values for 2 different days", () => {
+      const tuesday = addDays(DAY, 1);
       const timeLogDiagram = new WeekdayDiagramDataFactory([
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
-        TimeLogTestFactory.testFulfilledTimeLog(DAY, "11:00:00", 1),
-        TimeLogTestFactory.testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1),
-        TimeLogTestFactory.testFulfilledTimeLog(addDays(DAY, 1), "12:00:00", 1),
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "11:00:00", 8),
+        TimeLogTestFactory.testFulfilledTimeLog(tuesday, "09:00:00", 1),
+        TimeLogTestFactory.testFulfilledTimeLog(tuesday, "12:00:00", 1),
       ]);
 
       expect(timeLogDiagram.createData()).toEqual([
         {
           weekday: "Monday",
-          pauseMs: 1 * HOUR,
+          pause: 1 * HOUR,
+          overtime: 1 * HOUR,
+          work: 8 * HOUR,
         },
         {
           weekday: "Tuesday",
-          pauseMs: 2 * HOUR,
+          pause: 2 * HOUR,
+          overtime: 0,
+          work: 2 * HOUR,
         },
       ]);
     });
