@@ -18,6 +18,10 @@ export default class TimeLogApplicationService {
     return await this.timeLogRepository.allBefore(recentLimitDate);
   }
 
+  async getAllTimeLogs() {
+    return await this.timeLogRepository.all();
+  }
+
   async update(timeLog: TimeLog) {
     await this.timeLogRepository.update(timeLog);
   }

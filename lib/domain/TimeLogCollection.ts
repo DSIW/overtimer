@@ -5,6 +5,10 @@ import { format, isBefore } from "date-fns";
 export default class TimeLogCollection {
   constructor(private readonly timeLogs: TimeLog[]) {}
 
+  getAll() {
+    return this.timeLogs;
+  }
+
   getStartTimes() {
     return this.timeLogs.map((timeLog) => timeLog.startTime);
   }

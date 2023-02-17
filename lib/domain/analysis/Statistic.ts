@@ -1,9 +1,9 @@
-export interface Statistics {
-  min: string;
-  median: string;
-  max: string;
+export interface Statistics<T> {
+  min: T;
+  median: T;
+  max: T;
 }
 
-export default interface Statistic<T> {
-  getStatistics(values: T[]): Statistics;
+export default interface Statistic<T, S> {
+  getStatistics(values: T[]): Statistics<S>;
 }

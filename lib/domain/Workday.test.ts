@@ -107,6 +107,82 @@ describe("Workday", () => {
     });
   });
 
+  describe("getTotalWorkTimeMs", () => {
+    it("returns total work time if one timelog", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "13:00:00",
+        1
+      );
+
+      const workday = new Workday([timeLog, timeLog2]);
+
+      expect(workday.getTotalWorkTimeMs()).toEqual(2 * HOUR);
+    });
+  });
+
+  describe("getCappedTotalWorkTimeMs", () => {
+    it("returns work limit if limit is exceeded", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        9
+      );
+
+      const workday = new Workday([timeLog]);
+
+      expect(workday.getCappedTotalWorkTimeMs()).toEqual(8 * HOUR);
+    });
+
+    it("returns work time if not exceeding limit", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        8
+      );
+
+      const workday = new Workday([timeLog]);
+
+      expect(workday.getCappedTotalWorkTimeMs()).toEqual(8 * HOUR);
+    });
+  });
+
+  describe("getOvertimeMs", () => {
+    it("returns 0 overtime time if less than 8 hours of work", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+
+      const workday = new Workday([timeLog]);
+
+      expect(workday.getOvertimeMs()).toEqual(0 * HOUR);
+    });
+
+    it("returns total overtime time if more than 8 hours of work", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        8
+      );
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "13:00:00",
+        1
+      );
+
+      const workday = new Workday([timeLog, timeLog2]);
+
+      expect(workday.getOvertimeMs()).toEqual(1 * HOUR);
+    });
+  });
+
   describe("getPauseMs", () => {
     it("returns 0 if one timelog", () => {
       const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
