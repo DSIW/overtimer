@@ -1,19 +1,13 @@
 import { max, min } from "lodash";
 import Statistic, { Statistics } from "./Statistic";
-import Duration from "./Duration";
 import median from "./median";
 
-export default class DurationStatistic implements Statistic<number> {
-  getStatistics(durationMsList: number[]): Statistics {
+export default class DurationStatistic implements Statistic<number, number> {
+  getStatistics(durationMsList: number[]): Statistics<number> {
     return {
-      min: this.formatDuration(min(durationMsList)),
-      median: this.formatDuration(median(durationMsList)),
-      max: this.formatDuration(max(durationMsList)),
+      min: min(durationMsList) as number,
+      median: median(durationMsList),
+      max: max(durationMsList) as number,
     };
-  }
-
-  private formatDuration(milliseconds: number | undefined) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return new Duration(milliseconds!).getFormatted();
   }
 }

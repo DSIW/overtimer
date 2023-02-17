@@ -1,5 +1,4 @@
 import React, { PropsWithChildren } from "react";
-import TimeLog from "../../domain/TimeLog";
 
 export default function StatisticsRow({ children }: PropsWithChildren<{}>) {
   return (

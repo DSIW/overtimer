@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "./Page.module.css";
 import React, { PropsWithChildren } from "react";
-import theme from "../lib/interface/theme";
+import theme from "../theme";
 import { ThemeProvider } from "@mui/material/styles";
 
 export default function Page({ children }: PropsWithChildren<{}>) {
