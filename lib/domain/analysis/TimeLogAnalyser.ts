@@ -1,9 +1,11 @@
 import TimeLog from "../TimeLog";
-import Workday from "../Workday";
+import Workday, { Weekday } from "../Workday";
 import { groupBy } from "lodash";
 import TimeStatistic from "./TimeStatistic";
 import DurationStatistic from "./DurationStatistic";
 import { Statistics } from "./Statistic";
+
+type StatisticsPerWeekday = Record<Weekday, Statistics | undefined>;
 
 export default class TimeLogAnalyser {
   private timeStatistic = new TimeStatistic();
@@ -11,7 +13,7 @@ export default class TimeLogAnalyser {
 
   constructor(private readonly timeLogs: TimeLog[]) {}
 
-  getStartTimeStatisticsPerWeekday() {
+  getStartTimeStatisticsPerWeekday(): StatisticsPerWeekday {
     return this.getTimeStatisticsPerWeekday((workdays) => {
       return this.timeStatistic.getStatistics(
         workdays.map((workday) => workday.getStartTime())
@@ -45,10 +47,18 @@ export default class TimeLogAnalyser {
       workday.getWeekday()
     );
 
-    const result: Record<string, Statistics> = {};
+    const result: StatisticsPerWeekday = {
+      Friday: undefined,
+      Monday: undefined,
+      Saturday: undefined,
+      Sunday: undefined,
+      Thursday: undefined,
+      Tuesday: undefined,
+      Wednesday: undefined
+    };
 
     Object.entries(groupedByWeekday).forEach(([weekday, workdays]) => {
-      result[weekday] = callback(workdays);
+      result[weekday as Weekday] = callback(workdays);
     });
 
     return result;

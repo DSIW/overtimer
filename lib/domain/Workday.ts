@@ -2,6 +2,8 @@ import TimeLog from "./TimeLog";
 import { format, isSameDay, max, min } from "date-fns";
 import TimeLogCollection from "./TimeLogCollection";
 
+export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
+
 export default class Workday {
   private collection: TimeLogCollection;
 
@@ -18,8 +20,8 @@ export default class Workday {
     });
   }
 
-  getWeekday() {
-    return format(this.timeLogs[0].startTime, "EEEE");
+  getWeekday(): Weekday {
+    return format(this.timeLogs[0].startTime, "EEEE") as Weekday;
   }
 
   getStartTime() {

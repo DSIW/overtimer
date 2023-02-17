@@ -3,6 +3,7 @@ import TimeLog from "../../domain/TimeLog";
 import Duration from "../Duration";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
 import StatisticsCard from "./StatisticsCard";
+import StatisticsRow from "./StatisticsRow";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -17,14 +18,7 @@ export default function TimeLogSummary({ timeLogs }: Props) {
   const showWeekly = weeklyOvertimeMs !== 0 && totalOvertimeMs !== 0;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-around",
-        margin: "2rem",
-        width: "100%",
-      }}
-    >
+    <StatisticsRow>
       {showWeekly && (
         <StatisticsCard title="WEEK OVERTIME">
           <Duration milliseconds={weeklyOvertimeMs} />
@@ -33,6 +27,6 @@ export default function TimeLogSummary({ timeLogs }: Props) {
       <StatisticsCard title="TOTAL OVERTIME">
         <Duration milliseconds={totalOvertimeMs} />
       </StatisticsCard>
-    </div>
+    </StatisticsRow>
   );
 }
