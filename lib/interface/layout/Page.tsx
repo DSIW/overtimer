@@ -1,12 +1,11 @@
 import Head from "next/head";
 import styles from "./Page.module.css";
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import theme from "../theme";
 import { ThemeProvider } from "@mui/material/styles";
+import Children from "./Children";
 
-export default function Page({
-  children,
-}: PropsWithChildren<Record<string, never>>) {
+export default function Page({ children }: Children) {
   return (
     <div className={styles.container}>
       <Head>

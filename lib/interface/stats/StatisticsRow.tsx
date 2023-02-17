@@ -1,8 +1,7 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
+import Children from "../layout/Children";
 
-export default function StatisticsRow({
-  children,
-}: PropsWithChildren<Record<string, never>>) {
+export default function StatisticsRow({ children }: Children) {
   return (
     <div
       style={{

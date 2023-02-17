@@ -7,6 +7,7 @@ type DiagramEntryDto = {
   weekday: Weekday;
   pause: number;
   work: number;
+  overtime: number;
 };
 
 export type DiagramEntriesDto = DiagramEntryDto[];
