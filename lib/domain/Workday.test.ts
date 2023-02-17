@@ -148,7 +148,7 @@ describe("Workday", () => {
 
       const workday = new Workday([timeLog]);
 
-      expect(workday.getOvertimeMs()).toEqual(8 * HOUR);
+      expect(workday.getCappedTotalWorkTimeMs()).toEqual(8 * HOUR);
     });
   });
 
