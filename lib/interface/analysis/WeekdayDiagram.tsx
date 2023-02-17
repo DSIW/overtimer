@@ -1,13 +1,6 @@
 import React, { ReactElement } from "react";
 import Duration from "../Duration";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  Tooltip,
-  Legend,
-  TooltipProps
-} from "recharts";
+import { BarChart, Bar, XAxis, Tooltip, Legend, TooltipProps } from "recharts";
 import { DiagramEntriesDto } from "../../domain/analysis/WeekdayDiagramDataFactory";
 
 interface Props {
@@ -27,7 +20,7 @@ export default function WeekdayDiagram({ data }: Props): ReactElement {
             backgroundColor: "#fff",
             border: "1px solid #999",
             margin: 0,
-            padding: 10
+            padding: 10,
           }}
         >
           <p>{data.weekday}</p>

@@ -4,7 +4,9 @@ import React, { PropsWithChildren } from "react";
 import theme from "../theme";
 import { ThemeProvider } from "@mui/material/styles";
 
-export default function Page({ children }: PropsWithChildren<{}>) {
+export default function Page({
+  children,
+}: PropsWithChildren<Record<string, never>>) {
   return (
     <div className={styles.container}>
       <Head>
@@ -41,9 +43,7 @@ export default function Page({ children }: PropsWithChildren<{}>) {
       </Head>
 
       <main className={styles.main}>
-        <ThemeProvider theme={theme}>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </main>
     </div>
   );

@@ -2,7 +2,6 @@ import TimeLog from "../TimeLog";
 import Workday, { Weekday } from "../Workday";
 import { groupBy } from "lodash";
 import DurationStatistic from "./DurationStatistic";
-import median from "./median";
 
 type DiagramEntryDto = {
   weekday: Weekday;
@@ -63,7 +62,7 @@ export default class WeekdayDiagramDataFactory {
       Thursday: 3,
       Friday: 4,
       Saturday: 5,
-      Sunday: 6
+      Sunday: 6,
     };
 
     return result.sort((a, b) => {

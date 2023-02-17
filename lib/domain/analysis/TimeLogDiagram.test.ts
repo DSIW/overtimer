@@ -46,16 +46,8 @@ describe("TimeLogDiagram", () => {
       const timeLogDiagram = new WeekdayDiagramDataFactory([
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "11:00:00", 1),
-        TimeLogTestFactory.testFulfilledTimeLog(
-          addDays(DAY, 1),
-          "09:00:00",
-          1
-        ),
-        TimeLogTestFactory.testFulfilledTimeLog(
-          addDays(DAY, 1),
-          "12:00:00",
-          1
-        ),
+        TimeLogTestFactory.testFulfilledTimeLog(addDays(DAY, 1), "09:00:00", 1),
+        TimeLogTestFactory.testFulfilledTimeLog(addDays(DAY, 1), "12:00:00", 1),
       ]);
 
       expect(timeLogDiagram.createData()).toEqual([

@@ -1,6 +1,8 @@
 import React, { PropsWithChildren } from "react";
 
-export default function StatisticsRow({ children }: PropsWithChildren<{}>) {
+export default function StatisticsRow({
+  children,
+}: PropsWithChildren<Record<string, never>>) {
   return (
     <div
       style={{
