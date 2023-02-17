@@ -1,8 +1,16 @@
 import TimeLog from "./TimeLog";
 import { format, isSameDay, max, min } from "date-fns";
 import TimeLogCollection from "./TimeLogCollection";
+import { sum } from "lodash";
 
-export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
+export type Weekday =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
 
 export default class Workday {
   private collection: TimeLogCollection;
@@ -30,6 +38,10 @@ export default class Workday {
 
   getEndTime() {
     return max(this.collection.getEndTimes());
+  }
+
+  getTotalWorkTimeMs(): number {
+    return sum(this.collection.getAll().map((it) => it.getDurationMs()));
   }
 
   getPauseMs() {

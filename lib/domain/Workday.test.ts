@@ -107,6 +107,25 @@ describe("Workday", () => {
     });
   });
 
+  describe("getTotalWorkTimeMs", () => {
+    it("returns total work time if one timelog", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        1
+      );
+      const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "13:00:00",
+        1
+      );
+
+      const workday = new Workday([timeLog, timeLog2]);
+
+      expect(workday.getTotalWorkTimeMs()).toEqual(2 * HOUR);
+    });
+  });
+
   describe("getPauseMs", () => {
     it("returns 0 if one timelog", () => {
       const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
