@@ -4,6 +4,7 @@ import Duration from "../Duration";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
 import StatisticsCard from "./StatisticsCard";
 import StatisticsRow from "./StatisticsRow";
+import Link from "next/link";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -24,7 +25,7 @@ export default function TimeLogSummary({ timeLogs }: Props) {
           <Duration milliseconds={weeklyOvertimeMs} />
         </StatisticsCard>
       )}
-      <StatisticsCard title="TOTAL OVERTIME">
+      <StatisticsCard title={<Link href={"/analysis"}>TOTAL OVERTIME</Link>}>
         <Duration milliseconds={totalOvertimeMs} />
       </StatisticsCard>
     </StatisticsRow>

@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { ReactNode } from "react";
 
 interface Props {
-  title: string;
+  title: ReactNode;
   children: ReactNode;
 }
 
