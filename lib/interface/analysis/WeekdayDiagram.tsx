@@ -1,47 +1,36 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { Fragment, ReactElement } from "react";
 import Duration from "../Duration";
-import { BarChart, Bar, XAxis, Tooltip, Legend, TooltipProps } from "recharts";
-import { DiagramEntriesDto } from "../../domain/analysis/WeekdayDiagramDataFactory";
+import { Bar, BarChart, Legend, Tooltip, TooltipProps, XAxis } from "recharts";
+import { WeekdayDiagramEntryDto } from "./WeekdayDiagramDataFactory";
+import useWindowWidth from "./useWindowWidth";
+import OvertimerTooltip from "./OvertimerTooltip";
 
 interface Props {
-  data: DiagramEntriesDto;
+  data: WeekdayDiagramEntryDto[];
 }
 
 export default function WeekdayDiagram({ data }: Props): ReactElement {
-  const [width, setWidth] = useState(0);
-  useEffect(() => {
-    setWidth(window.innerWidth * 0.95);
-  }, []);
+  const width = useWindowWidth() * 0.95;
+
   function renderTooltip(props: TooltipProps<number, string>): ReactElement {
-    const { active, payload } = props;
-
-    if (active && payload && payload.length) {
-      const data = payload[0] && payload[0].payload;
-
-      return (
-        <div
-          style={{
-            backgroundColor: "#fff",
-            border: "1px solid #999",
-            margin: 0,
-            padding: 10,
-          }}
-        >
-          <p>{data.weekday}</p>
-          <p>
-            Work: <Duration milliseconds={data.work} />
-          </p>
-          <p>
-            Overtime: <Duration milliseconds={data.overtime} />
-          </p>
-          <p>
-            Pause: <Duration milliseconds={data.pause} />
-          </p>
-        </div>
-      );
-    }
-
-    return <></>;
+    return (
+      <OvertimerTooltip {...props}>
+        {(data: WeekdayDiagramEntryDto) => (
+          <Fragment>
+            <strong>{data.weekday}</strong>
+            <p>
+              Work: <Duration milliseconds={data.work} />
+            </p>
+            <p>
+              Overtime: <Duration milliseconds={data.overtime} />
+            </p>
+            <p>
+              Pause: <Duration milliseconds={data.pause} />
+            </p>
+          </Fragment>
+        )}
+      </OvertimerTooltip>
+    );
   }
 
   return (
