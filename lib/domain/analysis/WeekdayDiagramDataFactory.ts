@@ -5,6 +5,7 @@ import DurationStatistic from "./DurationStatistic";
 
 type DiagramEntryDto = {
   weekday: Weekday;
+  weekdayShort: string;
   pause: number;
   work: number;
   overtime: number;
@@ -35,6 +36,7 @@ export default class WeekdayDiagramDataFactory {
 
       const diagramEntryDto: DiagramEntryDto = {
         weekday: weekday as Weekday,
+        weekdayShort: this.convertToShortWeekday(weekday as Weekday),
         pause: pauseMedian,
         work: workMedian,
         overtime: overtimeMedian,
@@ -69,5 +71,9 @@ export default class WeekdayDiagramDataFactory {
     return result.sort((a, b) => {
       return sortedWeekdayIndex[a.weekday] - sortedWeekdayIndex[b.weekday];
     });
+  }
+
+  private convertToShortWeekday(weekday: Weekday) {
+    return weekday.substring(0, 3).toUpperCase();
   }
 }
