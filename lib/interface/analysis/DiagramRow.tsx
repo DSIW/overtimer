@@ -1,7 +1,10 @@
-import React from "react";
-import Children from "../layout/Children";
+import React, { ReactNode } from "react";
 
-export default function DiagramRow({ children }: Children) {
+interface Props {
+  children: ReactNode;
+}
+
+export default function DiagramRow({ children }: Props) {
   return (
     <div
       style={{
@@ -11,7 +14,11 @@ export default function DiagramRow({ children }: Children) {
         marginRight: 0,
         marginLeft: 0,
         width: "100%",
-        flexDirection: "column"
+        flexDirection: "column",
+        background: "white",
+        padding: "1rem",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
       }}
     >
       {children}

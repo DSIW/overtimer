@@ -3,15 +3,13 @@ import Duration from "../Duration";
 import { Bar, BarChart, Legend, Tooltip, TooltipProps, XAxis } from "recharts";
 import { WeekdayDiagramEntryDto } from "./WeekdayDiagramDataFactory";
 import OvertimerTooltip from "./OvertimerTooltip";
-import { useWindowWidth } from "@react-hook/window-size";
 
 interface Props {
   data: WeekdayDiagramEntryDto[];
+  width?: number;
 }
 
-export default function WeekdayDiagram({ data }: Props): ReactElement {
-  const width = Math.min(useWindowWidth() * 0.95, 700);
-
+export default function WeekdayDiagram({ data, width }: Props): ReactElement {
   function renderTooltip(props: TooltipProps<number, string>): ReactElement {
     return (
       <OvertimerTooltip {...props}>

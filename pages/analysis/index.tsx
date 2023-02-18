@@ -12,6 +12,7 @@ import WeekdayDiagram from "../../lib/interface/analysis/WeekdayDiagram";
 import OvertimeDiagram from "../../lib/interface/analysis/OvertimeDiagram";
 import OvertimeDiagramDataFactory from "../../lib/interface/analysis/OvertimeDiagramDataFactory";
 import DiagramRow from "../../lib/interface/analysis/DiagramRow";
+import DiagramContainer from "../../lib/interface/analysis/DiagramContainer";
 
 export default function AnalysisPage() {
   const timeLogs = useLiveQuery(
@@ -37,11 +38,15 @@ export default function AnalysisPage() {
       </StatisticsRow>
       <DiagramRow>
         <h3>Weekday</h3>
-        <WeekdayDiagram data={weekdayData} />
+        <DiagramContainer>
+          <WeekdayDiagram data={weekdayData} />
+        </DiagramContainer>
       </DiagramRow>
       <DiagramRow>
         <h3>History</h3>
-        <OvertimeDiagram data={overtimeData} />
+        <DiagramContainer>
+          <OvertimeDiagram data={overtimeData} />
+        </DiagramContainer>
       </DiagramRow>
     </Page>
   );

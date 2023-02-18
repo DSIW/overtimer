@@ -11,19 +11,17 @@ import {
 import { OvertimeDiagramEntryDto } from "./OvertimeDiagramDataFactory";
 import Duration from "../../domain/analysis/Duration";
 import OvertimerTooltip from "./OvertimerTooltip";
-import { useWindowWidth } from "@react-hook/window-size";
 
 interface Props {
   data: OvertimeDiagramEntryDto[];
+  width?: number;
 }
 
 function formatDuration(milliseconds: number): string {
   return new Duration(milliseconds).getFormattedHours();
 }
 
-export default function OvertimeDiagram({ data }: Props): ReactElement {
-  const width = Math.min(useWindowWidth() * 0.95, 700);
-
+export default function OvertimeDiagram({ data, width }: Props): ReactElement {
   function renderTooltip(props: TooltipProps<number, string>): ReactElement {
     return (
       <OvertimerTooltip {...props}>
