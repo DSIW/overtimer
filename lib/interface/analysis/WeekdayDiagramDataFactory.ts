@@ -46,7 +46,10 @@ export default class WeekdayDiagramDataFactory {
     return this.sortByWeekday(result);
   }
 
-  private workdayMedian(workdays: Workday[], key: keyof Workday): number {
+  private workdayMedian(
+    workdays: Workday[],
+    key: "getPauseMs" | "getOvertimeMs" | "getCappedTotalWorkTimeMs"
+  ): number {
     const overtimes = workdays.map((it) => it[key]()) as number[];
 
     const durationStatistic = new DurationStatistic();

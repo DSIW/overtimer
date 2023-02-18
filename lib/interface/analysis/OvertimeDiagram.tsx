@@ -1,5 +1,13 @@
 import React, { Fragment, ReactElement } from "react";
-import { Legend, Line, LineChart, Tooltip, TooltipProps, XAxis, YAxis } from "recharts";
+import {
+  Legend,
+  Line,
+  LineChart,
+  Tooltip,
+  TooltipProps,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { OvertimeDiagramEntryDto } from "./OvertimeDiagramDataFactory";
 import Duration from "../../domain/analysis/Duration";
 import useWindowWidth from "./useWindowWidth";

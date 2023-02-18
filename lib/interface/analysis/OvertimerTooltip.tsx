@@ -2,6 +2,7 @@ import React, { ReactElement, ReactNode } from "react";
 import { TooltipProps } from "recharts";
 
 interface Props extends TooltipProps<number, string> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: (data: any) => ReactNode;
 }
 export default function OvertimerTooltip(props: Props): ReactElement {
