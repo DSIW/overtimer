@@ -32,7 +32,11 @@ export default class Workday {
   }
 
   getWeekday(): Weekday {
-    return format(this.timeLogs[0].startTime, "EEEE") as Weekday;
+    return this.format("EEEE") as Weekday;
+  }
+
+  format(pattern: string): string {
+    return format(this.timeLogs[0].startTime, pattern);
   }
 
   getStartTime() {

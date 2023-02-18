@@ -45,6 +45,16 @@ describe("Workday", () => {
     });
   });
 
+  describe("format", () => {
+    it("returns formatted date", () => {
+      const workday = new Workday([
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
+      ]);
+
+      expect(workday.format("yyyy")).toBe("2022");
+    });
+  });
+
   describe("getStartTime", () => {
     it("returns start time if one timelog", () => {
       const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
