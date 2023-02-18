@@ -193,6 +193,32 @@ describe("Workday", () => {
     });
   });
 
+  describe("getOverAndUndertimeMs", () => {
+    it("returns overtime time if more than 8 hours of work", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        9
+      );
+
+      const workday = new Workday([timeLog]);
+
+      expect(workday.getOverAndUndertimeMs()).toEqual(1 * HOUR);
+    });
+
+    it("returns negative overtime if less than 8 hours of work", () => {
+      const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
+        DAY,
+        "09:00:00",
+        7
+      );
+
+      const workday = new Workday([timeLog]);
+
+      expect(workday.getOverAndUndertimeMs()).toEqual(-1 * HOUR);
+    });
+  });
+
   describe("getPauseMs", () => {
     it("returns 0 if one timelog", () => {
       const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
