@@ -21,11 +21,11 @@ export default function TimeLogSummary({ timeLogs }: Props) {
   return (
     <StatisticsRow>
       {showWeekly && (
-        <StatisticsCard title="WEEK OVERTIME">
+        <StatisticsCard title="week overtime">
           <Duration milliseconds={weeklyOvertimeMs} />
         </StatisticsCard>
       )}
-      <StatisticsCard title={<Link href={"/analysis"}>TOTAL OVERTIME</Link>}>
+      <StatisticsCard title={<Link href={"/analysis"}>total overtime</Link>}>
         <Duration milliseconds={totalOvertimeMs} />
       </StatisticsCard>
     </StatisticsRow>

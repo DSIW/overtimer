@@ -27,10 +27,10 @@ export default function AnalysisPage() {
   return (
     <Page>
       <StatisticsRow>
-        <StatisticsCard title="TOTAL OVERTIME">
+        <StatisticsCard title="total overtime">
           <Duration milliseconds={totalOvertimeMs} />
         </StatisticsCard>
-        <StatisticsCard title="Days">{days}</StatisticsCard>
+        <StatisticsCard title="days">{days}</StatisticsCard>
       </StatisticsRow>
       <StatisticsRow>
         <WeekdayDiagram data={data} />
