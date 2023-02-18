@@ -4,7 +4,7 @@ import StatisticsRow from "../../lib/interface/stats/StatisticsRow";
 import StatisticsCard from "../../lib/interface/stats/StatisticsCard";
 import Duration from "../../lib/interface/Duration";
 import TimeLogStatistics from "../../lib/domain/TimeLogStatistics";
-import WeekdayDiagramDataFactory from "../../lib/domain/analysis/WeekdayDiagramDataFactory";
+import WeekdayDiagramDataFactory from "../../lib/interface/analysis/WeekdayDiagramDataFactory";
 import { useLiveQuery } from "dexie-react-hooks";
 import { timeLogApplicationService } from "../../lib/application/TimeLogApplicationService";
 import TimeLog from "../../lib/domain/TimeLog";
@@ -21,8 +21,7 @@ export default function AnalysisPage() {
   const totalOvertimeMs = timeLogStatistics.getTotalOvertimeMs();
   const days = timeLogStatistics.getDays();
 
-  const timeLogDiagram = new WeekdayDiagramDataFactory(timeLogs);
-  const data = timeLogDiagram.createData();
+  const data = new WeekdayDiagramDataFactory(timeLogs).createData();
 
   return (
     <Page>
