@@ -11,10 +11,9 @@ interface Props {
 }
 
 export default function TimeLogSummary({ timeLogs }: Props) {
-  const weeklyOvertimeMs = new TimeLogStatistics(
-    timeLogs
-  ).getWeeklyOvertimeMs();
-  const totalOvertimeMs = new TimeLogStatistics(timeLogs).getTotalOvertimeMs();
+  const timeLogStatistics = new TimeLogStatistics(timeLogs);
+  const weeklyOvertimeMs = timeLogStatistics.getWeeklyOvertimeMs();
+  const totalOvertimeMs = timeLogStatistics.getTotalOvertimeMs();
 
   const showWeekly = weeklyOvertimeMs !== 0 && totalOvertimeMs !== 0;
 
