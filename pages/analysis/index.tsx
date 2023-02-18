@@ -9,6 +9,8 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { timeLogApplicationService } from "../../lib/application/TimeLogApplicationService";
 import TimeLog from "../../lib/domain/TimeLog";
 import WeekdayDiagram from "../../lib/interface/analysis/WeekdayDiagram";
+import OvertimeDiagram from "../../lib/interface/analysis/OvertimeDiagram";
+import OvertimeDiagramDataFactory from "../../lib/interface/analysis/OvertimeDiagramDataFactory";
 
 export default function AnalysisPage() {
   const timeLogs = useLiveQuery(
@@ -22,6 +24,7 @@ export default function AnalysisPage() {
   const days = timeLogStatistics.getDays();
 
   const data = new WeekdayDiagramDataFactory(timeLogs).createData();
+  const overtimeData = new OvertimeDiagramDataFactory(timeLogs).createData();
 
   return (
     <Page>
@@ -33,6 +36,9 @@ export default function AnalysisPage() {
       </StatisticsRow>
       <StatisticsRow>
         <WeekdayDiagram data={data} />
+      </StatisticsRow>
+      <StatisticsRow>
+        <OvertimeDiagram data={overtimeData} />
       </StatisticsRow>
     </Page>
   );
