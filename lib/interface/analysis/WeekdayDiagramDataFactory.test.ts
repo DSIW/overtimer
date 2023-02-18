@@ -23,6 +23,7 @@ describe("WeekdayDiagramDataFactory", () => {
       expect(timeLogDiagram.createData()).toEqual([
         {
           weekday: "Monday",
+          weekdayShort: "MON",
           pause: 0,
           overtime: 0,
           work: 1 * HOUR,
@@ -39,6 +40,7 @@ describe("WeekdayDiagramDataFactory", () => {
       expect(timeLogDiagram.createData()).toEqual([
         {
           weekday: "Monday",
+          weekdayShort: "MON",
           pause: 1 * HOUR,
           overtime: 0,
           work: 2 * HOUR,
@@ -58,12 +60,14 @@ describe("WeekdayDiagramDataFactory", () => {
       expect(timeLogDiagram.createData()).toEqual([
         {
           weekday: "Monday",
+          weekdayShort: "MON",
           pause: 1 * HOUR,
           overtime: 1 * HOUR,
           work: 8 * HOUR,
         },
         {
           weekday: "Tuesday",
+          weekdayShort: "TUE",
           pause: 2 * HOUR,
           overtime: 0,
           work: 2 * HOUR,
