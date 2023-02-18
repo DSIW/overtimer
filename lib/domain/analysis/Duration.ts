@@ -1,4 +1,5 @@
 import parseMs from "../../interface/parse-ms";
+import { round } from "lodash";
 
 export default class Duration {
   constructor(private milliseconds: number) {}
@@ -25,5 +26,10 @@ export default class Duration {
     }
 
     return parts.join(" ") || "0 s";
+  }
+
+  getFormattedHours(): string {
+    const hours = this.milliseconds / 1000 / 60 / 60;
+    return `${round(hours, 1)} h`;
   }
 }
