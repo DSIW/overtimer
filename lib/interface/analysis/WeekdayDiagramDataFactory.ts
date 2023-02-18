@@ -1,9 +1,9 @@
-import TimeLog from "../TimeLog";
-import Workday, { Weekday } from "../Workday";
+import TimeLog from "../../domain/TimeLog";
+import Workday, { Weekday } from "../../domain/Workday";
 import { groupBy } from "lodash";
-import DurationStatistic from "./DurationStatistic";
+import DurationStatistic from "../../domain/analysis/DurationStatistic";
 
-type DiagramEntryDto = {
+export type WeekdayDiagramEntryDto = {
   weekday: Weekday;
   weekdayShort: string;
   pause: number;
@@ -11,12 +11,10 @@ type DiagramEntryDto = {
   overtime: number;
 };
 
-export type DiagramEntriesDto = DiagramEntryDto[];
-
 export default class WeekdayDiagramDataFactory {
   constructor(private readonly timeLogs: TimeLog[]) {}
 
-  createData(): DiagramEntriesDto {
+  createData(): WeekdayDiagramEntryDto[] {
     const doneTimeLogs = this.timeLogs.filter((timeLog) => timeLog.isDone());
 
     const workdays = Workday.fromTimeLogs(doneTimeLogs);
@@ -24,7 +22,7 @@ export default class WeekdayDiagramDataFactory {
       workday.getWeekday()
     );
 
-    const result: DiagramEntriesDto = [];
+    const result: WeekdayDiagramEntryDto[] = [];
 
     Object.entries(groupedByWeekday).forEach(([weekday, workdays]) => {
       const pauseMedian = this.workdayMedian(workdays, "getPauseMs");
@@ -34,7 +32,7 @@ export default class WeekdayDiagramDataFactory {
       );
       const overtimeMedian = this.workdayMedian(workdays, "getOvertimeMs");
 
-      const diagramEntryDto: DiagramEntryDto = {
+      const diagramEntryDto: WeekdayDiagramEntryDto = {
         weekday: weekday as Weekday,
         weekdayShort: this.convertToShortWeekday(weekday as Weekday),
         pause: pauseMedian,
@@ -45,9 +43,7 @@ export default class WeekdayDiagramDataFactory {
       result.push(diagramEntryDto);
     });
 
-    const sorted = this.sortByWeekday(result);
-
-    return sorted;
+    return this.sortByWeekday(result);
   }
 
   private workdayMedian(workdays: Workday[], key: keyof Workday): number {
@@ -57,7 +53,7 @@ export default class WeekdayDiagramDataFactory {
     return durationStatistic.getStatistics(overtimes).median;
   }
 
-  private sortByWeekday(result: DiagramEntryDto[]) {
+  private sortByWeekday(result: WeekdayDiagramEntryDto[]) {
     const sortedWeekdayIndex = {
       Monday: 0,
       Tuesday: 1,
