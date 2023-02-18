@@ -11,6 +11,7 @@ import TimeLog from "../../lib/domain/TimeLog";
 import WeekdayDiagram from "../../lib/interface/analysis/WeekdayDiagram";
 import OvertimeDiagram from "../../lib/interface/analysis/OvertimeDiagram";
 import OvertimeDiagramDataFactory from "../../lib/interface/analysis/OvertimeDiagramDataFactory";
+import DiagramRow from "../../lib/interface/stats/DiagramRow";
 
 export default function AnalysisPage() {
   const timeLogs = useLiveQuery(
@@ -23,7 +24,7 @@ export default function AnalysisPage() {
   const totalOvertimeMs = timeLogStatistics.getTotalOvertimeMs();
   const days = timeLogStatistics.getDays();
 
-  const data = new WeekdayDiagramDataFactory(timeLogs).createData();
+  const weekdayData = new WeekdayDiagramDataFactory(timeLogs).createData();
   const overtimeData = new OvertimeDiagramDataFactory(timeLogs).createData();
 
   return (
@@ -34,12 +35,14 @@ export default function AnalysisPage() {
         </StatisticsCard>
         <StatisticsCard title="days">{days}</StatisticsCard>
       </StatisticsRow>
-      <StatisticsRow>
-        <WeekdayDiagram data={data} />
-      </StatisticsRow>
-      <StatisticsRow>
+      <DiagramRow>
+        <h3>Weekday</h3>
+        <WeekdayDiagram data={weekdayData} />
+      </DiagramRow>
+      <DiagramRow>
+        <h3>History</h3>
         <OvertimeDiagram data={overtimeData} />
-      </StatisticsRow>
+      </DiagramRow>
     </Page>
   );
 }

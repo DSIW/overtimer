@@ -10,8 +10,8 @@ import {
 } from "recharts";
 import { OvertimeDiagramEntryDto } from "./OvertimeDiagramDataFactory";
 import Duration from "../../domain/analysis/Duration";
-import useWindowWidth from "./useWindowWidth";
 import OvertimerTooltip from "./OvertimerTooltip";
+import { useWindowWidth } from "@react-hook/window-size";
 
 interface Props {
   data: OvertimeDiagramEntryDto[];
@@ -22,7 +22,8 @@ function formatDuration(milliseconds: number): string {
 }
 
 export default function OvertimeDiagram({ data }: Props): ReactElement {
-  const width = useWindowWidth() * 0.95;
+  const width = Math.min(useWindowWidth() * 0.95, 700);
+
   function renderTooltip(props: TooltipProps<number, string>): ReactElement {
     return (
       <OvertimerTooltip {...props}>
