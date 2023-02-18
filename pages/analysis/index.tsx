@@ -11,7 +11,7 @@ import TimeLog from "../../lib/domain/TimeLog";
 import WeekdayDiagram from "../../lib/interface/analysis/WeekdayDiagram";
 import OvertimeDiagram from "../../lib/interface/analysis/OvertimeDiagram";
 import OvertimeDiagramDataFactory from "../../lib/interface/analysis/OvertimeDiagramDataFactory";
-import DiagramRow from "../../lib/interface/stats/DiagramRow";
+import DiagramRow from "../../lib/interface/analysis/DiagramRow";
 
 export default function AnalysisPage() {
   const timeLogs = useLiveQuery(
