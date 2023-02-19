@@ -10,9 +10,7 @@ export default class OvertimeRatioDiagramDataFactory {
   constructor(private readonly timeLogs: TimeLog[]) {}
 
   createData(): OvertimeRatioDiagramEntryDto[] {
-    const doneTimeLogs = this.timeLogs.filter((timeLog) => timeLog.isDone());
-
-    const workdays = Workday.fromTimeLogs(doneTimeLogs);
+    const workdays = Workday.fromTimeLogs(this.timeLogs);
 
     let daysWithOvertime = 0;
     let daysWithoutOvertime = 0;

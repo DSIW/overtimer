@@ -15,9 +15,7 @@ export default class WeekdayDiagramDataFactory {
   constructor(private readonly timeLogs: TimeLog[]) {}
 
   createData(): WeekdayDiagramEntryDto[] {
-    const doneTimeLogs = this.timeLogs.filter((timeLog) => timeLog.isDone());
-
-    const workdays = Workday.fromTimeLogs(doneTimeLogs);
+    const workdays = Workday.fromTimeLogs(this.timeLogs);
     const groupedByWeekday = groupBy(workdays, (workday) =>
       workday.getWeekday()
     );

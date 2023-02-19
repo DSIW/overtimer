@@ -18,13 +18,20 @@ interface Props {
 }
 
 export default function Analysis({ timeLogs }: Props) {
-  const timeLogStatistics = new TimeLogStatistics(timeLogs);
+  const doneTimeLogs = timeLogs.filter((timeLog) => timeLog.isDone());
+
+  const timeLogStatistics = new TimeLogStatistics(doneTimeLogs);
+
   const totalOvertimeMs = timeLogStatistics.getTotalOvertimeMs();
   const days = timeLogStatistics.getDays();
 
-  const weekdayData = new WeekdayDiagramDataFactory(timeLogs).createData();
-  const overtimeData = new OvertimeDiagramDataFactory(timeLogs).createData();
-  const ratioData = new OvertimeRatioDiagramDataFactory(timeLogs).createData();
+  const weekdayData = new WeekdayDiagramDataFactory(doneTimeLogs).createData();
+  const overtimeData = new OvertimeDiagramDataFactory(
+    doneTimeLogs
+  ).createData();
+  const ratioData = new OvertimeRatioDiagramDataFactory(
+    doneTimeLogs
+  ).createData();
 
   return (
     <Fragment>

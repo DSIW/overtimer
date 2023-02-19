@@ -15,9 +15,7 @@ export default class OvertimeDiagramDataFactory {
   constructor(private readonly timeLogs: TimeLog[]) {}
 
   createData(): OvertimeDiagramEntryDto[] {
-    const doneTimeLogs = this.timeLogs.filter((timeLog) => timeLog.isDone());
-
-    const workdays = Workday.fromTimeLogs(doneTimeLogs);
+    const workdays = Workday.fromTimeLogs(this.timeLogs);
     const groupedByWeek = groupBy(workdays, (workday) =>
       workday.format("yyyy-ww")
     );
