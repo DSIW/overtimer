@@ -1,6 +1,6 @@
 import TimeLog from "../../../domain/TimeLog";
 import Workday from "../../../domain/Workday";
-import { groupBy, sum } from "lodash";
+import _, { groupBy, sum } from "lodash";
 import { compareAsc } from "date-fns";
 
 export type OvertimeDiagramEntryDto = {
@@ -16,9 +16,15 @@ export default class OvertimeDiagramDataFactory {
 
   createData(): OvertimeDiagramEntryDto[] {
     const workdays = Workday.fromTimeLogs(this.timeLogs);
+
+    const allSameYear =
+      _.uniq(workdays.map((it) => it.format("yyyy"))).length === 1;
+
     const groupedByWeek = groupBy(workdays, (workday) =>
-      workday.format("yyyy-ww")
+      workday.format(allSameYear ? "ww" : "MM/yyyy")
     );
+
+    console.log({ allSameYear, keys: Object.keys(groupedByWeek) });
 
     const entries: OvertimeDiagramEntryDto[] = [];
 
@@ -27,12 +33,12 @@ export default class OvertimeDiagramDataFactory {
       const overtimeSum = sum(overtimes);
 
       const workday = workdays[0];
-      const name = workday.format("ww/yyyy");
+      const name = workday.format(allSameYear ? "ww" : "MMM yyyy");
 
       const diagramEntryDto: OvertimeDiagramEntryDto = {
         date: workday.getStartTime(),
         name,
-        tooltipName: `CW ${name}`,
+        tooltipName: allSameYear ? `CW ${name}` : name,
         overtime: overtimeSum,
         cumulated: 0,
       };

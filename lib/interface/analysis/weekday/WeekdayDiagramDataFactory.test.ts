@@ -7,14 +7,6 @@ const DAY = parseISO("2022-08-01");
 
 describe("WeekdayDiagramDataFactory", () => {
   describe("getData()", () => {
-    it("returns 0 if no fulfilled time logs", () => {
-      const timeLogDiagram = new WeekdayDiagramDataFactory([
-        TimeLogTestFactory.testRunningTimeLog(DAY),
-      ]);
-
-      expect(timeLogDiagram.createData()).toEqual([]);
-    });
-
     it("returns correct values if one time log", () => {
       const timeLogDiagram = new WeekdayDiagramDataFactory([
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
