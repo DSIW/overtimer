@@ -3,7 +3,6 @@ import WeekdayDiagramDataFactory from "./WeekdayDiagramDataFactory";
 import TimeLog from "../../domain/TimeLog";
 import OvertimeDiagramDataFactory from "./OvertimeDiagramDataFactory";
 import StatisticsCard from "../stats/StatisticsCard";
-import DiagramContainer from "./DiagramContainer";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
 import OvertimeDiagram from "./OvertimeDiagram";
 import Duration from "../Duration";
