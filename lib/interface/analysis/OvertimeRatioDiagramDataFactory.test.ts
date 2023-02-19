@@ -11,7 +11,16 @@ describe("OvertimeRatioDiagramDataFactory", () => {
         TimeLogTestFactory.testRunningTimeLog(DAY),
       ]);
 
-      expect(timeLogDiagram.createData()).toEqual([]);
+      expect(timeLogDiagram.createData()).toEqual([
+        {
+          name: "With overtime",
+          count: 0,
+        },
+        {
+          name: "Without overtime",
+          count: 0,
+        },
+      ]);
     });
 
     it("groups by days if overtime exists", () => {

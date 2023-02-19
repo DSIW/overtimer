@@ -59,6 +59,10 @@ export default class Workday {
     return Math.max(this.getTotalWorkTimeMs() - HOUR_LIMIT, 0);
   }
 
+  hasOvertime() {
+    return this.getOvertimeMs() > 0;
+  }
+
   getOverAndUndertimeMs(): number {
     return this.getTotalWorkTimeMs() - HOUR_LIMIT;
   }
