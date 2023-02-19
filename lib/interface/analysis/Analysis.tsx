@@ -10,6 +10,8 @@ import Duration from "../Duration";
 import StatisticsRow from "../stats/StatisticsRow";
 import WeekdayDiagram from "./WeekdayDiagram";
 import DiagramRow from "./DiagramRow";
+import OvertimeRatioDiagram from "./OvertimeRatioDiagram";
+import OvertimeRatioDiagramDataFactory from "./OvertimeRatioDiagramDataFactory";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -22,6 +24,7 @@ export default function Analysis({ timeLogs }: Props) {
 
   const weekdayData = new WeekdayDiagramDataFactory(timeLogs).createData();
   const overtimeData = new OvertimeDiagramDataFactory(timeLogs).createData();
+  const ratioData = new OvertimeRatioDiagramDataFactory(timeLogs).createData();
 
   return (
     <Fragment>
@@ -31,6 +34,12 @@ export default function Analysis({ timeLogs }: Props) {
         </StatisticsCard>
         <StatisticsCard title="days">{days}</StatisticsCard>
       </StatisticsRow>
+      <DiagramRow>
+        <h3>Days</h3>
+        <DiagramContainer>
+          <OvertimeRatioDiagram data={ratioData} />
+        </DiagramContainer>
+      </DiagramRow>
       <DiagramRow>
         <h3>Weekday</h3>
         <DiagramContainer>
