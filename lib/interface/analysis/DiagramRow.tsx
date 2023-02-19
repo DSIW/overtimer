@@ -1,27 +1,31 @@
 import React, { ReactNode } from "react";
+import { Card, CardContent, Typography } from "@mui/material";
 
 interface Props {
+  title: string;
   children: ReactNode;
 }
 
-export default function DiagramRow({ children }: Props) {
+export default function DiagramRow({ title, children }: Props) {
   return (
-    <div
+    <Card
       style={{
-        display: "flex",
-        justifyContent: "space-around",
-        margin: "2rem",
-        marginRight: 0,
-        marginLeft: 0,
         width: "100%",
-        flexDirection: "column",
-        background: "white",
-        padding: "1rem",
-        border: "1px solid #ccc",
-        borderRadius: "5px",
       }}
     >
-      {children}
-    </div>
+      <CardContent>
+        <Typography
+          variant={"h5"}
+          color="text.secondary"
+          gutterBottom
+          marginBottom="2rem"
+          textTransform="uppercase"
+          fontWeight={300}
+        >
+          {title}
+        </Typography>
+        {children}
+      </CardContent>
+    </Card>
   );
 }

@@ -12,6 +12,7 @@ import WeekdayDiagram from "./WeekdayDiagram";
 import DiagramRow from "./DiagramRow";
 import OvertimeRatioDiagram from "./OvertimeRatioDiagram";
 import OvertimeRatioDiagramDataFactory from "./OvertimeRatioDiagramDataFactory";
+import { Grid } from "@mui/material";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -34,24 +35,29 @@ export default function Analysis({ timeLogs }: Props) {
         </StatisticsCard>
         <StatisticsCard title="days">{days}</StatisticsCard>
       </StatisticsRow>
-      <DiagramRow>
-        <h3>Days</h3>
-        <DiagramContainer>
-          <OvertimeRatioDiagram data={ratioData} />
-        </DiagramContainer>
-      </DiagramRow>
-      <DiagramRow>
-        <h3>Weekday</h3>
-        <DiagramContainer>
-          <WeekdayDiagram data={weekdayData} />
-        </DiagramContainer>
-      </DiagramRow>
-      <DiagramRow>
-        <h3>History</h3>
-        <DiagramContainer>
-          <OvertimeDiagram data={overtimeData} />
-        </DiagramContainer>
-      </DiagramRow>
+      <Grid container gap={2}>
+        <Grid xs={12}>
+          <DiagramRow title="Days">
+            <DiagramContainer>
+              <OvertimeRatioDiagram data={ratioData} />
+            </DiagramContainer>
+          </DiagramRow>
+        </Grid>
+        <Grid xs={12}>
+          <DiagramRow title="Weekday">
+            <DiagramContainer>
+              <WeekdayDiagram data={weekdayData} />
+            </DiagramContainer>
+          </DiagramRow>
+        </Grid>
+        <Grid xs={12}>
+          <DiagramRow title="History">
+            <DiagramContainer>
+              <OvertimeDiagram data={overtimeData} />
+            </DiagramContainer>
+          </DiagramRow>
+        </Grid>
+      </Grid>
     </Fragment>
   );
 }
