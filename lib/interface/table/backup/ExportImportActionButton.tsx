@@ -24,7 +24,6 @@ export default function ExportImportActionButton() {
       await exportImportApplicationService.exportAllTimeLogs();
       popupState.close();
     } catch (error) {
-      console.error(error);
       Sentry.captureException(error);
       enqueueSnackbar("Export failed!", { variant: "error" });
     }
@@ -39,7 +38,6 @@ export default function ExportImportActionButton() {
       enqueueSnackbar("Import was successful!", { variant: "success" });
       popupState.close();
     } catch (error) {
-      console.error(error);
       Sentry.captureException(error);
       enqueueSnackbar("Import failed!", { variant: "error" });
     }
