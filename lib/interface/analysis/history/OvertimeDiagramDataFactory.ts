@@ -24,8 +24,6 @@ export default class OvertimeDiagramDataFactory {
       workday.format(allSameYear ? "ww" : "MM/yyyy")
     );
 
-    console.log({ allSameYear, keys: Object.keys(groupedByWeek) });
-
     const entries: OvertimeDiagramEntryDto[] = [];
 
     Object.entries(groupedByWeek).forEach(([_week, workdays]) => {
