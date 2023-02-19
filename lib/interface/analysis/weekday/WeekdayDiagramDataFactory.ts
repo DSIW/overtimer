@@ -1,7 +1,7 @@
-import TimeLog from "../../domain/TimeLog";
-import Workday, { Weekday } from "../../domain/Workday";
+import TimeLog from "../../../domain/TimeLog";
+import Workday, { Weekday } from "../../../domain/Workday";
 import { groupBy } from "lodash";
-import DurationStatistic from "../../domain/analysis/DurationStatistic";
+import DurationStatistic from "../../../domain/analysis/DurationStatistic";
 
 export type WeekdayDiagramEntryDto = {
   weekday: Weekday;

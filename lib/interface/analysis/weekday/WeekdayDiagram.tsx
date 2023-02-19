@@ -1,8 +1,8 @@
 import React, { Fragment, ReactElement } from "react";
-import Duration from "../Duration";
+import Duration from "../../Duration";
 import { Bar, BarChart, Legend, Tooltip, TooltipProps, XAxis } from "recharts";
 import { WeekdayDiagramEntryDto } from "./WeekdayDiagramDataFactory";
-import OvertimerTooltip from "./OvertimerTooltip";
+import OvertimerTooltip from "../OvertimerTooltip";
 
 interface Props {
   data: WeekdayDiagramEntryDto[];

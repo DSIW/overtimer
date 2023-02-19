@@ -1,5 +1,5 @@
 import { addDays, parseISO } from "date-fns";
-import TimeLogTestFactory from "../../domain/TimeLogTestFactory";
+import TimeLogTestFactory from "../../../domain/TimeLogTestFactory";
 import OvertimeRatioDiagramDataFactory from "./OvertimeRatioDiagramDataFactory";
 
 const DAY = parseISO("2022-08-01");

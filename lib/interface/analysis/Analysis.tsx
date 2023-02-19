@@ -1,16 +1,16 @@
 import React, { Fragment } from "react";
-import WeekdayDiagramDataFactory from "./WeekdayDiagramDataFactory";
+import WeekdayDiagramDataFactory from "./weekday/WeekdayDiagramDataFactory";
 import TimeLog from "../../domain/TimeLog";
-import OvertimeDiagramDataFactory from "./OvertimeDiagramDataFactory";
+import OvertimeDiagramDataFactory from "./history/OvertimeDiagramDataFactory";
 import StatisticsCard from "../stats/StatisticsCard";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
-import OvertimeDiagram from "./OvertimeDiagram";
+import OvertimeDiagram from "./history/OvertimeDiagram";
 import Duration from "../Duration";
 import StatisticsRow from "../stats/StatisticsRow";
-import WeekdayDiagram from "./WeekdayDiagram";
+import WeekdayDiagram from "./weekday/WeekdayDiagram";
 import DiagramCard from "./DiagramCard";
-import OvertimeRatioDiagram from "./OvertimeRatioDiagram";
-import OvertimeRatioDiagramDataFactory from "./OvertimeRatioDiagramDataFactory";
+import OvertimeRatioDiagram from "./days/OvertimeRatioDiagram";
+import OvertimeRatioDiagramDataFactory from "./days/OvertimeRatioDiagramDataFactory";
 import { Grid } from "@mui/material";
 
 interface Props {

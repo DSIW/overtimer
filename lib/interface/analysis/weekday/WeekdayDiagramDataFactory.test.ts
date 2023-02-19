@@ -1,7 +1,7 @@
 import { addDays, parseISO } from "date-fns";
-import TimeLogTestFactory from "../../domain/TimeLogTestFactory";
+import TimeLogTestFactory from "../../../domain/TimeLogTestFactory";
 import WeekdayDiagramDataFactory from "./WeekdayDiagramDataFactory";
-import { HOUR } from "../../domain/time-constants";
+import { HOUR } from "../../../domain/time-constants";
 
 const DAY = parseISO("2022-08-01");
 

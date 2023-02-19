@@ -1,5 +1,5 @@
-import TimeLog from "../../domain/TimeLog";
-import Workday from "../../domain/Workday";
+import TimeLog from "../../../domain/TimeLog";
+import Workday from "../../../domain/Workday";
 import { groupBy, sum } from "lodash";
 import { compareAsc } from "date-fns";
 

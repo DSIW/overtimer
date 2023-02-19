@@ -1,5 +1,5 @@
-import TimeLog from "../../domain/TimeLog";
-import Workday from "../../domain/Workday";
+import TimeLog from "../../../domain/TimeLog";
+import Workday from "../../../domain/Workday";
 
 export type OvertimeRatioDiagramEntryDto = {
   name: string;

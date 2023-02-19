@@ -9,8 +9,8 @@ import {
   YAxis,
 } from "recharts";
 import { OvertimeDiagramEntryDto } from "./OvertimeDiagramDataFactory";
-import Duration from "../../domain/analysis/Duration";
-import OvertimerTooltip from "./OvertimerTooltip";
+import Duration from "../../../domain/analysis/Duration";
+import OvertimerTooltip from "../OvertimerTooltip";
 
 interface Props {
   data: OvertimeDiagramEntryDto[];
