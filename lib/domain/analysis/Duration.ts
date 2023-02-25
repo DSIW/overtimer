@@ -29,17 +29,21 @@ export default class Duration {
   }
 
   getFormattedHours(): string {
-    const hours = this.milliseconds / 1000 / 60 / 60;
+    const hours = this.getHours();
     return `${round(hours, 1)} h`;
   }
 
   getFormattedMaxHours(): string {
-    const hours = this.milliseconds / 1000 / 60 / 60;
+    const hours = this.getHours();
     if (hours === 0) {
       return `${hours} h`;
     }
 
     const ceil = Math.ceil(hours);
     return `less than ${ceil} h`;
+  }
+
+  private getHours() {
+    return this.milliseconds / 1000 / 60 / 60;
   }
 }
