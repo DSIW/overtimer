@@ -7,7 +7,6 @@ import { timerApplicationService } from "../../application/TimerApplicationServi
 import useWindowFocus from "use-window-focus";
 import {
   closeTimerNotification,
-  requestNotificationPermission,
   showTimerNotificationIfGranted,
 } from "../../infrastructure/notification/Notification";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
@@ -17,19 +16,11 @@ interface Props {
   timeLogs: TimeLog[];
 }
 
-function useNotification() {
-  useEffect(() => {
-    requestNotificationPermission();
-  }, []);
-}
-
 export default function TimerContainer({ timeLogs }: Props) {
   const currentTimeLog = timeLogs[0];
 
   // Update on focus for reset after midnight
   useWindowFocus();
-
-  useNotification();
 
   const { start, pause } = useStopwatch({ autoStart: false });
 
@@ -45,47 +36,16 @@ export default function TimerContainer({ timeLogs }: Props) {
   const { isRunning, value } = statistics.getTimerValues();
 
   useEffect(() => {
-    async function handleAction() {
-      const reg = await navigator.serviceWorker.getRegistration();
-      if (!reg) {
-        return;
-      }
-      reg.addEventListener(
-        "notificationclick",
-        (event: unknown) => {
-          // eslint-disable-next-line no-console
-          console.log({ event });
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          if (event.action === "stopTimer") {
-            handleStartStop();
-          }
-        },
-        false
-      );
-    }
-
     if (isRunning) {
       showTimerNotificationIfGranted(
         "Timer is running",
         `Remaining: ${new Duration(value).getFormatted(true)}`,
-        [
-          {
-            title: "stop",
-            action: "stopTimer",
-          },
-        ],
+        [],
         true
       );
-
-      handleAction();
     } else {
       closeTimerNotification();
     }
-
-    return () => {
-      // TODO
-    };
   }, [isRunning, value]);
 
   async function handleStartStop() {
@@ -97,10 +57,6 @@ export default function TimerContainer({ timeLogs }: Props) {
       await timerApplicationService.start();
     }
   }
-
-  // <Button onClick={() => showNotificationIfGranted("title", "body", [])}>
-  //   Show notification
-  // </Button>
 
   return <Timer timeLogs={timeLogs} onClick={handleStartStop} />;
 }

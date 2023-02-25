@@ -8,21 +8,31 @@ export async function showTimerNotificationIfGranted(
   actions: NotificationAction[],
   isPersistent: boolean
 ) {
+  await requestNotificationPermission();
+
   if (Notification.permission == "granted") {
     const reg = await navigator.serviceWorker.getRegistration();
-    reg &&
-      reg.showNotification(title, {
-        body,
-        actions: actions,
-        vibrate: [300, 100, 300],
-        requireInteraction: isPersistent,
-        tag: "timer",
-      });
+    if (!reg) {
+      return;
+    }
+
+    reg.showNotification(title, {
+      body,
+      actions: actions,
+      vibrate: [300, 100, 300],
+      requireInteraction: isPersistent,
+      tag: "timer",
+      icon: "/favicon.ico",
+    });
   }
 }
 
 export async function closeTimerNotification() {
   const reg = await navigator.serviceWorker.getRegistration();
-  const notifications = reg ? await reg.getNotifications({ tag: "timer" }) : [];
+  if (!reg) {
+    return;
+  }
+
+  const notifications = await reg.getNotifications({ tag: "timer" });
   notifications && notifications.forEach((not) => not.close());
 }
