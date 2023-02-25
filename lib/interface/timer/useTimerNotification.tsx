@@ -4,6 +4,7 @@ import {
   showTimerNotificationIfGranted,
 } from "../../infrastructure/notification/Notification";
 import Duration from "../../domain/analysis/Duration";
+import * as Sentry from "@sentry/browser";
 
 export default function useTimerNotification(
   isRunning: boolean,
@@ -16,9 +17,11 @@ export default function useTimerNotification(
         `Remaining: ${new Duration(value).getFormatted(true)}`,
         [],
         true
-      );
+      ).catch((error: unknown) => Sentry.captureException(error));
     } else {
-      closeTimerNotification();
+      closeTimerNotification().catch((error: unknown) =>
+        Sentry.captureException(error)
+      );
     }
   }, [isRunning, value]);
 }

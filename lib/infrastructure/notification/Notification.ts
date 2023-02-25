@@ -16,7 +16,7 @@ export async function showTimerNotificationIfGranted(
       return;
     }
 
-    reg.showNotification(title, {
+    await reg.showNotification(title, {
       body,
       actions: actions,
       vibrate: [300, 100, 300],
