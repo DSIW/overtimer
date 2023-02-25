@@ -35,8 +35,9 @@ export default class Duration {
 
   getFormattedMaxHours(): string {
     const hours = this.getHours();
-    if (hours === 0) {
-      return `${hours} h`;
+
+    if (hours <= 0) {
+      return `no remaining`;
     }
 
     const ceil = Math.ceil(hours);

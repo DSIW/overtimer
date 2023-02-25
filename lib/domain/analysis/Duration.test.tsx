@@ -77,8 +77,16 @@ describe("Duration", () => {
   });
 
   describe("getFormattedMaxHours()", () => {
+    it("renders negative duration", () => {
+      expect(new Duration(-1 * MIN).getFormattedMaxHours()).toEqual(
+        "no remaining"
+      );
+    });
+
     it("renders zero seconds", () => {
-      expect(new Duration(0).getFormattedMaxHours()).toEqual("0 h");
+      expect(new Duration(0 * SEC).getFormattedMaxHours()).toEqual(
+        "no remaining"
+      );
     });
 
     it("renders seconds as less than 1 hour", () => {
