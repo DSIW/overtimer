@@ -75,4 +75,40 @@ describe("Duration", () => {
       expect(new Duration(25 * HOUR).getFormattedHours()).toEqual("25 h");
     });
   });
+
+  describe("getFormattedMaxHours()", () => {
+    it("renders zero seconds", () => {
+      expect(new Duration(0).getFormattedMaxHours()).toEqual("0 h");
+    });
+
+    it("renders seconds as less than 1 hour", () => {
+      expect(new Duration(1 * SEC).getFormattedMaxHours()).toEqual(
+        "less than 1 h"
+      );
+    });
+
+    it("renders minutes as less than 1 hour", () => {
+      expect(new Duration(30 * MIN).getFormattedMaxHours()).toEqual(
+        "less than 1 h"
+      );
+    });
+
+    it("renders hours", () => {
+      expect(new Duration(1 * HOUR).getFormattedMaxHours()).toEqual(
+        "less than 1 h"
+      );
+    });
+
+    it("renders hours and minutes", () => {
+      expect(new Duration(1 * HOUR + 1 * MIN).getFormattedMaxHours()).toEqual(
+        "less than 2 h"
+      );
+    });
+
+    it("renders no days", () => {
+      expect(new Duration(25 * HOUR).getFormattedMaxHours()).toEqual(
+        "less than 25 h"
+      );
+    });
+  });
 });

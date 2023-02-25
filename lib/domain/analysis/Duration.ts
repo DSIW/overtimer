@@ -32,4 +32,14 @@ export default class Duration {
     const hours = this.milliseconds / 1000 / 60 / 60;
     return `${round(hours, 1)} h`;
   }
+
+  getFormattedMaxHours(): string {
+    const hours = this.milliseconds / 1000 / 60 / 60;
+    if (hours === 0) {
+      return `${hours} h`;
+    }
+
+    const ceil = Math.ceil(hours);
+    return `less than ${ceil} h`;
+  }
 }
