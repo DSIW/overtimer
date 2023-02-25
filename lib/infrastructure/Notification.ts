@@ -10,21 +10,23 @@ export async function showTimerNotificationIfGranted(
 ) {
   await requestNotificationPermission();
 
-  if (Notification.permission == PERMISSIONS_GRANTED) {
-    const registration = await getRegistration();
-    if (!registration) {
-      return;
-    }
-
-    await registration.showNotification(title, {
-      body,
-      actions: [],
-      vibrate: [300, 100, 300],
-      requireInteraction: true,
-      tag: "timer",
-      icon: "/favicon.ico",
-    });
+  if (Notification.permission !== PERMISSIONS_GRANTED) {
+    return;
   }
+
+  const registration = await getRegistration();
+  if (!registration) {
+    return;
+  }
+
+  await registration.showNotification(title, {
+    body,
+    actions: [],
+    vibrate: [300, 100, 300],
+    requireInteraction: false,
+    tag: "timer",
+    icon: "/favicon.ico",
+  });
 }
 
 export async function closeTimerNotification() {

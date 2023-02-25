@@ -7,6 +7,7 @@ import { timerApplicationService } from "../../application/TimerApplicationServi
 import useWindowFocus from "use-window-focus";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
 import useTimerNotification from "./useTimerNotification";
+import Duration from "../../domain/analysis/Duration";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -29,7 +30,9 @@ export default function TimerContainer({ timeLogs }: Props) {
 
   const { isRunning, value } = new TimeLogStatistics(timeLogs).getTimerValues();
 
-  useTimerNotification(isRunning, value);
+  const formattedDuration = new Duration(value).getFormattedMaxHours();
+
+  useTimerNotification(isRunning, formattedDuration);
 
   async function handleStartStop() {
     if (currentTimeLog && currentTimeLog.isRunning()) {
