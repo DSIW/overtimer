@@ -5,20 +5,16 @@ import {
 } from "../../infrastructure/Notification";
 import * as Sentry from "@sentry/browser";
 
-export default function useTimerNotification(
-  isRunning: boolean,
-  remainingHours: string
-) {
+export default function useTimerNotification(isRunning: boolean, body: string) {
   useEffect(() => {
     if (isRunning) {
-      showTimerNotificationIfGranted(
-        "Timer is running",
-        `Remaining: ${remainingHours}`
-      ).catch((error: unknown) => Sentry.captureException(error));
+      showTimerNotificationIfGranted("Timer is running", body).catch(
+        (error: unknown) => Sentry.captureException(error)
+      );
     } else {
       closeTimerNotification().catch((error: unknown) =>
         Sentry.captureException(error)
       );
     }
-  }, [isRunning, remainingHours]);
+  }, [isRunning, body]);
 }

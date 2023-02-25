@@ -28,11 +28,16 @@ export default function TimerContainer({ timeLogs }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTimeLog]);
 
-  const { isRunning, value } = new TimeLogStatistics(timeLogs).getTimerValues();
+  const { isRunning, value, isOverdue } = new TimeLogStatistics(
+    timeLogs
+  ).getTimerValues();
 
   const formattedDuration = new Duration(value).getFormattedMaxHours();
 
-  useTimerNotification(isRunning, formattedDuration);
+  useTimerNotification(
+    isRunning,
+    isOverdue ? "Stop working!" : `${formattedDuration} remaining`
+  );
 
   async function handleStartStop() {
     if (currentTimeLog && currentTimeLog.isRunning()) {
