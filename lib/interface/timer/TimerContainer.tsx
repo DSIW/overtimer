@@ -21,8 +21,6 @@ function useNotification() {
   useEffect(() => {
     requestNotificationPermission();
   }, []);
-
-  return [showTimerNotificationIfGranted, closeTimerNotification];
 }
 
 export default function TimerContainer({ timeLogs }: Props) {
@@ -31,7 +29,7 @@ export default function TimerContainer({ timeLogs }: Props) {
   // Update on focus for reset after midnight
   useWindowFocus();
 
-  const [showNotification, closeNotification] = useNotification();
+  useNotification();
 
   const { start, pause } = useStopwatch({ autoStart: false });
 
@@ -55,7 +53,10 @@ export default function TimerContainer({ timeLogs }: Props) {
       reg.addEventListener(
         "notificationclick",
         (event: unknown) => {
+          // eslint-disable-next-line no-console
           console.log({ event });
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           if (event.action === "stopTimer") {
             handleStartStop();
           }
@@ -65,7 +66,7 @@ export default function TimerContainer({ timeLogs }: Props) {
     }
 
     if (isRunning) {
-      showNotification(
+      showTimerNotificationIfGranted(
         "Timer is running",
         `Remaining: ${new Duration(value).getFormatted(true)}`,
         [
@@ -79,7 +80,7 @@ export default function TimerContainer({ timeLogs }: Props) {
 
       handleAction();
     } else {
-      closeNotification();
+      closeTimerNotification();
     }
 
     return () => {
