@@ -6,6 +6,7 @@ import { SnackbarProvider } from "notistack";
 import PersistenceWarning from "./PersistenceWarning";
 import { useTimeLogs } from "./hooks/useTimeLogs";
 import Footer from "./footer/Footer";
+import { Button } from "@mui/material";
 
 export default function TimerApp() {
   const timeLogs = useTimeLogs();
@@ -17,7 +18,16 @@ export default function TimerApp() {
   async function showNotification(text: string) {
     if (Notification.permission == "granted") {
       const reg = await navigator.serviceWorker.getRegistration();
-      reg && reg.showNotification(text);
+      reg &&
+        reg.showNotification(text, {
+          actions: [
+            {
+              action: "action",
+              title: "title",
+            },
+          ],
+          vibrate: [200, 100, 200],
+        });
     }
   }
 
@@ -25,9 +35,9 @@ export default function TimerApp() {
     <>
       <SnackbarProvider maxSnack={1}>
         <TimerContainer timeLogs={timeLogs} />
-        <button onClick={() => showNotification("test")}>
+        <Button onClick={() => showNotification("test")}>
           Show notification
-        </button>
+        </Button>
         <TimeLogSummary timeLogs={timeLogs} />
         <PersistenceWarning timeLogs={timeLogs} />
         <TimeLogTable timeLogs={timeLogs} />
