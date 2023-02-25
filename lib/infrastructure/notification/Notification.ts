@@ -1,26 +1,26 @@
+const PERMISSIONS_GRANTED = "granted";
+
 export async function requestNotificationPermission() {
   await Notification.requestPermission();
 }
 
 export async function showTimerNotificationIfGranted(
   title: string,
-  body: string,
-  actions: NotificationAction[],
-  isPersistent: boolean
+  body: string
 ) {
   await requestNotificationPermission();
 
-  if (Notification.permission == "granted") {
-    const reg = await navigator.serviceWorker.getRegistration();
-    if (!reg) {
+  if (Notification.permission == PERMISSIONS_GRANTED) {
+    const registration = await getRegistration();
+    if (!registration) {
       return;
     }
 
-    await reg.showNotification(title, {
+    await registration.showNotification(title, {
       body,
-      actions: actions,
+      actions: [],
       vibrate: [300, 100, 300],
-      requireInteraction: isPersistent,
+      requireInteraction: true,
       tag: "timer",
       icon: "/favicon.ico",
     });
@@ -28,11 +28,15 @@ export async function showTimerNotificationIfGranted(
 }
 
 export async function closeTimerNotification() {
-  const reg = await navigator.serviceWorker.getRegistration();
-  if (!reg) {
+  const registration = await getRegistration();
+  if (!registration) {
     return;
   }
 
-  const notifications = await reg.getNotifications({ tag: "timer" });
-  notifications && notifications.forEach((not) => not.close());
+  const notifications = await registration.getNotifications({ tag: "timer" });
+  notifications.forEach((notification) => notification.close());
+}
+
+export async function getRegistration() {
+  return await navigator.serviceWorker.getRegistration();
 }

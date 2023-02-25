@@ -14,9 +14,7 @@ export default function useTimerNotification(
     if (isRunning) {
       showTimerNotificationIfGranted(
         "Timer is running",
-        `Remaining: ${new Duration(value).getFormatted(true)}`,
-        [],
-        true
+        `Remaining: ${new Duration(value).getFormatted(true)}`
       ).catch((error: unknown) => Sentry.captureException(error));
     } else {
       closeTimerNotification().catch((error: unknown) =>
