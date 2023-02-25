@@ -26,7 +26,7 @@ export default function YearFilter(props: Props) {
 
   useEffect(() => {
     setYearFilter("" + defaultYear);
-  }, [props.timeLogs]);
+  }, [props.timeLogs, defaultYear]);
 
   const timeLogs = props.timeLogs.filter((timeLog) => {
     return (

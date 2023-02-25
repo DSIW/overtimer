@@ -4,7 +4,7 @@ import { round } from "lodash";
 export default class Duration {
   constructor(private milliseconds: number) {}
 
-  getFormatted(): string {
+  getFormatted(withSeconds = false): string {
     const { days, hours, minutes, seconds } = parseMs(this.milliseconds);
 
     const parts = [];
@@ -21,7 +21,7 @@ export default class Duration {
       parts.push(`${minutes} m`);
     }
 
-    if (seconds !== 0 && hours === 0 && minutes === 0) {
+    if ((hours === 0 && minutes === 0) || withSeconds) {
       parts.push(`${seconds} s`);
     }
 
@@ -29,7 +29,22 @@ export default class Duration {
   }
 
   getFormattedHours(): string {
-    const hours = this.milliseconds / 1000 / 60 / 60;
+    const hours = this.getHours();
     return `${round(hours, 1)} h`;
+  }
+
+  getFormattedMaxHours(): string {
+    const hours = this.getHours();
+
+    if (hours <= 0) {
+      return `no remaining`;
+    }
+
+    const ceil = Math.ceil(hours);
+    return `less than ${ceil} h`;
+  }
+
+  private getHours() {
+    return this.milliseconds / 1000 / 60 / 60;
   }
 }
