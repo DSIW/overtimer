@@ -3,7 +3,6 @@ import {
   closeTimerNotification,
   showTimerNotificationIfGranted,
 } from "../../infrastructure/Notification";
-import Duration from "../../domain/analysis/Duration";
 import * as Sentry from "@sentry/browser";
 
 export default function useTimerNotification(
