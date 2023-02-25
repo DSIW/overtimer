@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import {
   closeTimerNotification,
   showTimerNotificationIfGranted,
-} from "../../infrastructure/notification/Notification";
+} from "../../infrastructure/Notification";
 import Duration from "../../domain/analysis/Duration";
 import * as Sentry from "@sentry/browser";
 
