@@ -19,6 +19,12 @@ describe("Duration", () => {
       expect(new Duration(1 * MIN + 1 * SEC).getFormatted()).toEqual("1 m");
     });
 
+    it("does not remove seconds if withSeconds set", () => {
+      expect(new Duration(1 * MIN + 1 * SEC).getFormatted(true)).toEqual(
+        "1 m 1 s"
+      );
+    });
+
     it("renders hours", () => {
       expect(new Duration(1 * HOUR).getFormatted()).toEqual("1 h");
     });
