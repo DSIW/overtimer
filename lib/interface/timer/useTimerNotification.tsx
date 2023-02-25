@@ -8,18 +8,18 @@ import * as Sentry from "@sentry/browser";
 
 export default function useTimerNotification(
   isRunning: boolean,
-  value: number
+  remainingMillis: number
 ) {
   useEffect(() => {
     if (isRunning) {
       showTimerNotificationIfGranted(
         "Timer is running",
-        `Remaining: ${new Duration(value).getFormatted(true)}`
+        `Remaining: ${new Duration(remainingMillis).getFormatted(true)}`
       ).catch((error: unknown) => Sentry.captureException(error));
     } else {
       closeTimerNotification().catch((error: unknown) =>
         Sentry.captureException(error)
       );
     }
-  }, [isRunning, value]);
+  }, [isRunning, remainingMillis]);
 }
