@@ -1,34 +1,32 @@
 import TimeLog from "../domain/TimeLog";
 import TimeLogRepository from "../infrastructure/TimeLogRepository";
+import { exportImportApplicationService } from "./ExportImportApplicationService";
 
 export default class TimerApplicationService {
-    private readonly timeLogRepository: TimeLogRepository
+  private readonly timeLogRepository: TimeLogRepository;
 
-    constructor() {
-        this.timeLogRepository = new TimeLogRepository()
-    }
+  constructor() {
+    this.timeLogRepository = new TimeLogRepository();
+  }
 
-    async getAllTimeLogs() {
-        return await this.timeLogRepository.all()
-    }
+  async start() {
+    const timeLog = TimeLog.startedNow();
+    await this.timeLogRepository.save(timeLog);
+  }
 
-    async start() {
-      const timeLog = TimeLog.startedNow()
-      await this.timeLogRepository.save(timeLog)
-    }
+  async stop(currentTimeLog: TimeLog) {
+    const endTime = new Date();
 
-    async stop(currentTimeLog: TimeLog) {
-      const updatedTimeLog = new TimeLog({ ...currentTimeLog, endTime: new Date() })
-      await this.update(updatedTimeLog)
-    }
+    const updatedTimeLog = new TimeLog({
+      ...currentTimeLog,
+      endTime,
+    });
+    await this.timeLogRepository.update(updatedTimeLog);
 
-    async update(timeLog: TimeLog) {
-      await this.timeLogRepository.update(timeLog)
-    }
-
-    async delete(timeLog: TimeLog) {
-      await this.timeLogRepository.delete(timeLog)
-    }
+    await exportImportApplicationService.exportAllTimeLogsAfterWorkdayEnd(
+      endTime
+    );
+  }
 }
 
-export const timerApplicationService = new TimerApplicationService()
+export const timerApplicationService = new TimerApplicationService();

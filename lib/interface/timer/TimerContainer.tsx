@@ -1,40 +1,39 @@
-import 'react-circular-progressbar/dist/styles.css';
-import TimeLog from '../../domain/TimeLog';
-import {useStopwatch} from "react-timer-hook";
-import React, {useEffect} from "react";
+import "react-circular-progressbar/dist/styles.css";
+import TimeLog from "../../domain/TimeLog";
+import { useStopwatch } from "react-timer-hook";
+import React, { useEffect } from "react";
 import Timer from "./Timer";
-import { timerApplicationService } from '../../application/TimerApplicationService';
+import { timerApplicationService } from "../../application/TimerApplicationService";
+import useWindowFocus from "use-window-focus";
 
 interface Props {
   timeLogs: TimeLog[];
 }
 
 export default function TimerContainer({ timeLogs }: Props) {
-  const currentTimeLog = timeLogs[0]
+  const currentTimeLog = timeLogs[0];
 
-  const {
-    start,
-    pause,
-  } = useStopwatch({ autoStart: false })
+  // Update on focus for reset after midnight
+  useWindowFocus();
+
+  const { start, pause } = useStopwatch({ autoStart: false });
 
   useEffect(() => {
     if (currentTimeLog?.isRunning()) {
-      start()
+      start();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTimeLog])
+  }, [currentTimeLog]);
 
   async function handleStartStop() {
     if (currentTimeLog && currentTimeLog.isRunning()) {
-      pause()
-      await timerApplicationService.stop(currentTimeLog)
+      pause();
+      await timerApplicationService.stop(currentTimeLog);
     } else {
-      start()
-      await timerApplicationService.start()
+      start();
+      await timerApplicationService.start();
     }
   }
 
-  return (
-    <Timer timeLogs={timeLogs} onClick={handleStartStop} />
-  )
+  return <Timer timeLogs={timeLogs} onClick={handleStartStop} />;
 }

@@ -1,65 +1,60 @@
-import { IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core'
-import { DeleteOutlined, EditOutlined, MoreVert } from '@material-ui/icons'
-import TimeLog from '../../domain/TimeLog'
-import FormDialog from '../form/FormDialog'
+import { IconButton, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { DeleteOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
+import TimeLog from "../../domain/TimeLog";
+import FormDialog from "../form/FormDialog";
 import {
-  usePopupState,
-  bindTrigger,
   bindMenu,
-} from 'material-ui-popup-state/hooks'
-
-export type Action = "delete" | "edit"
+  bindTrigger,
+  usePopupState,
+} from "material-ui-popup-state/hooks";
+import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
+import { useState } from "react";
 
 interface Props {
   timeLog: TimeLog;
-  onAction: (action: Action, timeLog: TimeLog) => void;
 }
 
-export default function TableRowActionButton({ timeLog, onAction }: Props) {
+export default function TableRowActionButton({ timeLog }: Props) {
+  const popupState = usePopupState({
+    variant: "popover",
+    popupId: "TableRowActionButton",
+  });
+  const [open, setOpen] = useState(false);
 
-  const popupState = usePopupState({ variant: 'popover', popupId: 'ActionMenu' })
-  const dialogState = usePopupState({ variant: 'popover', popupId: 'Dialog' })
-
-  function handleAction(action: Action) {
-    return () => {
-      if (action === 'edit') {
-        dialogState.open()
-      }
-      onAction(action, timeLog)
-      popupState.close()
-    }
+  async function handleDelete() {
+    await timeLogApplicationService.delete(timeLog);
+    popupState.close();
   }
 
-  function handleCancel() {
-    onAction('edit', timeLog)
-    dialogState.close()
+  function handleEdit() {
+    setOpen(true);
+    popupState.close();
   }
 
-  function handleSubmit(timeLog: TimeLog) {
-    onAction('edit', timeLog)
-    dialogState.close()
+  function handleClose() {
+    setOpen(false);
   }
 
   return (
     <>
-      <IconButton {...bindTrigger(popupState)}>
+      <IconButton {...bindTrigger(popupState)} size="large">
         <MoreVert />
       </IconButton>
       <Menu {...bindMenu(popupState)}>
-        <MenuItem onClick={handleAction('edit')}>
+        <MenuItem onClick={handleEdit}>
           <ListItemIcon>
             <EditOutlined fontSize="small" />
           </ListItemIcon>
           Edit
         </MenuItem>
-        <MenuItem onClick={handleAction('delete')} disabled={!timeLog.isDeletable()}>
+        <MenuItem onClick={handleDelete} disabled={!timeLog.isDeletable()}>
           <ListItemIcon>
             <DeleteOutlined fontSize="small" />
           </ListItemIcon>
           Delete
         </MenuItem>
       </Menu>
-      <FormDialog open={dialogState.isOpen} timeLog={timeLog} onCancel={handleCancel} onSubmit={handleSubmit} />
+      <FormDialog open={open} timeLog={timeLog} onClose={handleClose} />
     </>
-  )
+  );
 }
