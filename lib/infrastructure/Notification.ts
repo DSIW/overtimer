@@ -1,16 +1,16 @@
-const PERMISSIONS_GRANTED = "granted";
+const PERMISSIONS_GRANTED: NotificationPermission = "granted";
 
 export async function requestNotificationPermission() {
-  await Notification.requestPermission();
+  return await Notification.requestPermission();
 }
 
 export async function showTimerNotificationIfGranted(
   title: string,
   body: string
 ) {
-  await requestNotificationPermission();
+  const permission = await requestNotificationPermission();
 
-  if (Notification.permission !== PERMISSIONS_GRANTED) {
+  if (permission !== PERMISSIONS_GRANTED) {
     return;
   }
 
