@@ -8,10 +8,12 @@ interface Props {
   years: number[];
 }
 
+export const ALL_YEARS = "all";
+
 export default function YearSelect(props: Props) {
   return (
     <Select value={props.value} onChange={props.onChange}>
-      <MenuItem value={"all"}>All</MenuItem>
+      <MenuItem value={ALL_YEARS}>All</MenuItem>
       {props.years.map((year) => (
         <MenuItem key={year} value={year}>
           {year}

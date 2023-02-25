@@ -3,7 +3,7 @@ import Page from "../../lib/interface/layout/Page";
 import { useLiveQuery } from "dexie-react-hooks";
 import { timeLogApplicationService } from "../../lib/application/TimeLogApplicationService";
 import TimeLog from "../../lib/domain/TimeLog";
-import AnalysisFilter from "../../lib/interface/analysis/filter/YearFilter";
+import YearFilter from "../../lib/interface/analysis/filter/YearFilter";
 import Analysis from "../../lib/interface/analysis/Analysis";
 
 export default function AnalysisPage() {
@@ -15,9 +15,9 @@ export default function AnalysisPage() {
 
   return (
     <Page>
-      <AnalysisFilter timeLogs={timeLogs}>
+      <YearFilter timeLogs={timeLogs}>
         {(timeLogs) => <Analysis timeLogs={timeLogs} />}
-      </AnalysisFilter>
+      </YearFilter>
     </Page>
   );
 }

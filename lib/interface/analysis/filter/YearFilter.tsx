@@ -1,8 +1,8 @@
 import { SelectChangeEvent } from "@mui/material/Select/SelectInput";
-import React, { Fragment, ReactElement, useState } from "react";
+import React, { Fragment, ReactElement, useEffect, useState } from "react";
 import TimeLog from "../../../domain/TimeLog";
 import _ from "lodash";
-import YearSelect from "./YearSelect";
+import YearSelect, { ALL_YEARS } from "./YearSelect";
 import { Box } from "@mui/material";
 
 interface Props {
@@ -19,11 +19,18 @@ export default function YearFilter(props: Props) {
     )
   );
 
-  const [yearFilter, setYearFilter] = useState("all");
+  const currentYear = new Date().getFullYear();
+  const defaultYear = years.includes(currentYear) ? currentYear : ALL_YEARS;
+
+  const [yearFilter, setYearFilter] = useState("" + defaultYear);
+
+  useEffect(() => {
+    setYearFilter("" + defaultYear);
+  }, [props.timeLogs]);
 
   const timeLogs = props.timeLogs.filter((timeLog) => {
     return (
-      yearFilter === "all" ||
+      yearFilter === ALL_YEARS ||
       timeLog.startTime.getFullYear() === parseInt(yearFilter)
     );
   });
