@@ -5,12 +5,8 @@ import React, { useEffect } from "react";
 import Timer from "./Timer";
 import { timerApplicationService } from "../../application/TimerApplicationService";
 import useWindowFocus from "use-window-focus";
-import {
-  closeTimerNotification,
-  showTimerNotificationIfGranted,
-} from "../../infrastructure/notification/Notification";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
-import Duration from "../../domain/analysis/Duration";
+import useTimerNotification from "./useTimerNotification";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -31,22 +27,9 @@ export default function TimerContainer({ timeLogs }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTimeLog]);
 
-  const statistics = new TimeLogStatistics(timeLogs);
+  const { isRunning, value } = new TimeLogStatistics(timeLogs).getTimerValues();
 
-  const { isRunning, value } = statistics.getTimerValues();
-
-  useEffect(() => {
-    if (isRunning) {
-      showTimerNotificationIfGranted(
-        "Timer is running",
-        `Remaining: ${new Duration(value).getFormatted(true)}`,
-        [],
-        true
-      );
-    } else {
-      closeTimerNotification();
-    }
-  }, [isRunning, value]);
+  useTimerNotification(isRunning, value);
 
   async function handleStartStop() {
     if (currentTimeLog && currentTimeLog.isRunning()) {
