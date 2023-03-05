@@ -23,9 +23,6 @@ A lot of other apps are too sophisticated and contain too many features which ma
 
 ## Screenshots
 
-### Default state
-![default](docs/overtimer-default.png)
-
-### State with overtime
-![overtime](docs/overtimer-overtime.png)
-
+| Default state | State with overtime |
+|---|---|
+| ![default](docs/overtimer-default.png) | ![overtime](docs/overtimer-overtime.png) |
