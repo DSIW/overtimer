@@ -6,6 +6,8 @@ Track working time with focus on overtime statistics.
 
 A lot of other apps are too sophisticated and contain too many features which make the UX cumbersome. This app was designed to focus on a very simple UX to achieve the daily tasks with as less clicks as possible.
 
+![default](docs/overtimer-video.gif)
+
 | Default state | State with overtime |
 |---|---|
 | ![default](docs/overtimer-default.png) | ![overtime](docs/overtimer-overtime.png) |
