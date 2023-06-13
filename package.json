@@ -27,7 +27,7 @@
     "@typescript-eslint/eslint-plugin": "5.59.11",
     "date-fns": "2.30.0",
     "dexie": "3.2.3",
-    "dexie-react-hooks": "1.1.4",
+    "dexie-react-hooks": "1.1.6",
     "file-saver": "2.0.5",
     "lodash": "4.17.21",
     "material-ui-popup-state": "5.0.9",
