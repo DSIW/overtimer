@@ -21,7 +21,7 @@
     "@emotion/styled": "11.11.0",
     "@mui/icons-material": "5.14.7",
     "@mui/lab": "*",
-    "@mui/material": "5.14.6",
+    "@mui/material": "5.14.7",
     "@sentry/nextjs": "7.65.0",
     "@types/file-saver": "2.0.5",
     "@typescript-eslint/eslint-plugin": "6.5.0",
