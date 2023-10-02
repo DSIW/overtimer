@@ -24,7 +24,7 @@
     "@mui/material": "5.14.10",
     "@sentry/nextjs": "7.70.0",
     "@types/file-saver": "2.0.5",
-    "@typescript-eslint/eslint-plugin": "6.7.3",
+    "@typescript-eslint/eslint-plugin": "6.7.4",
     "@typescript-eslint/typescript-estree": "6.7.3",
     "date-fns": "2.30.0",
     "dexie": "3.2.4",
