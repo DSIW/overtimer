@@ -17,8 +17,9 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 1 if one running time log", () => {
-      const currentTimeLog =
-        TimeLogTestFactory.testRunningTimeLog(todayWorkdayStart());
+      const currentTimeLog = TimeLogTestFactory.testRunningTimeLog(
+        todayWorkdayStart()
+      );
 
       const timeLogStatistics = new TimeLogStatistics([currentTimeLog], TODAY);
 
@@ -26,8 +27,9 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 1 if two time logs at the same day", () => {
-      const currentTimeLog =
-        TimeLogTestFactory.testRunningTimeLog(todayWorkdayStart());
+      const currentTimeLog = TimeLogTestFactory.testRunningTimeLog(
+        todayWorkdayStart()
+      );
 
       const timeLogStatistics = new TimeLogStatistics(
         [currentTimeLog, currentTimeLog],
@@ -38,8 +40,9 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 2 if two time logs at different days", () => {
-      const currentTimeLog =
-        TimeLogTestFactory.testRunningTimeLog(todayWorkdayStart());
+      const currentTimeLog = TimeLogTestFactory.testRunningTimeLog(
+        todayWorkdayStart()
+      );
 
       const yesterdayTimeLog = TimeLogTestFactory.testRunningTimeLog(YESTERDAY);
 
@@ -60,8 +63,9 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 0 if time log is running", () => {
-      const currentTimeLog =
-        TimeLogTestFactory.testRunningTimeLog(todayWorkdayStart());
+      const currentTimeLog = TimeLogTestFactory.testRunningTimeLog(
+        todayWorkdayStart()
+      );
 
       const statistics = new TimeLogStatistics([currentTimeLog], TODAY);
 
