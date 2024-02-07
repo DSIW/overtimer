@@ -93,7 +93,7 @@
     "@testing-library/jest-dom": "6.4.2",
     "@testing-library/react": "14.1.0",
     "@types/jest": "29.5.12",
-    "@types/lodash": "4.14.199",
+    "@types/lodash": "4.14.202",
     "@types/react": "17.0.13",
     "babel-jest": "29.7.0",
     "cypress": "13.5.0",
