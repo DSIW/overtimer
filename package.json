@@ -70,7 +70,7 @@
     "@mui/material": "5.15.9",
     "@sentry/nextjs": "7.100.1",
     "@types/file-saver": "2.0.5",
-    "@typescript-eslint/eslint-plugin": "6.21.0",
+    "@typescript-eslint/eslint-plugin": "7.0.1",
     "@typescript-eslint/typescript-estree": "6.7.3",
     "date-fns": "2.30.0",
     "dexie": "3.2.4",
