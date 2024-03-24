@@ -1,6 +1,6 @@
 import { withTime } from "./time-constants";
 import TimeLog from "./TimeLog";
-import { addHours } from "date-fns";
+import * as DateFns from "date-fns";
 
 export default class TimeLogTestFactory {
   static testFulfilledTimeLog(
@@ -11,7 +11,7 @@ export default class TimeLogTestFactory {
     const startTime = withTime(date, formattedStartTime);
     return new TimeLog({
       startTime: startTime,
-      endTime: addHours(startTime, hours),
+      endTime: DateFns.addHours(startTime, hours),
     });
   }
 

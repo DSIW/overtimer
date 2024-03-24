@@ -1,10 +1,10 @@
-import { addDays, parseISO } from "date-fns";
+import * as DateFns from "date-fns";
 import Workday from "./Workday";
 import TimeLogTestFactory from "./TimeLogTestFactory";
 import { HOUR } from "./time-constants";
 
 // test week: Mon, 2022-08-01 .. Sun, 2022-08-07
-const DAY = parseISO("2022-08-01");
+const DAY = DateFns.parseISO("2022-08-01");
 
 describe("Workday", () => {
   describe("fromTimelogs", () => {
@@ -20,7 +20,7 @@ describe("Workday", () => {
         1
       );
       const timeLogNextDay = TimeLogTestFactory.testFulfilledTimeLog(
-        addDays(DAY, 1),
+        DateFns.addDays(DAY, 1),
         "09:00:00",
         1
       );
@@ -300,7 +300,7 @@ describe("Workday", () => {
         1
       );
       const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
-        addDays(DAY, 1),
+        DateFns.addDays(DAY, 1),
         "09:00:00",
         1
       );

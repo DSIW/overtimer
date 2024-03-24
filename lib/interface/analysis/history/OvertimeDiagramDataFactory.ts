@@ -1,7 +1,7 @@
 import TimeLog from "../../../domain/TimeLog";
 import Workday from "../../../domain/Workday";
 import _, { groupBy, sum } from "lodash";
-import { compareAsc } from "date-fns";
+import * as DateFns from "date-fns";
 
 export type OvertimeDiagramEntryDto = {
   date: Date;
@@ -64,7 +64,7 @@ export default class OvertimeDiagramDataFactory {
 
   private sortByTime(entries: OvertimeDiagramEntryDto[]) {
     return entries.sort((a, b) => {
-      return compareAsc(a.date, b.date);
+      return DateFns.compareAsc(a.date, b.date);
     });
   }
 }

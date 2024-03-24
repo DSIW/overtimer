@@ -1,9 +1,9 @@
-import { addDays, parseISO } from "date-fns";
+import * as DateFns from "date-fns";
 import TimeLogTestFactory from "../../../domain/TimeLogTestFactory";
 import WeekdayDiagramDataFactory from "./WeekdayDiagramDataFactory";
 import { HOUR } from "../../../domain/time-constants";
 
-const DAY = parseISO("2022-08-01");
+const DAY = DateFns.parseISO("2022-08-01");
 
 describe("WeekdayDiagramDataFactory", () => {
   describe("getData()", () => {
@@ -41,7 +41,7 @@ describe("WeekdayDiagramDataFactory", () => {
     });
 
     it("returns correct values for 2 different days", () => {
-      const tuesday = addDays(DAY, 1);
+      const tuesday = DateFns.addDays(DAY, 1);
       const timeLogDiagram = new WeekdayDiagramDataFactory([
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
         TimeLogTestFactory.testFulfilledTimeLog(DAY, "11:00:00", 8),

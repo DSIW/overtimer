@@ -1,6 +1,6 @@
 import { Payload, updateTime } from "./formDialogReducer";
 import TimeLog from "../../domain/TimeLog";
-import { getDay, getHours, getMinutes, getSeconds, subDays } from "date-fns";
+import * as DateFns from "date-fns";
 
 function testDate(): Date {
   const date = new Date();
@@ -21,9 +21,9 @@ describe("formDialogReducer", () => {
     const newState = updateTime({ timeLog, error: false }, payload);
 
     const startTime = newState.timeLog.startTime;
-    expect(getMinutes(startTime)).toEqual(2);
-    expect(getHours(startTime)).toEqual(1);
-    expect(getSeconds(startTime)).toEqual(0);
+    expect(DateFns.getMinutes(startTime)).toEqual(2);
+    expect(DateFns.getHours(startTime)).toEqual(1);
+    expect(DateFns.getSeconds(startTime)).toEqual(0);
     expect(newState.error).toBe(false);
   });
 
@@ -45,7 +45,7 @@ describe("formDialogReducer", () => {
   it("updates endTime", () => {
     const timeLog = new TimeLog({ startTime: testDate(), endTime: testDate() });
 
-    const hours = getHours(timeLog.startTime) + 1;
+    const hours = DateFns.getHours(timeLog.startTime) + 1;
 
     const payload: Payload = {
       name: "endTime",
@@ -57,18 +57,18 @@ describe("formDialogReducer", () => {
 
     expect(newState.error).toBe(false);
     const endTime = newState.timeLog.endTime as Date;
-    expect(getMinutes(endTime)).toEqual(2);
-    expect(getHours(endTime)).toEqual(hours);
-    expect(getSeconds(endTime)).toEqual(0);
+    expect(DateFns.getMinutes(endTime)).toEqual(2);
+    expect(DateFns.getHours(endTime)).toEqual(hours);
+    expect(DateFns.getSeconds(endTime)).toEqual(0);
   });
 
   it("uses day of startTime for endTime if days are different", () => {
     const timeLog = new TimeLog({
-      startTime: subDays(testDate(), 1),
+      startTime: DateFns.subDays(testDate(), 1),
       endTime: testDate(),
     });
 
-    const hours = getHours(timeLog.startTime) + 1;
+    const hours = DateFns.getHours(timeLog.startTime) + 1;
 
     const payload: Payload = {
       name: "endTime",
@@ -80,10 +80,10 @@ describe("formDialogReducer", () => {
 
     expect(newState.error).toBe(false);
     const endTime = newState.timeLog.endTime as Date;
-    expect(getDay(endTime)).toEqual(getDay(timeLog.startTime));
-    expect(getHours(endTime)).toEqual(hours);
-    expect(getMinutes(endTime)).toEqual(0);
-    expect(getSeconds(endTime)).toEqual(0);
+    expect(DateFns.getDay(endTime)).toEqual(DateFns.getDay(timeLog.startTime));
+    expect(DateFns.getHours(endTime)).toEqual(hours);
+    expect(DateFns.getMinutes(endTime)).toEqual(0);
+    expect(DateFns.getSeconds(endTime)).toEqual(0);
   });
 
   it("does not update if time log is invalid", () => {

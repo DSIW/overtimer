@@ -1,9 +1,9 @@
-import { addDays, addWeeks, addYears, parseISO } from "date-fns";
+import * as DateFns from "date-fns";
 import TimeLogTestFactory from "../../../domain/TimeLogTestFactory";
 import { HOUR } from "../../../domain/time-constants";
 import OvertimeDiagramDataFactory from "./OvertimeDiagramDataFactory";
 
-const DAY = parseISO("2022-08-01");
+const DAY = DateFns.parseISO("2022-08-01");
 
 describe("OvertimeDiagramDataFactory", () => {
   describe("getData()", () => {
@@ -14,12 +14,12 @@ describe("OvertimeDiagramDataFactory", () => {
         9
       );
       const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
-        addDays(DAY, 1),
+        DateFns.addDays(DAY, 1),
         "09:00:00",
         9
       );
       const timeLog3 = TimeLogTestFactory.testFulfilledTimeLog(
-        addWeeks(DAY, 1),
+        DateFns.addWeeks(DAY, 1),
         "09:00:00",
         9
       );
@@ -55,7 +55,7 @@ describe("OvertimeDiagramDataFactory", () => {
         9
       );
       const timeLog2 = TimeLogTestFactory.testFulfilledTimeLog(
-        addYears(DAY, 1),
+        DateFns.addYears(DAY, 1),
         "09:00:00",
         9
       );

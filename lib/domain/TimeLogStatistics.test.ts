@@ -1,12 +1,12 @@
 import TimeLog from "./TimeLog";
 import TimeLogStatistics from "./TimeLogStatistics";
-import { addHours, parseISO, subDays, subHours, subWeeks } from "date-fns";
+import * as DateFns from "date-fns";
 import { HOUR, withTime } from "./time-constants";
 import TimeLogTestFactory from "./TimeLogTestFactory";
 
 // test week: Mon, 2022-08-01 .. Sun, 2022-08-07
-const TODAY = parseISO("2022-08-01");
-const YESTERDAY = subDays(todayWorkdayStart(), 1);
+const TODAY = DateFns.parseISO("2022-08-01");
+const YESTERDAY = DateFns.subDays(todayWorkdayStart(), 1);
 
 describe("TimeLogStatistics", () => {
   describe("getDays()", () => {
@@ -139,7 +139,10 @@ describe("TimeLogStatistics", () => {
     });
 
     it("returns 0h if previous week's time log has duration of 9h", () => {
-      const lastWeekTimeLog = testFulfilledTimeLog(subWeeks(TODAY, 1), 8 + 1);
+      const lastWeekTimeLog = testFulfilledTimeLog(
+        DateFns.subWeeks(TODAY, 1),
+        8 + 1
+      );
 
       const statistics = new TimeLogStatistics([lastWeekTimeLog], TODAY);
 
@@ -169,7 +172,9 @@ describe("TimeLogStatistics", () => {
 
     it("returns remaining 4h if timer runs for 4 hours", () => {
       const today = withTime(new Date(), "17:00:00");
-      const timeLog = TimeLogTestFactory.testRunningTimeLog(subHours(today, 4));
+      const timeLog = TimeLogTestFactory.testRunningTimeLog(
+        DateFns.subHours(today, 4)
+      );
       const statistics = new TimeLogStatistics([timeLog], today);
 
       expect(statistics.getTimerValues()).toEqual({
@@ -182,7 +187,9 @@ describe("TimeLogStatistics", () => {
 
     it("returns overtime of 1h if timer runs for 9 hours", () => {
       const today = withTime(new Date(), "17:00:00");
-      const timeLog = TimeLogTestFactory.testRunningTimeLog(subHours(today, 9));
+      const timeLog = TimeLogTestFactory.testRunningTimeLog(
+        DateFns.subHours(today, 9)
+      );
       const statistics = new TimeLogStatistics([timeLog], today);
 
       expect(statistics.getTimerValues()).toEqual({
@@ -202,6 +209,6 @@ function todayWorkdayStart() {
 function testFulfilledTimeLog(date: Date, hours: number) {
   return new TimeLog({
     startTime: date,
-    endTime: addHours(date, hours),
+    endTime: DateFns.addHours(date, hours),
   });
 }
