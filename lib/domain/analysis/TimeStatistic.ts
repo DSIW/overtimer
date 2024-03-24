@@ -1,12 +1,12 @@
-import { format, max, min } from "date-fns";
+import * as DateFns from "date-fns";
 import median from "./median";
 import Statistic, { Statistics } from "./Statistic";
 
 export default class TimeStatistic implements Statistic<Date, string> {
   getStatistics(times: Date[]): Statistics<string> {
-    const minStartTime = min(times);
+    const minStartTime = DateFns.min(times);
     const medianStartTime = this.median(times);
-    const maxStartTime = max(times);
+    const maxStartTime = DateFns.max(times);
     return {
       min: this.formatTime(minStartTime),
       median: this.formatTime(medianStartTime),
@@ -19,6 +19,6 @@ export default class TimeStatistic implements Statistic<Date, string> {
   }
 
   private formatTime(date: Date) {
-    return format(date, "HH:mm:SS");
+    return DateFns.format(date, "HH:mm:SS");
   }
 }

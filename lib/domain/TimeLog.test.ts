@@ -1,24 +1,19 @@
 import TimeLog from "./TimeLog";
-import {
-  addDays,
-  addHours,
-  addSeconds,
-  getMilliseconds,
-  subDays,
-  subSeconds,
-} from "date-fns";
+import * as DateFns from "date-fns";
 import { HOUR, todayWorkdayEnd } from "./time-constants";
 
 const TODAY = todayWorkdayEnd();
-const YESTERDAY = subDays(TODAY, 1);
+const YESTERDAY = DateFns.subDays(TODAY, 1);
 
 describe("TimeLog", () => {
   describe("constructor", () => {
     it("resets milliseconds", () => {
       const timeLog = new TimeLog({ startTime: TODAY, endTime: TODAY });
 
-      expect(getMilliseconds(timeLog.startTime)).toBe(0);
-      expect(timeLog.endTime && getMilliseconds(timeLog.endTime)).toBe(0);
+      expect(DateFns.getMilliseconds(timeLog.startTime)).toBe(0);
+      expect(timeLog.endTime && DateFns.getMilliseconds(timeLog.endTime)).toBe(
+        0
+      );
     });
   });
 
@@ -32,7 +27,7 @@ describe("TimeLog", () => {
     it("returns true if start time is older", () => {
       const timeLog = new TimeLog({
         startTime: TODAY,
-        endTime: addSeconds(TODAY, 1),
+        endTime: DateFns.addSeconds(TODAY, 1),
       });
 
       expect(timeLog.isValid()).toBe(true);
@@ -41,7 +36,7 @@ describe("TimeLog", () => {
     it("returns false if start time and end time have different date", () => {
       const timeLog = new TimeLog({
         startTime: TODAY,
-        endTime: addDays(TODAY, 1),
+        endTime: DateFns.addDays(TODAY, 1),
       });
 
       expect(timeLog.isValid()).toBe(false);
@@ -96,7 +91,7 @@ describe("TimeLog", () => {
     });
 
     it("returns milliseconds until provided time", () => {
-      const timeLog = new TimeLog({ startTime: subSeconds(TODAY, 1) });
+      const timeLog = new TimeLog({ startTime: DateFns.subSeconds(TODAY, 1) });
       expect(timeLog.getElapsedMs(TODAY)).toEqual(1000);
     });
   });
@@ -113,7 +108,7 @@ describe("TimeLog", () => {
     it("returns duration", () => {
       const timeLog = new TimeLog({
         startTime: TODAY,
-        endTime: addHours(TODAY, 4),
+        endTime: DateFns.addHours(TODAY, 4),
       });
 
       expect(timeLog.getDurationMs()).toBe(4 * HOUR);

@@ -1,5 +1,5 @@
 import TimeLog from "./TimeLog";
-import { format, isSameDay, max, min } from "date-fns";
+import * as DateFns from "date-fns";
 import TimeLogCollection from "./TimeLogCollection";
 import { sum } from "lodash";
 import { HOUR } from "./time-constants";
@@ -36,15 +36,15 @@ export default class Workday {
   }
 
   format(pattern: string): string {
-    return format(this.timeLogs[0].startTime, pattern);
+    return DateFns.format(this.timeLogs[0].startTime, pattern);
   }
 
   getStartTime() {
-    return min(this.collection.getStartTimes());
+    return DateFns.min(this.collection.getStartTimes());
   }
 
   getEndTime() {
-    return max(this.collection.getEndTimes());
+    return DateFns.max(this.collection.getEndTimes());
   }
 
   getTotalWorkTimeMs(): number {
@@ -101,7 +101,9 @@ export default class Workday {
 
     const startTimes = this.timeLogs.map((timeLogs) => timeLogs.startTime);
     if (
-      !startTimes.every((timeLog) => isSameDay(timeLog, timeLogs[0].startTime))
+      !startTimes.every((timeLog) =>
+        DateFns.isSameDay(timeLog, timeLogs[0].startTime)
+      )
     ) {
       throw new Error(
         `Workday can't be created, because multiple days are used`

@@ -1,5 +1,5 @@
 import TimeLog from "./TimeLog";
-import { format, isSameDay, isSameWeek } from "date-fns";
+import * as DateFns from "date-fns";
 import { HOUR, MONDAY } from "./time-constants";
 
 const WORK_HOURS = 8;
@@ -49,7 +49,7 @@ export default class TimeLogStatistics {
 
   getDays() {
     const formattedTimeLogs = this.timeLogs.map((timeLog) =>
-      format(timeLog.startTime, "yyyy-MM-dd")
+      DateFns.format(timeLog.startTime, "yyyy-MM-dd")
     );
     return new Set(formattedTimeLogs).size;
   }
@@ -119,11 +119,11 @@ export default class TimeLogStatistics {
   }
 
   private isToday(timeLog: TimeLog): boolean {
-    return isSameDay(timeLog.startTime, this.nowDate);
+    return DateFns.isSameDay(timeLog.startTime, this.nowDate);
   }
 
   private isThisWeek(timeLog: TimeLog): boolean {
-    return isSameWeek(timeLog.startTime, this.nowDate, {
+    return DateFns.isSameWeek(timeLog.startTime, this.nowDate, {
       weekStartsOn: MONDAY,
     });
   }

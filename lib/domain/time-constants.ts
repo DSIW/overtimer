@@ -1,13 +1,4 @@
-import {
-  formatISO,
-  parseISO,
-  setHours,
-  setMilliseconds,
-  setMinutes,
-  setSeconds,
-  startOfWeek,
-  subWeeks,
-} from "date-fns";
+import * as DateFns from "date-fns";
 
 export const SEC = 1000;
 export const MIN = 60 * SEC;
@@ -17,8 +8,8 @@ export const MONDAY = 1;
 const TODAY = new Date();
 
 export function startOfLastWeeks(weeks: number, today = TODAY): Date {
-  const recentLimitDate = subWeeks(today, weeks);
-  return startOfWeek(recentLimitDate, { weekStartsOn: MONDAY });
+  const recentLimitDate = DateFns.subWeeks(today, weeks);
+  return DateFns.startOfWeek(recentLimitDate, { weekStartsOn: MONDAY });
 }
 
 export function todayWorkdayEnd() {
@@ -28,10 +19,10 @@ export function todayWorkdayEnd() {
 export function withTime(date: Date, formattedTime: string) {
   const [hours, minutes, seconds] = formattedTime.split(":");
 
-  let dateWithNewTime = parseISO(formatISO(date));
-  dateWithNewTime = setHours(dateWithNewTime, +hours);
-  dateWithNewTime = setMinutes(dateWithNewTime, +minutes);
-  dateWithNewTime = setSeconds(dateWithNewTime, +seconds);
-  dateWithNewTime = setMilliseconds(dateWithNewTime, 0);
+  let dateWithNewTime = DateFns.parseISO(DateFns.formatISO(date));
+  dateWithNewTime = DateFns.setHours(dateWithNewTime, +hours);
+  dateWithNewTime = DateFns.setMinutes(dateWithNewTime, +minutes);
+  dateWithNewTime = DateFns.setSeconds(dateWithNewTime, +seconds);
+  dateWithNewTime = DateFns.setMilliseconds(dateWithNewTime, 0);
   return dateWithNewTime;
 }

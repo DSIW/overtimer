@@ -1,6 +1,6 @@
 import TimeLog from "./TimeLog";
 import { groupBy } from "lodash";
-import { format, isBefore } from "date-fns";
+import * as DateFns from "date-fns";
 
 export default class TimeLogCollection {
   constructor(private readonly timeLogs: TimeLog[]) {}
@@ -19,13 +19,13 @@ export default class TimeLogCollection {
 
   groupedByDay() {
     return groupBy(this.timeLogs, (timeLog) => {
-      return format(timeLog.startTime, "yyyy-MM-dd");
+      return DateFns.format(timeLog.startTime, "yyyy-MM-dd");
     });
   }
 
   sorted() {
     return this.timeLogs.sort((a, b) =>
-      isBefore(a.startTime, b.startTime) ? -1 : 1
+      DateFns.isBefore(a.startTime, b.startTime) ? -1 : 1
     );
   }
 }

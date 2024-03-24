@@ -1,5 +1,5 @@
 import TimeLog from "../../domain/TimeLog";
-import { isValid, setHours, setMinutes, setSeconds } from "date-fns";
+import * as DateFns from "date-fns";
 import { TimeLogEventTargetName } from "./ChangeEvent";
 
 export interface State {
@@ -24,11 +24,11 @@ export function updateTime(state: State, payload: Payload) {
   }
 
   let updatedTime = state.timeLog.startTime;
-  updatedTime = setHours(updatedTime, hours);
-  updatedTime = setMinutes(updatedTime, minutes);
-  updatedTime = setSeconds(updatedTime, 0);
+  updatedTime = DateFns.setHours(updatedTime, hours);
+  updatedTime = DateFns.setMinutes(updatedTime, minutes);
+  updatedTime = DateFns.setSeconds(updatedTime, 0);
 
-  const valid = isValid(updatedTime);
+  const valid = DateFns.isValid(updatedTime);
 
   if (!valid) {
     return { ...state, error: true };
@@ -51,5 +51,5 @@ export function updateTime(state: State, payload: Payload) {
 }
 
 function resetSeconds(time: Date): Date {
-  return setSeconds(time, 0);
+  return DateFns.setSeconds(time, 0);
 }

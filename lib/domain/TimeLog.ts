@@ -1,4 +1,4 @@
-import { isSameDay, isToday, setMilliseconds } from "date-fns";
+import * as DateFns from "date-fns";
 
 interface Fields {
   id?: number;
@@ -31,7 +31,7 @@ export default class TimeLog {
 
   isValid() {
     const end = this.endTime || new Date();
-    const sameDay = isSameDay(this.startTime, end);
+    const sameDay = DateFns.isSameDay(this.startTime, end);
     return sameDay && this.startTime < end;
   }
 
@@ -44,7 +44,7 @@ export default class TimeLog {
   }
 
   isDeletable() {
-    return !(this.isRunning() && isToday(this.startTime));
+    return !(this.isRunning() && DateFns.isToday(this.startTime));
   }
 
   getElapsedMs(nowDate: Date): number {
@@ -65,6 +65,6 @@ export default class TimeLog {
   }
 
   private reducePrecision(time: Date): Date {
-    return setMilliseconds(time, 0);
+    return DateFns.setMilliseconds(time, 0);
   }
 }
