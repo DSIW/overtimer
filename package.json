@@ -28,7 +28,7 @@
     "react-timer-hook": "3.0.7",
     "recharts": "2.12.3",
     "use-window-focus": "1.4.3",
-    "usehooks-ts": "2.14.0"
+    "usehooks-ts": "3.0.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.4.2",
