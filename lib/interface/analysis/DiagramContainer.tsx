@@ -9,7 +9,7 @@ export default function DiagramContainer({ children }: Props) {
   const sizeRef = useRef(null);
   const { width } = useResizeObserver({
     ref: sizeRef,
-    box: "content-box"
+    box: "content-box",
   });
 
   return (
