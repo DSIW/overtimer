@@ -21,8 +21,6 @@ export async function showTimerNotificationIfGranted(
 
   await registration.showNotification(title, {
     body,
-    actions: [],
-    vibrate: [300, 100, 300],
     requireInteraction: false,
     tag: "timer",
     icon: "/favicon.ico",
