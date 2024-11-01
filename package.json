@@ -14,7 +14,7 @@
     "@typescript-eslint/parser": "7.6.0",
     "@typescript-eslint/typescript-estree": "7.6.0",
     "date-fns": "3.6.0",
-    "dexie": "3.2.5",
+    "dexie": "4.0.8",
     "dexie-react-hooks": "1.1.7",
     "file-saver": "2.0.5",
     "lodash": "4.17.21",
