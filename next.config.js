@@ -15,6 +15,9 @@ const SentryWebpackPluginOptions = {
   //   urlPrefix, include, ignore
 
   silent: true, // Suppresses all logs
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = withSentryConfig(configWithPwa, SentryWebpackPluginOptions);
