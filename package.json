@@ -13,7 +13,7 @@
     "@typescript-eslint/eslint-plugin": "7.6.0",
     "@typescript-eslint/parser": "7.18.0",
     "@typescript-eslint/typescript-estree": "7.6.0",
-    "date-fns": "3.6.0",
+    "date-fns": "4.1.0",
     "dexie": "4.0.8",
     "dexie-react-hooks": "1.1.7",
     "file-saver": "2.0.5",
