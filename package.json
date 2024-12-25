@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "11.13.3",
     "@emotion/styled": "11.14.0",
-    "@mui/icons-material": "5.16.7",
+    "@mui/icons-material": "5.16.13",
     "@mui/lab": "*",
     "@mui/material": "5.16.12",
     "@sentry/nextjs": "8.47.0",
