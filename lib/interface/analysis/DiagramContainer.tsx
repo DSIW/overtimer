@@ -1,4 +1,10 @@
-import React, { cloneElement, ReactElement, useRef, useState, useEffect } from "react";
+import React, {
+  cloneElement,
+  ReactElement,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 
 interface Props {
   children: ReactElement<{ width?: number }>;
