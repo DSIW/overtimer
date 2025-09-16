@@ -41,7 +41,9 @@ export default function FormDialog(props: Props) {
   }
 
   function close() {
-    onClose && onClose();
+    if (onClose) {
+      onClose();
+    }
   }
 
   return (
