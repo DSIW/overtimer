@@ -9,7 +9,7 @@ interface Props {
 
 export default function DiagramCard({ title, children }: Props) {
   return (
-    <Grid xs={12}>
+    <Grid container size={{ xs: 12 }}>
       <Card
         style={{
           width: "100%",
