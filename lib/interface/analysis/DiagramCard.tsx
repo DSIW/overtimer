@@ -4,7 +4,7 @@ import DiagramContainer from "./DiagramContainer";
 
 interface Props {
   title: string;
-  children: ReactElement;
+  children: ReactElement<{ width?: number }>;
 }
 
 export default function DiagramCard({ title, children }: Props) {
