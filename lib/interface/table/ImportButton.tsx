@@ -9,7 +9,9 @@ interface Props {
 export default function ImportButton({ onClick }: Props) {
   async function handleClick() {
     const file = document.getElementById("file");
-    file && file.click();
+    if (file) {
+      file.click();
+    }
   }
 
   return (
