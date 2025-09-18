@@ -15,7 +15,7 @@
     "@typescript-eslint/typescript-estree": "8.44.0",
     "date-fns": "4.1.0",
     "dexie": "4.2.0",
-    "dexie-react-hooks": "1.1.7",
+    "dexie-react-hooks": "4.2.0",
     "file-saver": "2.0.5",
     "lodash": "4.17.21",
     "material-ui-popup-state": "5.3.6",
