@@ -27,7 +27,7 @@
     "react-dom": "19.1.1",
     "react-timer-hook": "4.0.5",
     "recharts": "3.2.1",
-    "use-window-focus": "1.4.3"
+    "use-window-focus": "1.4.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.8.0",
