@@ -8,7 +8,7 @@
     "@mui/icons-material": "7.3.4",
     "@mui/lab": "*",
     "@mui/material": "7.3.4",
-    "@sentry/nextjs": "10.19.0",
+    "@sentry/nextjs": "10.20.0",
     "@types/file-saver": "2.0.7",
     "@typescript-eslint/eslint-plugin": "8.46.1",
     "@typescript-eslint/parser": "8.46.1",
