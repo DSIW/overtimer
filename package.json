@@ -10,7 +10,7 @@
     "@mui/material": "7.3.5",
     "@sentry/nextjs": "10.25.0",
     "@types/file-saver": "2.0.7",
-    "@typescript-eslint/eslint-plugin": "8.46.4",
+    "@typescript-eslint/eslint-plugin": "8.47.0",
     "@typescript-eslint/parser": "8.47.0",
     "@typescript-eslint/typescript-estree": "8.47.0",
     "date-fns": "4.1.0",
