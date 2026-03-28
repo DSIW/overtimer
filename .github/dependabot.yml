@@ -5,8 +5,50 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
+    groups:
+      next:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+      typescript-eslint:
+        patterns:
+          - "@typescript-eslint/*"
+      mui:
+        patterns:
+          - "@mui/*"
+          - "@emotion/*"
+      testing:
+        patterns:
+          - "@testing-library/*"
+          - "@types/jest"
+          - "jest"
+          - "jest-environment-jsdom"
+          - "babel-jest"
+      cypress:
+        patterns:
+          - "cypress"
+          - "@cypress/*"
+          - "qs"
+          - "systeminformation"
+      sentry:
+        patterns:
+          - "@sentry/*"
+      dexie:
+        patterns:
+          - "dexie"
+          - "dexie-react-hooks"
+      eslint:
+        patterns:
+          - "eslint"
+          - "eslint-config-prettier"
+          - "eslint-plugin-prettier"
