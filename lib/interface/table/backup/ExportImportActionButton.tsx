@@ -29,11 +29,10 @@ export default function ExportImportActionButton() {
     }
   }
 
-  async function handleImport(event: ChangeEvent) {
+  async function handleImport(event: ChangeEvent<HTMLInputElement>) {
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const file = event.target.files[0];
+      const file = event.target.files?.[0];
+      if (!file) return;
       await exportImportApplicationService.importFile(file);
       enqueueSnackbar("Import was successful!", { variant: "success" });
       popupState.close();

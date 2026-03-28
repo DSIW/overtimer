@@ -25,6 +25,7 @@ export default function YearFilter(props: Props) {
   const [yearFilter, setYearFilter] = useState("" + defaultYear);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setYearFilter("" + defaultYear);
   }, [props.timeLogs, defaultYear]);
 
