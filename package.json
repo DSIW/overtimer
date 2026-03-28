@@ -1,6 +1,6 @@
 {
   "name": "overtimer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -14,8 +14,8 @@
     "@typescript-eslint/parser": "8.57.2",
     "@typescript-eslint/typescript-estree": "8.57.2",
     "date-fns": "4.1.0",
-    "dexie": "4.4.1",
-    "dexie-react-hooks": "4.4.0",
+    "dexie": "4.2.1",
+    "dexie-react-hooks": "4.2.0",
     "file-saver": "2.0.5",
     "lodash": "4.17.23",
     "material-ui-popup-state": "5.3.6",
