@@ -9,7 +9,11 @@ interface Props {
 export default function StatisticsCard({ title, children }: Props) {
   return (
     <div>
-      <Typography color="textSecondary" gutterBottom textTransform="uppercase">
+      <Typography
+        color="textSecondary"
+        gutterBottom
+        sx={{ textTransform: "uppercase" }}
+      >
         {title}
       </Typography>
       <Typography

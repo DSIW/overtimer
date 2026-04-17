@@ -41,7 +41,7 @@ export default function Analysis({ timeLogs }: Props) {
         </StatisticsCard>
         <StatisticsCard title="days">{days}</StatisticsCard>
       </StatisticsRow>
-      <Grid container gap={2}>
+      <Grid container sx={{ gap: 2 }}>
         <DiagramCard title="Days">
           <OvertimeRatioDiagram data={ratioData} />
         </DiagramCard>
