@@ -1,6 +1,13 @@
 import React, { Fragment, ReactElement } from "react";
 import Duration from "../../Duration";
-import { Bar, BarChart, Legend, Tooltip, TooltipProps, XAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  Legend,
+  Tooltip,
+  TooltipContentProps,
+  XAxis,
+} from "recharts";
 import { WeekdayDiagramEntryDto } from "./WeekdayDiagramDataFactory";
 import OvertimerTooltip from "../OvertimerTooltip";
 
@@ -10,7 +17,7 @@ interface Props {
 }
 
 export default function WeekdayDiagram({ data, width }: Props): ReactElement {
-  function renderTooltip(props: TooltipProps<number, string>): ReactElement {
+  function renderTooltip(props: TooltipContentProps): ReactElement {
     return (
       <OvertimerTooltip {...props}>
         {(data: WeekdayDiagramEntryDto) => (
