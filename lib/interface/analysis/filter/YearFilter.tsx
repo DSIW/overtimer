@@ -1,4 +1,4 @@
-import { SelectChangeEvent } from "@mui/material/Select/SelectInput";
+import { SelectChangeEvent } from "@mui/material/Select";
 import React, { Fragment, ReactElement, useEffect, useState } from "react";
 import TimeLog from "../../../domain/TimeLog";
 import _ from "lodash";
