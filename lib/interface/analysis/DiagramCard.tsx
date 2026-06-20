@@ -20,9 +20,11 @@ export default function DiagramCard({ title, children }: Props) {
             variant={"h5"}
             color="text.secondary"
             gutterBottom
-            marginBottom="2rem"
-            textTransform="uppercase"
-            fontWeight={300}
+            sx={{
+              marginBottom: "2rem",
+              textTransform: "uppercase",
+              fontWeight: 300,
+            }}
           >
             {title}
           </Typography>

@@ -30,12 +30,10 @@ export function TimeField({
       error={error}
       autoFocus
       margin="dense"
-      InputLabelProps={{
-        shrink: true,
-      }}
       fullWidth
-      inputProps={{
-        step: 300, // 5 min
+      slotProps={{
+        inputLabel: { shrink: true },
+        input: { inputProps: { step: 300 } }, // 5 min
       }}
       onChange={onChange}
     />
