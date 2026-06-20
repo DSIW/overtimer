@@ -1,4 +1,4 @@
-import { SelectChangeEvent } from "@mui/material/Select/SelectInput";
+import { SelectChangeEvent } from "@mui/material/Select";
 import React from "react";
 import { MenuItem, Select } from "@mui/material";
 
