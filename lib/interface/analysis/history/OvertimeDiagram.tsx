@@ -4,7 +4,7 @@ import {
   Line,
   LineChart,
   Tooltip,
-  TooltipProps,
+  TooltipContentProps,
   XAxis,
   YAxis,
 } from "recharts";
@@ -22,7 +22,7 @@ function formatDuration(milliseconds: number): string {
 }
 
 export default function OvertimeDiagram({ data, width }: Props): ReactElement {
-  function renderTooltip(props: TooltipProps<number, string>): ReactElement {
+  function renderTooltip(props: TooltipContentProps): ReactElement {
     return (
       <OvertimerTooltip {...props}>
         {(data: OvertimeDiagramEntryDto) => (

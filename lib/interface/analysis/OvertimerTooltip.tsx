@@ -1,14 +1,10 @@
 import React, { ReactElement, ReactNode } from "react";
-import { TooltipProps } from "recharts";
+import { TooltipContentProps } from "recharts";
 
-interface Props extends TooltipProps<number, string> {
-  payload?: Array<{
-    payload?: ReactNode;
-    [key: string]: unknown;
-  }>;
+type Props = TooltipContentProps & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: (data: any) => ReactNode;
-}
+};
 export default function OvertimerTooltip(props: Props): ReactElement {
   const { active, payload, children } = props;
 

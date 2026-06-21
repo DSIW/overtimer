@@ -13,6 +13,7 @@ export default function useStateFromProps(
   const [state, setState] = useState(initial);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setState(initial);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLog]);
