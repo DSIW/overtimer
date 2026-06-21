@@ -20,7 +20,7 @@ module.exports = [
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...globals.jest,
+        ...globals.vitest,
       },
     },
     rules: {
@@ -45,7 +45,7 @@ module.exports = [
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...globals.jest,
+        ...globals.vitest,
       },
     },
     rules: {

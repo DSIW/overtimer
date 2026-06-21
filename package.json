@@ -32,19 +32,17 @@
     "@playwright/test": "1.61.0",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
-    "@types/jest": "30.0.0",
     "@types/lodash": "4.17.24",
     "@types/react": "19.2.17",
-    "babel-jest": "30.4.1",
     "eslint": "9.39.1",
     "eslint-config-next": "16.2.9",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
-    "jest": "30.4.2",
-    "jest-environment-jsdom": "30.4.1",
+    "jsdom": "29.1.1",
     "npm-run-all": "4.1.5",
     "prettier": "3.8.4",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
   },
   "scripts": {
     "dev": "next dev",
@@ -52,10 +50,10 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "npm-run-all typecheck lint jest test:e2e:headless",
+    "test": "npm-run-all typecheck lint vitest test:e2e:headless",
     "test:e2e": "playwright test --ui",
     "test:e2e:headless": "playwright test",
-    "jest": "jest",
+    "vitest": "vitest run",
     "typecheck": "tsc --noEmit"
   }
 }

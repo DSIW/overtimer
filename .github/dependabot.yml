@@ -30,10 +30,8 @@ updates:
       testing:
         patterns:
           - "@testing-library/*"
-          - "@types/jest"
-          - "jest"
-          - "jest-environment-jsdom"
-          - "babel-jest"
+          - "vitest"
+          - "jsdom"
       playwright:
         patterns:
           - "@playwright/*"
