@@ -41,6 +41,5 @@ yarn-error.log*
 
 fix-git-author.sh
 
-/cypress/downloads
-/cypress/videos
-/cypress/screenshots
+/test-results/
+/playwright-report/

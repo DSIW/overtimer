@@ -29,13 +29,13 @@
     "use-window-focus": "1.5.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.59.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@types/jest": "30.0.0",
     "@types/lodash": "4.17.24",
     "@types/react": "19.2.14",
     "babel-jest": "30.3.0",
-    "cypress": "15.15.0",
     "eslint": "9.39.1",
     "eslint-config-next": "16.2.4",
     "eslint-config-prettier": "10.1.8",
@@ -44,7 +44,6 @@
     "jest-environment-jsdom": "30.3.0",
     "npm-run-all": "4.1.5",
     "prettier": "3.8.3",
-    "start-server-and-test": "3.0.2",
     "typescript": "6.0.3"
   },
   "scripts": {
@@ -54,11 +53,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "npm-run-all typecheck lint jest test:e2e:headless",
-    "test:e2e": "start-server-and-test start http://localhost:3000 cypress",
-    "test:e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless",
+    "test:e2e": "playwright test --ui",
+    "test:e2e:headless": "playwright test",
     "jest": "jest",
-    "cypress": "cypress open",
-    "cypress:headless": "cypress run",
     "typecheck": "tsc --noEmit"
   }
 }

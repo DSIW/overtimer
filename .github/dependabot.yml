@@ -34,12 +34,11 @@ updates:
           - "jest"
           - "jest-environment-jsdom"
           - "babel-jest"
-      cypress:
+      playwright:
         patterns:
-          - "cypress"
-          - "@cypress/*"
-          - "qs"
-          - "systeminformation"
+          - "@playwright/*"
+          - "playwright"
+          - "playwright-core"
       sentry:
         patterns:
           - "@sentry/*"
