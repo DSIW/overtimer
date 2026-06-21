@@ -30,16 +30,13 @@ updates:
       testing:
         patterns:
           - "@testing-library/*"
-          - "@types/jest"
-          - "jest"
-          - "jest-environment-jsdom"
-          - "babel-jest"
-      cypress:
+          - "vitest"
+          - "jsdom"
+      playwright:
         patterns:
-          - "cypress"
-          - "@cypress/*"
-          - "qs"
-          - "systeminformation"
+          - "@playwright/*"
+          - "playwright"
+          - "playwright-core"
       sentry:
         patterns:
           - "@sentry/*"
