@@ -4,6 +4,7 @@ export const SEC = 1000;
 export const MIN = 60 * SEC;
 export const HOUR = 60 * MIN;
 export const WEEK_LIMIT = 8;
+export const WEEK_LIMIT_OPTIONS = [4, 8, 12, 26, 52];
 export const MONDAY = 1;
 const TODAY = new Date();
 

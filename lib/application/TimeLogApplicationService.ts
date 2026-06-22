@@ -13,8 +13,8 @@ export default class TimeLogApplicationService {
     return await this.timeLogRepository.count();
   }
 
-  async getAllRecentTimeLogs() {
-    const recentLimitDate = startOfLastWeeks(WEEK_LIMIT);
+  async getAllRecentTimeLogs(weeks: number = WEEK_LIMIT) {
+    const recentLimitDate = startOfLastWeeks(weeks);
     return await this.timeLogRepository.allBefore(recentLimitDate);
   }
 
