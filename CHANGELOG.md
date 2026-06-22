@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/DSIW/overtimer/compare/overtimer-v1.0.1...overtimer-v1.1.0) (2026-06-22)
+
+
+### Features
+
+* make time log week filter configurable via select box ([#1246](https://github.com/DSIW/overtimer/issues/1246)) ([8070adf](https://github.com/DSIW/overtimer/commit/8070adf7b7c9665410a00045aa3d30012c5498d4))
+
 ## [1.0.1](https://github.com/DSIW/overtimer/compare/overtimer-v1.0.0...overtimer-v1.0.1) (2026-06-21)
 
 
