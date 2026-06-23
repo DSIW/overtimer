@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/DSIW/overtimer/compare/overtimer-v1.1.0...overtimer-v1.1.1) (2026-06-23)
+
+
+### Bug Fixes
+
+* **ci:** use PAT for release-please so release events trigger deploy ([#1249](https://github.com/DSIW/overtimer/issues/1249)) ([fbb1973](https://github.com/DSIW/overtimer/commit/fbb1973fd4d09d4a731a316cfa1ea384dabadf8b))
+
 ## [1.1.0](https://github.com/DSIW/overtimer/compare/overtimer-v1.0.1...overtimer-v1.1.0) (2026-06-22)
 
 
