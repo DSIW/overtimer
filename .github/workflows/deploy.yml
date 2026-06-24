@@ -27,7 +27,7 @@ jobs:
         id: deploy
         run: |
           set -eo pipefail
-          output=$(npx vercel --token "$VERCEL_TOKEN" 2>&1 | tee /dev/stderr)
+          output=$(npx vercel --yes --token "$VERCEL_TOKEN" 2>&1 | tee /dev/stderr)
           url=$(echo "$output" | tail -1)
           echo "url=$url" >> "$GITHUB_OUTPUT"
         env:
@@ -62,7 +62,7 @@ jobs:
         id: deploy
         run: |
           set -eo pipefail
-          output=$(npx vercel --prod --token "$VERCEL_TOKEN" 2>&1 | tee /dev/stderr)
+          output=$(npx vercel --prod --yes --token "$VERCEL_TOKEN" 2>&1 | tee /dev/stderr)
           url=$(echo "$output" | tail -1)
           echo "url=$url" >> "$GITHUB_OUTPUT"
         env:
