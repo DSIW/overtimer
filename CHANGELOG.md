@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/DSIW/overtimer/compare/overtimer-v1.1.1...overtimer-v1.1.2) (2026-06-24)
+
+
+### Bug Fixes
+
+* **ci:** grep deploy URL from vercel output instead of tail -1 ([#1257](https://github.com/DSIW/overtimer/issues/1257)) ([78b0c99](https://github.com/DSIW/overtimer/commit/78b0c997ea58a64912b01e9dabb9471a48568d7e))
+
 ## [1.1.1](https://github.com/DSIW/overtimer/compare/overtimer-v1.1.0...overtimer-v1.1.1) (2026-06-23)
 
 
