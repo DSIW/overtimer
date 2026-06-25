@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/DSIW/overtimer/compare/overtimer-v1.1.2...overtimer-v1.2.0) (2026-06-25)
+
+
+### Features
+
+* make total overtime card visually clickable ([#1259](https://github.com/DSIW/overtimer/issues/1259)) ([7ee7479](https://github.com/DSIW/overtimer/commit/7ee7479a93409b00b2955ece8226c92291c498e8))
+
 ## [1.1.2](https://github.com/DSIW/overtimer/compare/overtimer-v1.1.1...overtimer-v1.1.2) (2026-06-24)
 
 
