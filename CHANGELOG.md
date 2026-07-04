@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/DSIW/overtimer/compare/overtimer-v1.2.0...overtimer-v1.2.1) (2026-07-04)
+
+
+### Bug Fixes
+
+* pin yaml devDependency to stop Dependabot lockfile-drift loop ([#1279](https://github.com/DSIW/overtimer/issues/1279)) ([09ecad1](https://github.com/DSIW/overtimer/commit/09ecad16e58b390da83449677646583b6c777a37))
+
 ## [1.2.0](https://github.com/DSIW/overtimer/compare/overtimer-v1.1.2...overtimer-v1.2.0) (2026-06-25)
 
 
