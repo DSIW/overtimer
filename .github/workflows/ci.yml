@@ -25,7 +25,17 @@ jobs:
         run: npm ci
       - name: Recover from out-of-sync lockfile on Dependabot PRs
         if: ${{ failure() && steps.install.outcome == 'failure' && github.actor == 'dependabot[bot]' }}
-        run: gh pr comment "$PR_URL" --body "@dependabot recreate"
+        run: |
+          set -euo pipefail
+          ALREADY_TRIED=$(gh pr view "$PR_URL" --json comments --jq \
+            '[.comments[].body | select(contains("auto-recreate requested"))] | length')
+          if [ "$ALREADY_TRIED" -gt 0 ]; then
+            gh pr comment "$PR_URL" --body "⚠️ \`npm ci\` failed again after a previous automatic \`@dependabot recreate\` attempt. Not retrying again to avoid an infinite loop — this needs human investigation."
+            gh pr edit "$PR_URL" --add-label "needs-triage" || true
+          else
+            gh pr comment "$PR_URL" --body "🔁 auto-recreate requested: \`npm ci\` failed with an out-of-sync lockfile. Asking Dependabot to recreate this PR (one automatic attempt; will not retry indefinitely if this recurs)."
+            gh pr comment "$PR_URL" --body "@dependabot recreate"
+          fi
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
