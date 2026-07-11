@@ -49,3 +49,11 @@ updates:
           - "eslint"
           - "eslint-config-prettier"
           - "eslint-plugin-prettier"
+    ignore:
+      # eslint v10 requires ScopeManager implementations to provide
+      # addGlobals(), which @typescript-eslint/scope-manager doesn't
+      # implement yet, crashing `npm run lint`. Remove once
+      # typescript-eslint ships ESLint 10 support:
+      # https://github.com/typescript-eslint/typescript-eslint/issues/11829
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
