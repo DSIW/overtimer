@@ -12,14 +12,7 @@ export default function OvertimerTooltip(props: Props): ReactElement {
     const data = payload[0] && payload[0].payload;
 
     return (
-      <div
-        style={{
-          backgroundColor: "#fff",
-          border: "1px solid #999",
-          margin: 0,
-          padding: 10,
-        }}
-      >
+      <div className="m-0 border border-border-primary bg-surface-primary p-2.5 text-content-primary shadow-elevated">
         {children(data)}
       </div>
     );

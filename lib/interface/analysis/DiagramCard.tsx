@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-import { Card, CardContent, Grid, Typography } from "@mui/material";
 import DiagramContainer from "./DiagramContainer";
 
 interface Props {
@@ -9,28 +8,11 @@ interface Props {
 
 export default function DiagramCard({ title, children }: Props) {
   return (
-    <Grid container size={{ xs: 12 }}>
-      <Card
-        style={{
-          width: "100%",
-        }}
-      >
-        <CardContent>
-          <Typography
-            variant={"h5"}
-            color="text.secondary"
-            gutterBottom
-            sx={{
-              marginBottom: "2rem",
-              textTransform: "uppercase",
-              fontWeight: 300,
-            }}
-          >
-            {title}
-          </Typography>
-          <DiagramContainer>{children}</DiagramContainer>
-        </CardContent>
-      </Card>
-    </Grid>
+    <div className="w-full rounded-lg border border-border-primary bg-surface-primary p-4 shadow-card">
+      <h2 className="mb-8 text-lg font-light uppercase text-content-secondary">
+        {title}
+      </h2>
+      <DiagramContainer>{children}</DiagramContainer>
+    </div>
   );
 }

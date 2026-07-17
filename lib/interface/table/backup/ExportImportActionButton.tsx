@@ -1,28 +1,22 @@
-import { IconButton, Menu, MenuItem, ListItemIcon } from "@mui/material";
-import { GetApp, MoreVert } from "@mui/icons-material";
-import {
-  usePopupState,
-  bindTrigger,
-  bindMenu,
-} from "material-ui-popup-state/hooks";
+import { Download, MoreVertical } from "lucide-react";
 import { exportImportApplicationService } from "../../../application/ExportImportApplicationService";
 import ImportButton from "../ImportButton";
 import { ChangeEvent } from "react";
 import { useSnackbar } from "notistack";
 import * as Sentry from "@sentry/browser";
+import { useDropdown } from "../../ui/useDropdown";
+import { DropdownMenu, DropdownMenuItem } from "../../ui/DropdownMenu";
 
 export default function ExportImportActionButton() {
-  const popupState = usePopupState({
-    variant: "popover",
-    popupId: "ExportImportActionButton",
-  });
+  const { open, setOpen, triggerRef, menuRef } =
+    useDropdown<HTMLButtonElement>();
 
   const { enqueueSnackbar } = useSnackbar();
 
   async function handleExport() {
     try {
       await exportImportApplicationService.exportAllTimeLogs();
-      popupState.close();
+      setOpen(false);
     } catch (error) {
       Sentry.captureException(error);
       enqueueSnackbar("Export failed!", { variant: "error" });
@@ -35,7 +29,7 @@ export default function ExportImportActionButton() {
       if (!file) return;
       await exportImportApplicationService.importFile(file);
       enqueueSnackbar("Import was successful!", { variant: "success" });
-      popupState.close();
+      setOpen(false);
     } catch (error) {
       Sentry.captureException(error);
       enqueueSnackbar("Import failed!", { variant: "error" });
@@ -43,19 +37,22 @@ export default function ExportImportActionButton() {
   }
 
   return (
-    <>
-      <IconButton {...bindTrigger(popupState)} size="large">
-        <MoreVert />
-      </IconButton>
-      <Menu {...bindMenu(popupState)}>
-        <MenuItem onClick={handleExport}>
-          <ListItemIcon>
-            <GetApp fontSize="small" />
-          </ListItemIcon>
+    <div className="relative inline-block">
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-label="Backup actions"
+        onClick={() => setOpen((current) => !current)}
+        className="rounded-full p-2 text-content-secondary hover:bg-surface-secondary"
+      >
+        <MoreVertical size={20} />
+      </button>
+      <DropdownMenu open={open} menuRef={menuRef}>
+        <DropdownMenuItem onClick={handleExport} icon={<Download size={16} />}>
           Export
-        </MenuItem>
+        </DropdownMenuItem>
         <ImportButton onClick={handleImport} />
-      </Menu>
-    </>
+      </DropdownMenu>
+    </div>
   );
 }

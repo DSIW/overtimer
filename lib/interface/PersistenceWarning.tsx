@@ -1,6 +1,3 @@
-import { Button } from "@mui/material";
-import { AlertTitle } from "@mui/material";
-import Alert from "@mui/material/Alert";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -10,6 +7,7 @@ import {
   isPersisted,
   requestPersistence,
 } from "../infrastructure/PersistencePermission";
+import Alert from "./ui/Alert";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -45,16 +43,20 @@ export default function PersistenceWarning({ timeLogs }: Props) {
   }
 
   return (
-    <div style={{ width: "100%", marginBottom: "2rem" }}>
+    <div className="mb-8 w-full">
       <Alert
         severity="warning"
+        title="Persistence not allowed!"
         action={
-          <Button color="inherit" size="small" onClick={handleTrial}>
+          <button
+            type="button"
+            onClick={handleTrial}
+            className="rounded-md px-2 py-1 text-sm font-medium hover:bg-warning/10"
+          >
             TRY AGAIN
-          </Button>
+          </button>
         }
       >
-        <AlertTitle>Persistence not allowed!</AlertTitle>
         {WARNING_MESSAGE}
       </Alert>
     </div>

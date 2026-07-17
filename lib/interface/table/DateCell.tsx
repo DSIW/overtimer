@@ -33,7 +33,7 @@ export default function DateCell({ time }: Props) {
           }
 
           .date {
-            color: gray;
+            color: var(--content-tertiary);
           }
         `}
       </style>

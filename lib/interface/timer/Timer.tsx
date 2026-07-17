@@ -7,30 +7,26 @@ import TimeLog from "../../domain/TimeLog";
 import Time from "./Time";
 import StartStopButton from "./StartStopButton";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
-import { useTheme } from "@mui/material";
 
 interface Props {
   timeLogs: TimeLog[];
   onClick: () => Promise<void>;
 }
 
-const GRAY = "#dddddd";
+const ACCENT = "var(--color-accent)";
+const DANGER = "var(--color-danger)";
+const TRAIL = "var(--color-border-primary)";
 const DIAMETER = 250;
 
 export default function Timer({ timeLogs, onClick }: Props) {
-  const theme = useTheme();
-
-  const blue = theme.palette.primary.main;
-  const red = theme.palette.secondary.main;
-
   const statistics = new TimeLogStatistics(timeLogs);
 
   const { isRunning, value, percentage, isOverdue } =
     statistics.getTimerValues();
 
-  const color = isOverdue ? red : blue;
+  const color = isOverdue ? DANGER : ACCENT;
 
-  const progressStyles = buildStyles({ pathColor: color, trailColor: GRAY });
+  const progressStyles = buildStyles({ pathColor: color, trailColor: TRAIL });
 
   return (
     <>

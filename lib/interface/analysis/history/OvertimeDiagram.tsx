@@ -44,14 +44,14 @@ export default function OvertimeDiagram({ data, width }: Props): ReactElement {
         yAxisId="left"
         type="monotone"
         dataKey="overtime"
-        stroke="#1876D2"
+        stroke="var(--color-accent)"
         dot={false}
       />
       <Line
         yAxisId="left"
         type="monotone"
         dataKey="cumulated"
-        stroke="#ccc"
+        stroke="var(--color-content-tertiary)"
         strokeDasharray="5 5"
         dot={false}
       />

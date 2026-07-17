@@ -1,5 +1,4 @@
-import { Typography } from "@mui/material";
-import { ChevronRight } from "@mui/icons-material";
+import { ChevronRight } from "lucide-react";
 import { ReactNode } from "react";
 import Link from "next/link";
 
@@ -12,27 +11,11 @@ interface Props {
 export default function StatisticsCard({ title, children, href }: Props) {
   const content = (
     <div>
-      <Typography
-        color="textSecondary"
-        gutterBottom
-        sx={{
-          textTransform: "uppercase",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
+      <div className="flex items-center gap-1 text-sm uppercase text-content-secondary">
         {title}
-        {href && <ChevronRight fontSize="small" />}
-      </Typography>
-      <Typography
-        variant="body2"
-        component="p"
-        align="right"
-        color="primary"
-        style={{ fontSize: "1.3rem" }}
-      >
-        {children}
-      </Typography>
+        {href && <ChevronRight size={16} />}
+      </div>
+      <div className="text-right text-xl text-accent">{children}</div>
     </div>
   );
 
@@ -41,14 +24,7 @@ export default function StatisticsCard({ title, children, href }: Props) {
   }
 
   return (
-    <Link
-      href={href}
-      style={{
-        textDecoration: "none",
-        color: "inherit",
-        cursor: "pointer",
-      }}
-    >
+    <Link href={href} className="cursor-pointer text-inherit no-underline">
       {content}
     </Link>
   );

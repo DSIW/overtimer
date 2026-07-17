@@ -11,7 +11,6 @@ import WeekdayDiagram from "./weekday/WeekdayDiagram";
 import DiagramCard from "./DiagramCard";
 import OvertimeRatioDiagram from "./days/OvertimeRatioDiagram";
 import OvertimeRatioDiagramDataFactory from "./days/OvertimeRatioDiagramDataFactory";
-import { Grid } from "@mui/material";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -41,7 +40,7 @@ export default function Analysis({ timeLogs }: Props) {
         </StatisticsCard>
         <StatisticsCard title="days">{days}</StatisticsCard>
       </StatisticsRow>
-      <Grid container sx={{ gap: 2 }}>
+      <div className="flex w-full flex-col gap-4">
         <DiagramCard title="Days">
           <OvertimeRatioDiagram data={ratioData} />
         </DiagramCard>
@@ -51,7 +50,7 @@ export default function Analysis({ timeLogs }: Props) {
         <DiagramCard title="History">
           <OvertimeDiagram data={overtimeData} />
         </DiagramCard>
-      </Grid>
+      </div>
     </Fragment>
   );
 }

@@ -23,7 +23,7 @@ export default function TitleDescription({ title, description }: Props) {
           }
 
           .description {
-            color: gray;
+            color: var(--content-tertiary);
           }
         `}
       </style>

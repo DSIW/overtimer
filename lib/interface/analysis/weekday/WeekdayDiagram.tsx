@@ -41,9 +41,9 @@ export default function WeekdayDiagram({ data, width }: Props): ReactElement {
   return (
     <BarChart width={width} height={300} data={data}>
       <XAxis dataKey="weekdayShort" type="category" />
-      <Bar dataKey="pause" fill="green" stackId="a" />
-      <Bar dataKey="work" fill="#1876D2" stackId="a" />
-      <Bar dataKey="overtime" fill="#F44336" stackId="a" />
+      <Bar dataKey="pause" fill="var(--color-success)" stackId="a" />
+      <Bar dataKey="work" fill="var(--color-accent)" stackId="a" />
+      <Bar dataKey="overtime" fill="var(--color-danger)" stackId="a" />
       <Legend />
       <Tooltip content={renderTooltip} />
     </BarChart>

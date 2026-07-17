@@ -1,12 +1,3 @@
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 import TimeLog from "../../domain/TimeLog";
 import EmptyTableRow from "./EmptyTableRow";
 import ExportImportActionButton from "./backup/ExportImportActionButton";
@@ -31,19 +22,23 @@ export default function TimerLogTable({
   const hiddenTimeLogCount = totalCount - timeLogs.length;
 
   return (
-    <TableContainer component={Paper}>
-      <Table style={{ minWidth: 400, maxWidth: "95vw" }}>
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">DATE</TableCell>
-            <TableCell align="right">DURATION</TableCell>
-            <TableCell align="right">
+    <div className="w-full overflow-x-auto rounded-lg border border-border-primary bg-surface-primary shadow-card">
+      <table className="min-w-[400px] max-w-[95vw] border-collapse">
+        <thead>
+          <tr className="border-b border-border-primary">
+            <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-content-secondary">
+              Date
+            </th>
+            <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-content-secondary">
+              Duration
+            </th>
+            <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-content-secondary">
               <ExportImportActionButton />
-            </TableCell>
-          </TableRow>
+            </th>
+          </tr>
           <BackupInfoTableRow timeLogs={timeLogs} />
-        </TableHead>
-        <TableBody>
+        </thead>
+        <tbody>
           {timeLogs.length === 0 && <EmptyTableRow />}
           {timeLogs.map((timeLog: TimeLog) => (
             <TimeLogTableRow
@@ -56,8 +51,8 @@ export default function TimerLogTable({
             weekLimit={weekLimit}
             onWeekLimitChange={onWeekLimitChange}
           />
-        </TableBody>
-      </Table>
-    </TableContainer>
+        </tbody>
+      </table>
+    </div>
   );
 }
