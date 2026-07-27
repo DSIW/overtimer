@@ -29,7 +29,7 @@
     "use-window-focus": "1.5.0"
   },
   "devDependencies": {
-    "@playwright/test": "1.61.1",
+    "@playwright/test": "1.62.0",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@types/lodash": "4.17.24",
