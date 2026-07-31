@@ -14,7 +14,7 @@ A lot of other apps are too sophisticated and contain too many features which ma
 
 - Start/stop timer
 - Start timer with setting start time when you're already working
-- Show weekly and total overtime for last 8 weeks
+- Show weekly and total overtime for a configurable time range (last N weeks, this year, or a specific quarter)
 - Export/import time logs in JSON format
 - Daily backups after 17:00 when stopping the timer
 - Limit timelogs to 8 full weeks

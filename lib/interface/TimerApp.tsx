@@ -5,12 +5,12 @@ import TimerContainer from "./timer/TimerContainer";
 import { SnackbarProvider } from "notistack";
 import PersistenceWarning from "./PersistenceWarning";
 import { useTimeLogs } from "./hooks/useTimeLogs";
-import { useWeekLimit } from "./hooks/useWeekLimit";
+import { useTimeRangeOption } from "./hooks/useTimeRangeOption";
 import Footer from "./footer/Footer";
 
 export default function TimerApp() {
-  const [weekLimit, setWeekLimit] = useWeekLimit();
-  const timeLogs = useTimeLogs(weekLimit);
+  const [timeRangeOptionId, setTimeRangeOptionId] = useTimeRangeOption();
+  const timeLogs = useTimeLogs(timeRangeOptionId);
 
   return (
     <>
@@ -20,8 +20,8 @@ export default function TimerApp() {
         <PersistenceWarning timeLogs={timeLogs} />
         <TimeLogTable
           timeLogs={timeLogs}
-          weekLimit={weekLimit}
-          onWeekLimitChange={setWeekLimit}
+          timeRangeOptionId={timeRangeOptionId}
+          onTimeRangeOptionChange={setTimeRangeOptionId}
         />
         <Footer />
       </SnackbarProvider>
