@@ -1,24 +1,24 @@
-import { WEEK_LIMIT_OPTIONS } from "../../domain/time-constants";
+import { visibleTimeRangeOptions } from "../../domain/time-constants";
 import SpannedTableRow from "./SpannedTableRow";
 
 interface Props {
   count: number;
-  weekLimit: number;
-  onWeekLimitChange: (weeks: number) => void;
+  timeRangeOptionId: string;
+  onTimeRangeOptionChange: (optionId: string) => void;
 }
 
 export default function MoreEntriesTableRow({
   count,
-  weekLimit,
-  onWeekLimitChange,
+  timeRangeOptionId,
+  onTimeRangeOptionChange,
 }: Props) {
   return (
     <SpannedTableRow>
-      {count > 0 && <>{count} time logs are outdated after </>}
-      {count <= 0 && <>Showing time logs of the last </>}
+      {count > 0 && <>{count} time logs are outdated. </>}
+      Showing time logs for{" "}
       <select
-        value={weekLimit}
-        onChange={(event) => onWeekLimitChange(Number(event.target.value))}
+        value={timeRangeOptionId}
+        onChange={(event) => onTimeRangeOptionChange(event.target.value)}
         style={{
           border: "none",
           background: "transparent",
@@ -27,13 +27,13 @@ export default function MoreEntriesTableRow({
           cursor: "pointer",
         }}
       >
-        {WEEK_LIMIT_OPTIONS.map((weeks) => (
-          <option key={weeks} value={weeks}>
-            {weeks}
+        {visibleTimeRangeOptions().map((option) => (
+          <option key={option.id} value={option.id}>
+            {option.label}
           </option>
         ))}
-      </select>{" "}
-      weeks.
+      </select>
+      .
     </SpannedTableRow>
   );
 }
