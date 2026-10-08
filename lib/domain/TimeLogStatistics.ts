@@ -1,9 +1,11 @@
 import TimeLog from "./TimeLog";
 import * as DateFns from "date-fns";
-import { HOUR, MONDAY } from "./time-constants";
+import { HOUR, MONDAY, withTime } from "./time-constants";
 
 const WORK_HOURS = 8;
 const WORK_HOURS_MS = WORK_HOURS * HOUR;
+const PAUSE_WINDOW_START = "06:00:00";
+const PAUSE_WINDOW_END = "17:00:00";
 
 export default class TimeLogStatistics {
   constructor(
@@ -44,6 +46,7 @@ export default class TimeLogStatistics {
       value,
       percentage,
       isOverdue,
+      pauseMs: isRunning || isOverdue ? undefined : this.getCurrentPauseMs(),
     };
   }
 
@@ -67,6 +70,28 @@ export default class TimeLogStatistics {
     const todayOvertime = this.calcOvertimeMs(todayTimeLogs);
 
     return Math.max(0, todayOvertime);
+  }
+
+  /**
+   * Time since the last stop today. Only defined within the pause window and
+   * if there is a finished time log today.
+   */
+  private getCurrentPauseMs(): number | undefined {
+    const windowStart = withTime(this.nowDate, PAUSE_WINDOW_START);
+    const windowEnd = withTime(this.nowDate, PAUSE_WINDOW_END);
+    if (this.nowDate < windowStart || this.nowDate >= windowEnd) {
+      return undefined;
+    }
+
+    const endTimes = this.timeLogs
+      .filter(this.isToday)
+      .filter(this.isDone)
+      .map((timeLog) => +timeLog.endTime!);
+    if (endTimes.length === 0) {
+      return undefined;
+    }
+
+    return Math.max(0, +this.nowDate - Math.max(...endTimes));
   }
 
   private getTotalWorkTimeMs() {

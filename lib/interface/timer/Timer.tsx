@@ -15,6 +15,7 @@ interface Props {
 }
 
 const GRAY = "#dddddd";
+const GRAY_TEXT = "#757575";
 const DIAMETER = 250;
 
 export default function Timer({ timeLogs, onClick }: Props) {
@@ -25,7 +26,7 @@ export default function Timer({ timeLogs, onClick }: Props) {
 
   const statistics = new TimeLogStatistics(timeLogs);
 
-  const { isRunning, value, percentage, isOverdue } =
+  const { isRunning, value, percentage, isOverdue, pauseMs } =
     statistics.getTimerValues();
 
   const color = isOverdue ? red : blue;
@@ -43,6 +44,12 @@ export default function Timer({ timeLogs, onClick }: Props) {
           <div style={{ color, fontSize: "2em", marginTop: "3rem" }}>
             <Time milliseconds={value} />
           </div>
+
+          {pauseMs !== undefined && (
+            <div style={{ color: GRAY_TEXT, fontSize: "0.8em" }}>
+              pause <Time milliseconds={pauseMs} />
+            </div>
+          )}
 
           <StartStopButton
             isRunning={isRunning}
