@@ -41,11 +41,17 @@ export default function Timer({ timeLogs, onClick }: Props) {
           strokeWidth={4}
           styles={progressStyles}
         >
-          <div style={{ color, fontSize: "2em", marginTop: "3rem" }}>
+          {pauseMs !== undefined && <PauseIndicator milliseconds={pauseMs} />}
+
+          <div
+            style={{
+              color,
+              fontSize: "2em",
+              marginTop: pauseMs === undefined ? "3rem" : "0.25rem",
+            }}
+          >
             <Time milliseconds={value} />
           </div>
-
-          {pauseMs !== undefined && <PauseIndicator milliseconds={pauseMs} />}
 
           <StartStopButton
             isRunning={isRunning}
