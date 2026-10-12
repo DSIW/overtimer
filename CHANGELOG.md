@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/DSIW/overtimer/compare/overtimer-v1.3.1...overtimer-v1.4.0) (2026-10-12)
+
+
+### Features
+
+* **timer:** show pause length while timer is stopped ([#1348](https://github.com/DSIW/overtimer/issues/1348)) ([2e7c0bb](https://github.com/DSIW/overtimer/commit/2e7c0bbc77e0b834d83f26c7bb9510adae736228))
+
 ## [1.3.1](https://github.com/DSIW/overtimer/compare/overtimer-v1.3.0...overtimer-v1.3.1) (2026-07-31)
 
 
