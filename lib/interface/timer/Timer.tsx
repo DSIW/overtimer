@@ -5,6 +5,7 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import TimeLog from "../../domain/TimeLog";
 import Time from "./Time";
+import PauseIndicator from "./PauseIndicator";
 import StartStopButton from "./StartStopButton";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
 import { useTheme } from "@mui/material";
@@ -15,7 +16,6 @@ interface Props {
 }
 
 const GRAY = "#dddddd";
-const GRAY_TEXT = "#757575";
 const DIAMETER = 250;
 
 export default function Timer({ timeLogs, onClick }: Props) {
@@ -45,11 +45,7 @@ export default function Timer({ timeLogs, onClick }: Props) {
             <Time milliseconds={value} />
           </div>
 
-          {pauseMs !== undefined && (
-            <div style={{ color: GRAY_TEXT, fontSize: "0.8em" }}>
-              pause <Time milliseconds={pauseMs} />
-            </div>
-          )}
+          {pauseMs !== undefined && <PauseIndicator milliseconds={pauseMs} />}
 
           <StartStopButton
             isRunning={isRunning}
