@@ -196,6 +196,73 @@ describe("TimeLogStatistics", () => {
       });
     });
   });
+
+  describe("pauseMs in getTimerValues()", () => {
+    const at = (time: string) => withTime(TODAY, time);
+    const doneLog = (start: string, hours: number) =>
+      TimeLogTestFactory.testFulfilledTimeLog(TODAY, start, hours);
+
+    it("returns time since last stop within the pause window", () => {
+      const statistics = new TimeLogStatistics(
+        [doneLog("08:00:00", 2)],
+        at("10:30:00")
+      );
+
+      expect(statistics.getTimerValues().pauseMs).toBe(30 * 60 * 1000);
+    });
+
+    it("uses the latest stop of today", () => {
+      const statistics = new TimeLogStatistics(
+        [doneLog("11:00:00", 1), doneLog("08:00:00", 2)],
+        at("12:30:00")
+      );
+
+      expect(statistics.getTimerValues().pauseMs).toBe(30 * 60 * 1000);
+    });
+
+    it("is undefined if no time log is finished today", () => {
+      const statistics = new TimeLogStatistics([], at("10:00:00"));
+
+      expect(statistics.getTimerValues().pauseMs).toBeUndefined();
+    });
+
+    it("is undefined while timer is running", () => {
+      const running = TimeLogTestFactory.testRunningTimeLog(at("10:00:00"));
+      const statistics = new TimeLogStatistics(
+        [running, doneLog("08:00:00", 1)],
+        at("10:30:00")
+      );
+
+      expect(statistics.getTimerValues().pauseMs).toBeUndefined();
+    });
+
+    it("is undefined if 8h are worked", () => {
+      const statistics = new TimeLogStatistics(
+        [doneLog("08:00:00", 8)],
+        at("16:30:00")
+      );
+
+      expect(statistics.getTimerValues().pauseMs).toBeUndefined();
+    });
+
+    it("is undefined before 06:00", () => {
+      const statistics = new TimeLogStatistics(
+        [doneLog("04:00:00", 1)],
+        at("05:30:00")
+      );
+
+      expect(statistics.getTimerValues().pauseMs).toBeUndefined();
+    });
+
+    it("is undefined from 17:00", () => {
+      const statistics = new TimeLogStatistics(
+        [doneLog("08:00:00", 2)],
+        at("17:00:00")
+      );
+
+      expect(statistics.getTimerValues().pauseMs).toBeUndefined();
+    });
+  });
 });
 
 function todayWorkdayStart() {

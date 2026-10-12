@@ -12,7 +12,7 @@ A lot of other apps are too sophisticated and contain too many features which ma
 
 ## Features
 
-- Start/stop timer
+- Start/stop timer, showing the current pause length between 6:00 and 17:00 while below 8h
 - Start timer with setting start time when you're already working
 - Show weekly and total overtime for a configurable time range (last N weeks, this year, or a specific quarter)
 - Export/import time logs in JSON format
