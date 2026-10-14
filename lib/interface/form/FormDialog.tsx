@@ -1,16 +1,10 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
 import TimeLog from "../../domain/TimeLog";
 import { TimeField } from "./TimeField";
 import ChangeEvent, { TimeLogEventTarget } from "./ChangeEvent";
 import { updateTime } from "./formDialogReducer";
 import useStateFromProps from "./useStateFromProps";
 import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
+import Dialog from "../ui/Dialog";
 
 interface Props {
   open: boolean;
@@ -47,9 +41,14 @@ export default function FormDialog(props: Props) {
   }
 
   return (
-    <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit</DialogTitle>
-      <DialogContent>
+    <Dialog open={open} onClose={close} titleId="form-dialog-title">
+      <h2
+        id="form-dialog-title"
+        className="px-6 pt-5 text-lg font-medium text-content-primary"
+      >
+        Edit
+      </h2>
+      <div className="flex flex-col gap-4 px-6 py-4">
         <TimeField
           name="startTime"
           label="Start"
@@ -66,15 +65,23 @@ export default function FormDialog(props: Props) {
             onChange={handleTime}
           />
         )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={close} color="primary">
+      </div>
+      <div className="flex justify-end gap-2 px-4 pb-4">
+        <button
+          type="button"
+          onClick={close}
+          className="rounded-md px-3 py-1.5 text-sm font-medium text-accent hover:bg-accent/10"
+        >
           Cancel
-        </Button>
-        <Button onClick={handleSubmit} color="primary">
+        </button>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className="rounded-md px-3 py-1.5 text-sm font-medium text-accent hover:bg-accent/10"
+        >
           Save
-        </Button>
-      </DialogActions>
+        </button>
+      </div>
     </Dialog>
   );
 }

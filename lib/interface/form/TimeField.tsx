@@ -1,9 +1,9 @@
-import { TextField } from "@mui/material";
 import { format } from "date-fns";
 import ChangeEvent, { TimeLogEventTargetName } from "./ChangeEvent";
 import * as React from "react";
 
 const TIME_FORMAT = "HH:mm";
+const FIVE_MINUTES_IN_SECONDS = 300;
 
 interface Props {
   name: TimeLogEventTargetName;
@@ -21,21 +21,25 @@ export function TimeField({
   onChange,
 }: Props) {
   return (
-    <TextField
-      id={name}
-      name={name}
-      label={label}
-      type="time"
-      defaultValue={format(defaultTime, TIME_FORMAT)}
-      error={error}
-      autoFocus
-      margin="dense"
-      fullWidth
-      slotProps={{
-        inputLabel: { shrink: true },
-        input: { inputProps: { step: 300 } }, // 5 min
-      }}
-      onChange={onChange}
-    />
+    <div className="flex flex-col gap-1">
+      <label
+        htmlFor={name}
+        className="text-sm font-medium text-content-secondary"
+      >
+        {label}
+      </label>
+      <input
+        id={name}
+        name={name}
+        type="time"
+        step={FIVE_MINUTES_IN_SECONDS}
+        defaultValue={format(defaultTime, TIME_FORMAT)}
+        autoFocus
+        onChange={onChange}
+        className={`w-full rounded-md border bg-surface-primary px-3 py-2 text-sm text-content-primary outline-none focus:border-accent ${
+          error ? "border-danger" : "border-border-primary"
+        }`}
+      />
+    </div>
   );
 }

@@ -1,18 +1,11 @@
 import React, { ReactNode } from "react";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
-import { usePopupState } from "material-ui-popup-state/hooks";
-import { bindPopper, anchorRef, bindTrigger } from "material-ui-popup-state";
-import { ClickAwayListener } from "@mui/material";
+import { ChevronDown } from "lucide-react";
+import Button, { ButtonColor } from "../../ui/Button";
+import { useDropdown } from "../../ui/useDropdown";
+import { DropdownMenu, DropdownMenuItem } from "../../ui/DropdownMenu";
 
 interface Props {
-  color: "primary" | "secondary";
+  color: ButtonColor;
   onClick: () => void;
   startIcon?: ReactNode;
   children: string;
@@ -32,61 +25,45 @@ export default function ButtonWithOptions({
   options,
   children,
 }: Props) {
-  const popupState = usePopupState({
-    variant: "popover",
-    popupId: "ButtonWithOptions",
-  });
+  const { open, setOpen, triggerRef, menuRef } =
+    useDropdown<HTMLButtonElement>();
 
   async function handleMenuItemClick(option: Option) {
-    handleClose();
+    setOpen(false);
     await option.onClick();
   }
 
-  function handleClose() {
-    popupState.close();
-  }
-
   return (
-    <>
-      <ButtonGroup
-        variant="outlined"
-        color={color}
-        ref={anchorRef(popupState)}
-        aria-label="split button"
-      >
-        <Button startIcon={startIcon} onClick={onClick}>
+    <div className="relative inline-block">
+      <div className="inline-flex" role="group" aria-label="split button">
+        <Button
+          color={color}
+          startIcon={startIcon}
+          onClick={onClick}
+          className="rounded-r-none"
+        >
           {children}
         </Button>
-        <Button size="small" {...bindTrigger(popupState)}>
-          <ArrowDropDownIcon />
+        <Button
+          ref={triggerRef}
+          color={color}
+          onClick={() => setOpen((current) => !current)}
+          className="rounded-l-none border-l-0 px-2"
+          aria-label="More start options"
+        >
+          <ChevronDown size={18} />
         </Button>
-      </ButtonGroup>
-      <Popper transition disablePortal {...bindPopper(popupState)}>
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === "bottom" ? "center top" : "center bottom",
-            }}
+      </div>
+      <DropdownMenu open={open} menuRef={menuRef} align="left">
+        {options.map((option) => (
+          <DropdownMenuItem
+            key={option.key}
+            onClick={() => handleMenuItemClick(option)}
           >
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList id="split-button-menu">
-                  {options.map((option) => (
-                    <MenuItem
-                      key={option.key}
-                      onClick={() => handleMenuItemClick(option)}
-                    >
-                      {option.name}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </>
+            {option.name}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenu>
+    </div>
   );
 }

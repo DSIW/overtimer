@@ -1,60 +1,58 @@
-import { IconButton, ListItemIcon, Menu, MenuItem } from "@mui/material";
-import { DeleteOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
+import { Pencil, Trash2, MoreVertical } from "lucide-react";
 import TimeLog from "../../domain/TimeLog";
 import FormDialog from "../form/FormDialog";
-import {
-  bindMenu,
-  bindTrigger,
-  usePopupState,
-} from "material-ui-popup-state/hooks";
 import { timeLogApplicationService } from "../../application/TimeLogApplicationService";
 import { useState } from "react";
+import { useDropdown } from "../ui/useDropdown";
+import { DropdownMenu, DropdownMenuItem } from "../ui/DropdownMenu";
 
 interface Props {
   timeLog: TimeLog;
 }
 
 export default function TableRowActionButton({ timeLog }: Props) {
-  const popupState = usePopupState({
-    variant: "popover",
-    popupId: "TableRowActionButton",
-  });
-  const [open, setOpen] = useState(false);
+  const { open, setOpen, triggerRef, menuRef } =
+    useDropdown<HTMLButtonElement>();
+  const [editOpen, setEditOpen] = useState(false);
 
   async function handleDelete() {
     await timeLogApplicationService.delete(timeLog);
-    popupState.close();
-  }
-
-  function handleEdit() {
-    setOpen(true);
-    popupState.close();
-  }
-
-  function handleClose() {
     setOpen(false);
   }
 
+  function handleEdit() {
+    setEditOpen(true);
+    setOpen(false);
+  }
+
+  function handleClose() {
+    setEditOpen(false);
+  }
+
   return (
-    <>
-      <IconButton {...bindTrigger(popupState)} size="large">
-        <MoreVert />
-      </IconButton>
-      <Menu {...bindMenu(popupState)}>
-        <MenuItem onClick={handleEdit}>
-          <ListItemIcon>
-            <EditOutlined fontSize="small" />
-          </ListItemIcon>
+    <div className="relative inline-block">
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-label="Row actions"
+        onClick={() => setOpen((current) => !current)}
+        className="rounded-full p-2 text-content-secondary hover:bg-surface-secondary"
+      >
+        <MoreVertical size={20} />
+      </button>
+      <DropdownMenu open={open} menuRef={menuRef}>
+        <DropdownMenuItem onClick={handleEdit} icon={<Pencil size={16} />}>
           Edit
-        </MenuItem>
-        <MenuItem onClick={handleDelete} disabled={!timeLog.isDeletable()}>
-          <ListItemIcon>
-            <DeleteOutlined fontSize="small" />
-          </ListItemIcon>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={handleDelete}
+          disabled={!timeLog.isDeletable()}
+          icon={<Trash2 size={16} />}
+        >
           Delete
-        </MenuItem>
-      </Menu>
-      <FormDialog open={open} timeLog={timeLog} onClose={handleClose} />
-    </>
+        </DropdownMenuItem>
+      </DropdownMenu>
+      <FormDialog open={editOpen} timeLog={timeLog} onClose={handleClose} />
+    </div>
   );
 }

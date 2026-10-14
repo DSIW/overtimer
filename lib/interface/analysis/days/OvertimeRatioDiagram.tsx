@@ -17,13 +17,17 @@ export default function OvertimeRatioDiagram({
         data={data}
         dataKey="count"
         nameKey="name"
-        fill="#8884d8"
+        fill="var(--color-accent)"
         innerRadius={50}
       >
         {data.map((entry, index) => (
           <Cell
             key={`cell-${index}`}
-            fill={/without/i.test(entry.name) ? "#1876D2" : "#F44336"}
+            fill={
+              /without/i.test(entry.name)
+                ? "var(--color-accent)"
+                : "var(--color-danger)"
+            }
           />
         ))}
       </Pie>

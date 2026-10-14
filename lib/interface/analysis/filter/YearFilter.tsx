@@ -1,9 +1,7 @@
-import { SelectChangeEvent } from "@mui/material/Select";
 import React, { Fragment, ReactElement, useEffect, useState } from "react";
 import TimeLog from "../../../domain/TimeLog";
 import _ from "lodash";
 import YearSelect, { ALL_YEARS } from "./YearSelect";
-import { Box } from "@mui/material";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -36,26 +34,19 @@ export default function YearFilter(props: Props) {
     );
   });
 
-  function handleYearSelect(event: SelectChangeEvent) {
+  function handleYearSelect(event: React.ChangeEvent<HTMLSelectElement>) {
     setYearFilter(event.target.value);
   }
 
   return (
     <Fragment>
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "right",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
+      <div className="flex w-full items-center justify-end">
         <YearSelect
           value={yearFilter}
           onChange={handleYearSelect}
           years={years}
         />
-      </Box>
+      </div>
       {props.children(timeLogs)}
     </Fragment>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import ButtonWithOptions from "./ButtonWithOptions";
-import { PlayArrow } from "@mui/icons-material";
+import { Play } from "lucide-react";
 
 interface Props {
   color: "primary" | "secondary";
@@ -16,7 +16,7 @@ export default function StartButton({
   return (
     <ButtonWithOptions
       color={color}
-      startIcon={<PlayArrow fontSize="large" />}
+      startIcon={<Play size={22} />}
       onClick={onStart}
       options={[
         {

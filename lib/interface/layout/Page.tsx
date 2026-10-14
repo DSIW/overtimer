@@ -1,9 +1,8 @@
 import Head from "next/head";
 import styles from "./Page.module.css";
 import React from "react";
-import theme from "../theme";
-import { ThemeProvider } from "@mui/material/styles";
 import Children from "./Children";
+import ThemeToggle from "../theme/ThemeToggle";
 
 export default function Page({ children }: Children) {
   return (
@@ -31,19 +30,10 @@ export default function Page({ children }: Children) {
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
         <meta name="theme-color" content="#317EFB" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        />
       </Head>
 
-      <main className={styles.main}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </main>
+      <ThemeToggle />
+      <main className={styles.main}>{children}</main>
     </div>
   );
 }

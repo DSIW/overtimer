@@ -1,5 +1,4 @@
-import { Box, Chip } from "@mui/material";
-import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
+import { Coffee } from "lucide-react";
 import DomainDuration from "../../domain/analysis/Duration";
 
 interface Props {
@@ -10,27 +9,12 @@ export default function PauseIndicator({ milliseconds }: Props) {
   const formatted = new DomainDuration(milliseconds).getFormatted(true);
 
   return (
-    <Chip
-      size="small"
-      icon={<FreeBreakfastIcon />}
+    <span
       aria-label={`pause ${formatted}`}
-      label={
-        <Box component="span" sx={{ fontVariantNumeric: "tabular-nums" }}>
-          {formatted}
-        </Box>
-      }
-      sx={{
-        mt: "1.5rem",
-        color: "primary.main",
-        bgcolor: "action.hover",
-        "& .MuiChip-icon": { color: "primary.main" },
-        "@keyframes pause-fade-in": {
-          from: { opacity: 0 },
-          to: { opacity: 1 },
-        },
-        animation: "pause-fade-in 0.4s ease-out",
-        "@media (prefers-reduced-motion: reduce)": { animation: "none" },
-      }}
-    />
+      className="mt-6 inline-flex animate-[pause-fade-in_0.4s_ease-out] items-center gap-1.5 rounded-full bg-surface-secondary px-3 py-1 text-sm text-accent motion-reduce:animate-none"
+    >
+      <Coffee aria-hidden="true" size={16} />
+      <span className="tabular-nums">{formatted}</span>
+    </span>
   );
 }

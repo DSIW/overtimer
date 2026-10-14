@@ -1,4 +1,3 @@
-import { TableRow, TableCell } from "@mui/material";
 import { ReactNode } from "react";
 
 interface Props {
@@ -7,10 +6,10 @@ interface Props {
 
 export default function SpannedTableRow(props: Props) {
   return (
-    <TableRow>
-      <TableCell align="center" colSpan={3}>
+    <tr>
+      <td colSpan={3} className="px-4 py-3 text-center">
         {props.children}
-      </TableCell>
-    </TableRow>
+      </td>
+    </tr>
   );
 }

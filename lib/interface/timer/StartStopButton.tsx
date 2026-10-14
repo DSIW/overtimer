@@ -1,8 +1,7 @@
 import StartButton from "./start-button/StartButton";
 import FormDialog from "../form/FormDialog";
-import React from "react";
+import React, { useState } from "react";
 import { useTimeLogs } from "../hooks/useTimeLogs";
-import { usePopupState } from "material-ui-popup-state/hooks";
 import StopButton from "./StopButton";
 import TimeLog from "../../domain/TimeLog";
 
@@ -17,10 +16,7 @@ export default function StartStopButton({
   isOverdue,
   onClick,
 }: Props) {
-  const dialogState = usePopupState({
-    variant: "popover",
-    popupId: "StartStopButton",
-  });
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const color = isOverdue ? "secondary" : "primary";
   const timeLog: TimeLog | undefined = useTimeLogs()[0];
@@ -31,15 +27,15 @@ export default function StartStopButton({
 
   async function handleExtendedStart() {
     await onClick();
-    dialogState.open();
+    setDialogOpen(true);
   }
 
   function close() {
-    dialogState.close();
+    setDialogOpen(false);
   }
 
   // Wait for persisted running timeLog
-  const isExtendedStartFormOpen = dialogState.isOpen && timeLog?.isRunning();
+  const isExtendedStartFormOpen = dialogOpen && timeLog?.isRunning();
 
   return (
     <div style={{ marginTop: "1rem", width: "143px" }}>

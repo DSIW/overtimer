@@ -1,4 +1,3 @@
-import { TableCell, TableRow } from "@mui/material";
 import { format } from "date-fns";
 import TimeLog from "../../domain/TimeLog";
 import TableRowActionButton from "./TableRowActionButton";
@@ -25,19 +24,19 @@ export default function TimerLogTableRow({ timeLog }: Props) {
   const formattedDuration = <Duration milliseconds={duration} zero=">0 s" />;
 
   return (
-    <TableRow>
-      <TableCell>
+    <tr className="border-b border-border-secondary last:border-b-0">
+      <td className="px-4 py-3">
         <DateCell time={timeLog.startTime} />
-      </TableCell>
-      <TableCell align="right" style={{ minWidth: "120px" }}>
+      </td>
+      <td className="min-w-[120px] px-4 py-3 text-right">
         <TitleDescription
           title={formattedDuration}
           description={formattedTimeRange}
         />
-      </TableCell>
-      <TableCell align="right">
+      </td>
+      <td className="px-4 py-3 text-right">
         <TableRowActionButton timeLog={timeLog} />
-      </TableCell>
-    </TableRow>
+      </td>
+    </tr>
   );
 }

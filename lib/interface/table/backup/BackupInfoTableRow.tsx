@@ -1,9 +1,7 @@
-import Alert from "@mui/material/Alert";
-import React from "react";
 import TimeLog from "../../../domain/TimeLog";
 import { todayWorkdayEnd } from "../../../domain/time-constants";
 import { format } from "date-fns";
-import { TableCell, TableRow } from "@mui/material";
+import Alert from "../../ui/Alert";
 
 interface Props {
   timeLogs: TimeLog[];
@@ -18,12 +16,10 @@ export default function BackupInfoTableRow({ timeLogs }: Props) {
   }
 
   return (
-    <TableRow>
-      <TableCell colSpan={3} style={{ padding: "0" }}>
-        <Alert severity="info" style={{ borderRadius: "0" }}>
-          {WARNING_MESSAGE}
-        </Alert>
-      </TableCell>
-    </TableRow>
+    <tr>
+      <td colSpan={3} className="p-0">
+        <Alert severity="info">{WARNING_MESSAGE}</Alert>
+      </td>
+    </tr>
   );
 }

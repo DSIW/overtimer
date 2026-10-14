@@ -1,6 +1,6 @@
-import { MenuItem, ListItemIcon } from "@mui/material";
-import { Publish } from "@mui/icons-material";
+import { Upload } from "lucide-react";
 import ChangeEvent from "../form/ChangeEvent";
+import { DropdownMenuItem } from "../ui/DropdownMenu";
 
 interface Props {
   onClick: (event: ChangeEvent) => void;
@@ -16,17 +16,14 @@ export default function ImportButton({ onClick }: Props) {
 
   return (
     <>
-      <MenuItem onClick={handleClick}>
-        <ListItemIcon>
-          <Publish fontSize="small" />
-        </ListItemIcon>
+      <DropdownMenuItem onClick={handleClick} icon={<Upload size={16} />}>
         Import
-      </MenuItem>
+      </DropdownMenuItem>
       <input
         type="file"
         id="file"
         accept="application/json"
-        style={{ display: "none" }}
+        className="hidden"
         onChange={onClick}
       />
     </>
