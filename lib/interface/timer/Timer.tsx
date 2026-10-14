@@ -5,6 +5,7 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import TimeLog from "../../domain/TimeLog";
 import Time from "./Time";
+import PauseIndicator from "./PauseIndicator";
 import StartStopButton from "./StartStopButton";
 import TimeLogStatistics from "../../domain/TimeLogStatistics";
 
@@ -21,7 +22,7 @@ const DIAMETER = 250;
 export default function Timer({ timeLogs, onClick }: Props) {
   const statistics = new TimeLogStatistics(timeLogs);
 
-  const { isRunning, value, percentage, isOverdue } =
+  const { isRunning, value, percentage, isOverdue, pauseMs } =
     statistics.getTimerValues();
 
   const color = isOverdue ? DANGER : ACCENT;
@@ -36,7 +37,15 @@ export default function Timer({ timeLogs, onClick }: Props) {
           strokeWidth={4}
           styles={progressStyles}
         >
-          <div style={{ color, fontSize: "2em", marginTop: "3rem" }}>
+          {pauseMs !== undefined && <PauseIndicator milliseconds={pauseMs} />}
+
+          <div
+            style={{
+              color,
+              fontSize: "2em",
+              marginTop: pauseMs === undefined ? "3rem" : "0.25rem",
+            }}
+          >
             <Time milliseconds={value} />
           </div>
 

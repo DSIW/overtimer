@@ -5,7 +5,10 @@ export default class Duration {
   constructor(private milliseconds: number) {}
 
   getFormatted(withSeconds = false): string {
-    const { days, hours, minutes, seconds } = parseMs(this.milliseconds);
+    const isNegative = this.milliseconds < 0;
+    const { days, hours, minutes, seconds } = parseMs(
+      Math.abs(this.milliseconds)
+    );
 
     const parts = [];
 
@@ -25,7 +28,9 @@ export default class Duration {
       parts.push(`${seconds} s`);
     }
 
-    return parts.join(" ") || "0 s";
+    const formatted = parts.join(" ") || "0 s";
+
+    return isNegative ? `-${formatted}` : formatted;
   }
 
   getFormattedHours(): string {

@@ -40,6 +40,16 @@ describe("Duration", () => {
         "1 d 1 h 1 m"
       );
     });
+
+    it("renders negative minutes", () => {
+      expect(new Duration(-1 * MIN).getFormatted()).toEqual("-1 m");
+    });
+
+    it("renders negative hours and minutes", () => {
+      expect(new Duration(-1 * HOUR - 1 * MIN).getFormatted()).toEqual(
+        "-1 h 1 m"
+      );
+    });
   });
 
   describe("getFormattedHours()", () => {

@@ -1,7 +1,7 @@
 import "react-circular-progressbar/dist/styles.css";
 import TimeLog from "../../domain/TimeLog";
 import { useStopwatch } from "react-timer-hook";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Timer from "./Timer";
 import { timerApplicationService } from "../../application/TimerApplicationService";
 import useWindowFocus from "use-window-focus";
@@ -28,9 +28,20 @@ export default function TimerContainer({ timeLogs }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTimeLog]);
 
-  const { isRunning, value, isOverdue } = new TimeLogStatistics(
+  const { isRunning, value, isOverdue, pauseMs } = new TimeLogStatistics(
     timeLogs
   ).getTimerValues();
+
+  // Re-render every second during a pause, because the stopwatch is paused
+  const [, setTick] = useState(0);
+  const isPauseActive = pauseMs !== undefined;
+  useEffect(() => {
+    if (!isPauseActive) {
+      return;
+    }
+    const interval = setInterval(() => setTick((tick) => tick + 1), 1000);
+    return () => clearInterval(interval);
+  }, [isPauseActive]);
 
   const formattedDuration = new Duration(value).getFormattedMaxHours();
 

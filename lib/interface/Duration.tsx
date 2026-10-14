@@ -6,11 +6,15 @@ interface Props {
 }
 
 export default function Duration({ milliseconds, zero = "0 s" }: Props) {
-  if (milliseconds < 1000) {
+  if (Math.abs(milliseconds) < 1000) {
     return <span>{zero}</span>;
   }
 
   const formatted = new DomainDuration(milliseconds).getFormatted();
+
+  if (milliseconds < 0) {
+    return <span className="text-danger">{formatted}</span>;
+  }
 
   return <span>{formatted}</span>;
 }

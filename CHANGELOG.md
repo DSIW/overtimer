@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.4.0](https://github.com/DSIW/overtimer/compare/overtimer-v1.3.1...overtimer-v1.4.0) (2026-10-12)
+
+
+### Features
+
+* **timer:** show pause length while timer is stopped ([#1348](https://github.com/DSIW/overtimer/issues/1348)) ([2e7c0bb](https://github.com/DSIW/overtimer/commit/2e7c0bbc77e0b834d83f26c7bb9510adae736228))
+
+## [1.3.1](https://github.com/DSIW/overtimer/compare/overtimer-v1.3.0...overtimer-v1.3.1) (2026-07-31)
+
+
+### Bug Fixes
+
+* show negative overtime as a red negative number instead of 0 ([#1309](https://github.com/DSIW/overtimer/issues/1309)) ([113a52a](https://github.com/DSIW/overtimer/commit/113a52a90aa99e1911e0a9fbcc6ba5184867156a))
+
+## [1.3.0](https://github.com/DSIW/overtimer/compare/overtimer-v1.2.1...overtimer-v1.3.0) (2026-07-31)
+
+
+### Features
+
+* add configurable time range for time log table ([#1307](https://github.com/DSIW/overtimer/issues/1307)) ([1bff674](https://github.com/DSIW/overtimer/commit/1bff674ca7a6a411e65de11199afc599bfd5ff88))
+
 ## [1.2.1](https://github.com/DSIW/overtimer/compare/overtimer-v1.2.0...overtimer-v1.2.1) (2026-07-04)
 
 

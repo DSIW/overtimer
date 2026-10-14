@@ -9,14 +9,14 @@ import MoreEntriesTableRow from "./MoreEntriesTableRow";
 
 interface Props {
   timeLogs: TimeLog[];
-  weekLimit: number;
-  onWeekLimitChange: (weeks: number) => void;
+  timeRangeOptionId: string;
+  onTimeRangeOptionChange: (optionId: string) => void;
 }
 
 export default function TimerLogTable({
   timeLogs,
-  weekLimit,
-  onWeekLimitChange,
+  timeRangeOptionId,
+  onTimeRangeOptionChange,
 }: Props) {
   const totalCount = useTimeLogCount();
   const hiddenTimeLogCount = totalCount - timeLogs.length;
@@ -48,8 +48,8 @@ export default function TimerLogTable({
           ))}
           <MoreEntriesTableRow
             count={hiddenTimeLogCount}
-            weekLimit={weekLimit}
-            onWeekLimitChange={onWeekLimitChange}
+            timeRangeOptionId={timeRangeOptionId}
+            onTimeRangeOptionChange={onTimeRangeOptionChange}
           />
         </tbody>
       </table>
