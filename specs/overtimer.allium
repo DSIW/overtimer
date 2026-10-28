@@ -1,0 +1,624 @@
+-- allium: 3
+-- overtimer.allium
+
+-- Scope: Overtimer - time tracking with focus on overtime: the timer
+--   dashboard, daily overtime accounting, the dashboard time range,
+--   backups and the analysis page.
+-- Includes: TimeLog, Workday, Preferences, AnalysisFilter, BackupFile;
+--   timer start/stop, editing and deleting time logs, time range
+--   selection, overtime summary, pause indication, timer notification,
+--   export/import and the automatic backup after the workday end, storage
+--   persistence warning, analysis statistics and year filter.
+-- Excludes:
+--   - Persistence mechanics, browser storage schema migrations
+--   - Chart rendering, colours, tooltips, layout, theming, footer link
+--   - Error reporting/telemetry
+--   - Legacy preference migration (old "week limit" setting)
+--   - Unused time-of-day statistic helper (dead code)
+--
+-- The app is single-user and local: every time log belongs to the one
+-- person using the app on this device. "Day" means local calendar day and
+-- "week" means a Monday-start calendar week throughout.
+
+------------------------------------------------------------
+-- Given
+------------------------------------------------------------
+
+given {
+    storage: DeviceStorage
+}
+
+------------------------------------------------------------
+-- External Entities
+------------------------------------------------------------
+
+-- The single person using the app. There is no authentication.
+external entity Worker {}
+
+-- The device storage the time logs live in. The browser decides whether
+-- it is persistent (protected from automatic eviction).
+external entity DeviceStorage {
+    is_persistent: Boolean
+}
+
+------------------------------------------------------------
+-- Value Types
+------------------------------------------------------------
+
+-- One time log as written to, or read from, a backup file.
+value BackupEntry {
+    started_at: Timestamp
+    ended_at: Timestamp?
+}
+
+------------------------------------------------------------
+-- Enumerations
+------------------------------------------------------------
+
+enum TimeRangeOption {
+    last_4_weeks | last_8_weeks | last_12_weeks | last_26_weeks | last_52_weeks
+    | this_year | q1 | q2 | q3 | q4
+}
+
+------------------------------------------------------------
+-- Entities and Variants
+------------------------------------------------------------
+
+-- A contiguous stretch of work. A day may have several time logs; the
+-- gaps between them are pauses.
+entity TimeLog {
+    started_at: Timestamp
+    status: running | done
+    ended_at: Timestamp when status = done
+
+    transitions status {
+        running -> done
+        terminal: done
+    }
+
+    -- The calendar day the time log belongs to (by its start).
+    day: day_of(started_at)
+
+    -- Work time contributed. A running log contributes nothing until it is
+    -- stopped; the timer adds its elapsed time separately.
+    duration: if status = done: ended_at - started_at else: 0.minutes
+    elapsed: if status = running: now - started_at else: 0.minutes
+
+    -- The time log that is currently being timed today cannot be deleted.
+    -- A running log left over from a previous day can be.
+    is_deletable: not (status = running and day = day_of(now))
+
+    -- The workday this time log belongs to.
+    workday: Workday with day = this.day
+
+    invariant DoneLogsAreWithinOneDay {
+        status = done implies
+            (started_at < ended_at and day_of(started_at) = day_of(ended_at))
+    }
+}
+
+-- All time logs that started on one calendar day. A workday exists for
+-- every day with at least one time log; it is a grouping, not something
+-- the worker creates. Only done time logs count towards its measures.
+entity Workday {
+    day: Timestamp
+    time_logs: TimeLog with day = this.day
+    done_logs: time_logs where status = done
+
+    total_work_time: total_duration(done_logs)
+    -- Sum of the gaps between consecutive done time logs of the day.
+    pause: total_gaps(done_logs)
+    weekday: weekday_of(day)
+
+    over_and_undertime: total_work_time - config.daily_target_work_time
+    has_overtime: total_work_time > config.daily_target_work_time
+    -- Overtime never goes below zero; work time is capped at the target.
+    overtime: if has_overtime: over_and_undertime else: 0.minutes
+    capped_work_time:
+        if has_overtime: config.daily_target_work_time else: total_work_time
+}
+
+-- Remembered dashboard settings (kept across sessions on the device).
+entity Preferences {
+    time_range: TimeRangeOption
+}
+
+-- A downloadable JSON backup of time logs.
+entity BackupFile {
+    created_at: Timestamp
+    entries: List<BackupEntry>
+    trigger: manual | after_workday_end
+}
+
+-- The year selected on the analysis page; null means all years.
+entity AnalysisFilter {
+    year: Integer?
+}
+
+------------------------------------------------------------
+-- Config
+------------------------------------------------------------
+
+config {
+    -- Expected work time per worked day; anything above is overtime,
+    -- anything below is undertime.
+    daily_target_work_time: Duration = 8.hours
+
+    -- Time-of-day offsets from local midnight.
+    pause_window_start: Duration = 6.hours
+    pause_window_end: Duration = 17.hours
+    workday_end: Duration = 17.hours
+}
+
+------------------------------------------------------------
+-- Defaults
+------------------------------------------------------------
+
+default Preferences preferences = { time_range: last_8_weeks }
+
+default AnalysisFilter analysis_filter = { year: null }
+
+------------------------------------------------------------
+-- Rules
+------------------------------------------------------------
+
+-- Timer -----------------------------------------------------
+
+rule StartTimer {
+    when: WorkerStartsTimer(worker)
+
+    requires: not (TimeLogs).any(l => l.status = running)
+
+    ensures: TimeLog.created(started_at: now, status: running)
+
+    @guidance
+        -- The dashboard decides between start and stop by looking at the
+        -- most recent time log only; see open questions.
+}
+
+-- "Start with time": the worker is already working and back-dates the
+-- start. The UI starts the timer now and immediately opens the edit
+-- dialog for the start time; cancelling the dialog keeps the start "now".
+rule StartTimerWithStartTime {
+    when: WorkerStartsTimerWithStartTime(worker, started_at)
+
+    requires: not (TimeLogs).any(l => l.status = running)
+    requires: started_at < now
+    requires: day_of(started_at) = day_of(now)
+
+    ensures: TimeLog.created(started_at: started_at, status: running)
+}
+
+rule StopTimer {
+    when: WorkerStopsTimer(worker, log)
+
+    requires: log.status = running
+
+    ensures:
+        log.status = done
+        log.ended_at = now
+    ensures: TimerStopped(log: log, at: now)
+}
+
+-- Editing and deleting ---------------------------------------
+
+-- Only the time of day can be changed; the log stays on its original day.
+-- A done log must end after it starts.
+rule EditDoneTimeLog {
+    when: WorkerEditsTimeLog(worker, log, started_at, ended_at?)
+
+    requires: log.status = done
+    requires: ended_at != null
+    requires: day_of(started_at) = log.day
+    requires: day_of(ended_at) = log.day
+    requires: started_at < ended_at
+
+    ensures:
+        log.started_at = started_at
+        log.ended_at = ended_at
+    ensures: TimeLogEdited(log: log)
+}
+
+-- For a running log only the start can be changed, and it must lie in the
+-- past.
+rule EditRunningTimeLog {
+    when: WorkerEditsTimeLog(worker, log, started_at, ended_at?)
+
+    requires: log.status = running
+    requires: day_of(started_at) = log.day
+    requires: started_at < now
+    requires: day_of(now) = log.day
+
+    ensures: log.started_at = started_at
+    ensures: TimeLogEdited(log: log)
+}
+
+rule DeleteTimeLog {
+    when: WorkerDeletesTimeLog(worker, log)
+
+    requires: log.is_deletable
+
+    ensures: not exists log
+}
+
+-- Dashboard time range --------------------------------------
+
+rule SelectTimeRange {
+    when: WorkerSelectsTimeRange(worker, option)
+
+    requires: is_selectable(option, now)
+
+    ensures: preferences.time_range = option
+
+    @guidance
+        -- is_selectable hides quarters that have not started yet in the
+        -- current year. All week ranges and "this year" are always
+        -- selectable.
+}
+
+-- Backups ----------------------------------------------------
+
+rule ExportTimeLogs {
+    when: WorkerExportsTimeLogs(worker)
+
+    ensures: BackupFile.created(
+        created_at: now,
+        entries: backup_entries(TimeLogs),
+        trigger: manual
+    )
+
+    @guidance
+        -- The export always contains every stored time log, including
+        -- those outside the dashboard's time range and running ones. The
+        -- file is named after the export date and time.
+}
+
+-- Stopping the timer after the workday end produces a backup. There is no
+-- other daily backup: if the timer is never stopped after the workday end
+-- on a day, no backup is made for it.
+rule AutomaticBackupAfterWorkdayEnd {
+    when: TimerStopped(log, at)
+
+    requires: at > start_of_day(now) + config.workday_end
+
+    ensures: BackupFile.created(
+        created_at: now,
+        entries: backup_entries(TimeLogs),
+        trigger: after_workday_end
+    )
+}
+
+-- Importing replaces every stored time log with the file's contents. The
+-- import is all-or-nothing: one invalid entry rejects the whole file. An
+-- empty file changes nothing.
+rule ImportTimeLogs {
+    when: WorkerImportsBackup(worker, file)
+
+    requires: file.entries.count > 0
+    requires: file.entries.all(e => is_valid_entry(e, now))
+
+    ensures:
+        for existing in TimeLogs:
+            not exists existing
+    ensures:
+        for e in file.entries:
+            if e.ended_at = null:
+                TimeLog.created(started_at: e.started_at, status: running)
+            else:
+                TimeLog.created(
+                    started_at: e.started_at,
+                    status: done,
+                    ended_at: e.ended_at
+                )
+
+    @guidance
+        -- is_valid_entry: the entry starts before its end (or before now if
+        -- it has no end) and both lie on the same calendar day. A running
+        -- entry is therefore only valid if it started earlier today.
+}
+
+-- Storage persistence ----------------------------------------
+
+-- Every save of a time log asks the browser to make storage persistent:
+-- creating a log (start, start with time, import), stopping it and editing
+-- it. Deleting a time log does not. The worker can also retry explicitly
+-- from the warning.
+rule RequestStoragePersistenceOnChange {
+    when: log: TimeLog.created
+
+    requires: not storage.is_persistent
+
+    ensures: StoragePersistenceRequested(storage: storage)
+}
+
+rule RequestStoragePersistenceOnStop {
+    when: log: TimeLog.status transitions_to done
+
+    requires: not storage.is_persistent
+
+    ensures: StoragePersistenceRequested(storage: storage)
+}
+
+rule RequestStoragePersistenceOnEdit {
+    when: TimeLogEdited(log)
+
+    requires: not storage.is_persistent
+
+    ensures: StoragePersistenceRequested(storage: storage)
+}
+
+rule WorkerRetriesStoragePersistence {
+    when: WorkerRetriesStoragePersistence(worker, storage)
+
+    requires: not storage.is_persistent
+
+    ensures: StoragePersistenceRequested(storage: storage)
+
+    @guidance
+        -- If the browser still refuses, the worker is told to grant the
+        -- permission in the site settings.
+}
+
+-- Timer notification -----------------------------------------
+
+rule ShowTimerNotification {
+    when: log: TimeLog.status becomes running
+
+    ensures: TimerNotificationShown(log: log)
+
+    @guidance
+        -- Shown only if the worker granted notification permission
+        -- (permission is requested when the dashboard opens). The content
+        -- is described by the TimerNotification surface.
+}
+
+rule CloseTimerNotification {
+    when: log: TimeLog.status transitions_to done
+
+    ensures: TimerNotificationClosed(log: log)
+}
+
+-- Analysis ----------------------------------------------------
+
+rule SelectAnalysisYear {
+    when: WorkerSelectsAnalysisYear(worker, year?)
+
+    requires: year = null or year in years_with_time_logs(TimeLogs)
+
+    ensures: analysis_filter.year = year
+}
+
+-- On opening the analysis page (and, in the current implementation,
+-- whenever the stored time logs change) the filter falls back to the
+-- current year if it has time logs, otherwise to all years.
+rule ResetAnalysisYear {
+    when: WorkerOpensAnalysis(worker)
+
+    ensures:
+        if year_of(now) in years_with_time_logs(TimeLogs):
+            analysis_filter.year = year_of(now)
+        else:
+            analysis_filter.year = null
+}
+
+------------------------------------------------------------
+-- Invariants
+------------------------------------------------------------
+
+-- At most one time log starts at any given instant.
+invariant UniqueStartTimes {
+    for a in TimeLogs:
+        for b in TimeLogs:
+            a != b implies a.started_at != b.started_at
+}
+
+------------------------------------------------------------
+-- Surfaces
+------------------------------------------------------------
+
+-- The main page: timer, overtime summary and the time log table.
+surface TimerDashboard {
+    facing worker: Worker
+    context preferences: Preferences
+
+    -- Time logs shown on the dashboard and used for its statistics.
+    let range_start = time_range_start(preferences.time_range, now)
+    let shown_logs = TimeLogs where started_at > range_start
+    let hidden_log_count = TimeLogs.count - shown_logs.count
+
+    let todays_logs = shown_logs where day = day_of(now)
+    -- The elapsed time of the latest shown log counts towards today
+    -- regardless of the day it started on (same as TimerNotification); see
+    -- open questions.
+    let latest_log = latest_by_start(shown_logs)
+    let latest_elapsed = if latest_log != null: latest_log.elapsed else: 0.minutes
+    let worked_today = total_duration(todays_logs) + latest_elapsed
+    let remaining_today = config.daily_target_work_time - worked_today
+    let is_overdue = remaining_today <= 0.minutes
+    let is_running = shown_logs.any(l => l.status = running)
+
+    -- Pause: time since the last stop today, shown only while stopped,
+    -- below the daily target and within the pause window.
+    let last_stop_today = latest_end(todays_logs where status = done)
+    let in_pause_window =
+        now >= start_of_day(now) + config.pause_window_start
+        and now < start_of_day(now) + config.pause_window_end
+
+    -- Overtime: past worked days count fully (over- and undertime); today
+    -- counts only once it exceeds the target.
+    -- Only days with at least one done time log count as worked days.
+    let past_workdays =
+        shown_logs where status = done and day != day_of(now) -> workday
+    let todays_workdays = shown_logs where status = done and day = day_of(now) -> workday
+    let total_overtime =
+        sum_over_and_undertime(past_workdays) + sum_overtime(todays_workdays)
+    let weekly_overtime = overtime_of(shown_logs where start_of_week(started_at) = start_of_week(now), now)
+
+    exposes:
+        -- Timer: remaining work time today, or the overtime once overdue.
+        remaining_today when not is_overdue
+        absolute(remaining_today) when is_overdue
+        is_running
+        is_overdue
+        now - last_stop_today
+            when not is_running and not is_overdue and in_pause_window
+                and last_stop_today != null
+
+        -- Overtime summary.
+        weekly_overtime when weekly_overtime != 0.minutes and total_overtime != 0.minutes
+        total_overtime
+
+        -- Time log table, newest first.
+        for log in shown_logs:
+            log.day
+            log.workday.weekday
+            log.started_at
+            log.ended_at when log.status = done
+            log.duration
+            log.is_deletable
+        hidden_log_count
+        preferences.time_range
+
+    provides:
+        WorkerStartsTimer(worker) when not is_running
+        WorkerStartsTimerWithStartTime(worker, started_at) when not is_running
+        for log in shown_logs:
+            WorkerStopsTimer(worker, log) when log.status = running
+            WorkerEditsTimeLog(worker, log, started_at, ended_at?)
+            WorkerDeletesTimeLog(worker, log) when log.is_deletable
+        WorkerSelectsTimeRange(worker, option)
+        WorkerExportsTimeLogs(worker)
+        WorkerImportsBackup(worker, file)
+
+    @guarantee BackupHintShown
+        -- Whenever time logs are shown, the worker is told that time logs
+        -- are exported automatically after the workday end.
+
+    @guidance
+        -- time_range_start(option, now):
+        --   last N weeks: start (Monday 00:00) of the week containing
+        --     now - N weeks
+        --   this year: 1 January of the current year
+        --   quarter Qn: first day of Qn in the current year (no end bound)
+        -- Hidden time logs are reported as "outdated"; nothing is deleted.
+        -- overtime_of(logs, now) applies the same past/today overtime
+        -- computation as total_overtime to the given logs. Weekly overtime
+        -- is that computation over the shown time logs of the current
+        -- week.
+}
+
+-- Warning shown while the browser has not granted persistent storage.
+surface StoragePersistenceWarning {
+    facing worker: Worker
+    context storage: DeviceStorage where not is_persistent
+
+    exposes:
+        storage.is_persistent
+
+    provides:
+        WorkerRetriesStoragePersistence(worker, storage)
+
+    @guarantee ShownOnlyWithTimeLogs
+        -- The warning appears only when at least one time log is shown on
+        -- the dashboard, and advises making regular (e.g. daily) backups
+        -- because time logs could be deleted by the browser.
+}
+
+-- System notification while the timer runs.
+surface TimerNotification {
+    facing worker: Worker
+    context log: TimeLog where status = running
+
+    let worked_today = total_duration(TimeLogs where day = day_of(now)) + log.elapsed
+    let remaining_today = config.daily_target_work_time - worked_today
+
+    exposes:
+        -- "less than N h remaining" (N = remaining hours rounded up)
+        ceil_hours(remaining_today) when remaining_today > 0.minutes
+        -- "Stop working!" once the daily target is reached
+        remaining_today <= 0.minutes
+}
+
+-- Long-term statistics over all stored time logs, filtered by year.
+surface AnalysisPage {
+    facing worker: Worker
+    context filter: AnalysisFilter
+
+    let selected_logs = TimeLogs where status = done
+        and (filter.year = null or year_of(started_at) = filter.year)
+    -- Only workdays with at least one done time log; days whose only log
+    -- is still running are excluded.
+    let selected_workdays = Workdays where done_logs.count > 0
+        and (filter.year = null or year_of(day) = filter.year)
+
+    exposes:
+        years_with_time_logs(TimeLogs)
+        filter.year
+
+        -- Totals: the same overtime computation as the dashboard (past
+        -- days count fully, today only once above the target) and the
+        -- number of worked days.
+        overtime_of(selected_logs, now)
+        selected_workdays.count
+
+        -- "Days": workdays with overtime versus without.
+        (selected_workdays where has_overtime).count
+        (selected_workdays where not has_overtime).count
+
+        -- "Weekday": per weekday (Monday first), the median pause, median
+        -- capped work time and median overtime of its workdays.
+        for wd in selected_workdays:
+            wd.weekday
+            wd.pause
+            wd.capped_work_time
+            wd.overtime
+
+        -- "History": over/undertime (signed) summed per period plus the
+        -- running cumulative total, in chronological order.
+        for wd in selected_workdays:
+            wd.day
+            wd.over_and_undertime
+        history_of(selected_workdays)
+
+    provides:
+        WorkerSelectsAnalysisYear(worker, year?)
+        WorkerOpensAnalysis(worker)
+
+    @guidance
+        -- Weekday statistics: median(pause), median(capped_work_time) and
+        -- median(overtime) over the selected workdays sharing a weekday.
+        -- history_of: a period is a calendar week when all selected
+        -- workdays fall in one year, otherwise a calendar month; each
+        -- period's value is the sum of its workdays' over_and_undertime.
+        -- Workdays only count done time logs, so a day whose only log is
+        -- still running is left out of the analysis.
+}
+
+------------------------------------------------------------
+-- Open Questions
+------------------------------------------------------------
+
+open question "Start/stop is decided by the most recent time log only (the timer stops the latest log if it is running, otherwise starts a new one). Should the rule be 'no running time log exists' as specified, or is a second running log (e.g. after back-dating a running log before an earlier done log) acceptable?"
+open question "A running time log forgotten over midnight can be stopped the next day, producing a done log that spans two days and violates DoneLogsAreWithinOneDay (such a log would then fail re-import). Should stopping clamp to the start day, reject, or is the current behaviour accepted?"
+open question "Today's worked time (dashboard timer and notification) adds the elapsed time of the latest time log regardless of the day it started on, so a running log forgotten from a previous day inflates today's remaining time and can make today appear overdue. Should only today's running log count?"
+open question "Stopping the timer within the same second it was started yields started_at = ended_at, which violates DoneLogsAreWithinOneDay (started_at < ended_at). Should such a stop be rejected, the log deleted, or the invariant relaxed to started_at <= ended_at?"
+open question "A backup file with duplicate start times passes import validation but produces time logs that violate UniqueStartTimes. Should the whole file be rejected, or should duplicates be collapsed?"
+open question "Known divergence: ImportTimeLogs is specified as all-or-nothing, but the implementation deletes all time logs and then writes the new ones outside a single transaction, so a failure during writing loses data. Should import be made atomic?"
+open question "Known divergence: an edit is specified to apply only if all its fields are valid, but the implementation saves fields one by one, so a valid start time followed by an invalid end time is partly saved. Should edits be made all-or-nothing?"
+open question "Known divergence: the storage persistence warning does not disappear after a successful retry, and it is shown while the first persistence check is still pending. The spec intends it to show only while storage is known to be non-persistent. Confirm and fix the implementation?"
+open question "'Start with time' is implemented as start-now plus an edit dialog; cancelling the dialog leaves the log started at now. Is that intended, or should cancelling abort the start?"
+open question "Every calendar day with at least one done time log is expected to have 8 h of work, including weekends and public holidays, while days without time logs count as neither over- nor undertime. Is counting weekend days as 8 h targets intended?"
+open question "Dashboard statistics (total and weekly overtime, today's remaining time) only consider time logs inside the selected time range, so 'total overtime' changes with the range. Is total overtime meant to be range-scoped?"
+open question "Quarter time ranges have no end: selecting Q1 in Q3 shows time logs from 1 January until now, the same as Q1-Q3. Should a quarter be bounded by its end?"
+open question "The time range start and the set of selectable quarters are computed from the date the page was loaded, not the current date, so a page kept open across midnight or a quarter boundary uses a stale range. Intended?"
+open question "The README says 'Limit timelogs to 8 full weeks' but nothing is ever deleted; older logs are only hidden and counted as 'outdated'. Is automatic pruning expected, or should the README change?"
+open question "Importing an empty backup file changes nothing but still reports success. Should an empty import be rejected or replace everything with nothing?"
+open question "Import validity is judged relative to the import moment: a running entry from an earlier day (e.g. a backup taken while the timer ran) makes the whole file invalid. Intended?"
+open question "Backups are only made when the timer is stopped after 17:00. Days on which the worker stops earlier (or never stops) get no automatic backup. Is a stop-triggered backup the intended policy, or is a once-per-day backup expected?"
+open question "The weekly overtime card is hidden whenever total overtime is exactly zero, even if this week has overtime. Intended?"
+open question "Is Worker a single implicit actor (single-user, device-local app), or should multiple people/devices be modelled?"
+open question "Analysis history sums signed over/undertime per workday, so today's unfinished day shows as undertime, while the total overtime figures ignore today's undertime. Should history exclude today's undertime too?"
+open question "Analysis history groups by locale week number (not Monday-start weeks as on the dashboard); late-December days can land in week 1 and merge with early January. Which week definition is intended?"
+open question "Weekday medians sort values as text and only average the two middle values for some list lengths, so medians can be wrong on real data. Is the standard statistical median intended?"
+open question "The analysis year filter resets to the default (current year or all) whenever stored time logs change, discarding the worker's selection. Intended?"
+open question "The analysis page uses every stored time log regardless of the dashboard time range, while the dashboard's 'total overtime' is range-scoped. Should the two totals agree?"
