@@ -37,8 +37,11 @@ export default class TimeLogRepository {
     await requestPersistence();
   }
 
-  async saveAll(timeLogs: TimeLog[]): Promise<void> {
-    await this.db.timeLogs.bulkPut(timeLogs);
+  async replaceAll(timeLogs: TimeLog[]): Promise<void> {
+    await this.db.transaction("rw", this.db.timeLogs, async () => {
+      await this.db.timeLogs.clear();
+      await this.db.timeLogs.bulkAdd(timeLogs);
+    });
     await requestPersistence();
   }
 
@@ -57,10 +60,6 @@ export default class TimeLogRepository {
     }
 
     await this.db.timeLogs.delete(timeLog.id);
-  }
-
-  async deleteAll(): Promise<void> {
-    await this.db.timeLogs.clear();
   }
 }
 
