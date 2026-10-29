@@ -34,7 +34,7 @@ export default function FormDialog(props: Props) {
   }
 
   async function handleSubmit() {
-    if (timeLog.isValid()) {
+    if (!error && timeLog.isValid()) {
       await timeLogApplicationService.update(timeLog);
       close();
     }
@@ -71,7 +71,7 @@ export default function FormDialog(props: Props) {
         <Button onClick={close} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button onClick={handleSubmit} color="primary" disabled={error}>
           Save
         </Button>
       </DialogActions>
