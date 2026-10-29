@@ -197,6 +197,21 @@ describe("TimeLogStatistics", () => {
     });
   });
 
+  describe("getTimerValues() with a running time log from a previous day", () => {
+    it("does not count the previous day's elapsed time for today", () => {
+      const now = withTime(new Date(), "17:00:00");
+      const timeLog = TimeLogTestFactory.testRunningTimeLog(
+        DateFns.subDays(DateFns.subHours(now, 4), 1)
+      );
+      const statistics = new TimeLogStatistics([timeLog], now);
+
+      expect(statistics.getTimerValues()).toMatchObject({
+        value: 8 * HOUR,
+        isOverdue: false,
+      });
+    });
+  });
+
   describe("pauseMs in getTimerValues()", () => {
     const at = (time: string) => withTime(TODAY, time);
     const doneLog = (start: string, hours: number) =>
