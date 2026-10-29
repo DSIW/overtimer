@@ -23,10 +23,14 @@ export default class TimeLogRepository {
     return await this.db.timeLogs.count();
   }
 
-  async allBefore(limitDate: Date): Promise<TimeLog[]> {
+  async allBefore(limitDate: Date, endDate?: Date): Promise<TimeLog[]> {
     const records = await this.db.timeLogs
       .orderBy("startTime")
-      .filter((timeLog) => isAfter(timeLog.startTime, limitDate))
+      .filter(
+        (timeLog) =>
+          isAfter(timeLog.startTime, limitDate) &&
+          (endDate === undefined || !isAfter(timeLog.startTime, endDate))
+      )
       .reverse()
       .toArray();
     return records.map((record) => new TimeLog({ ...record }));

@@ -1,6 +1,7 @@
 import {
   startOfLastWeeks,
   startOfTimeRange,
+  endOfTimeRange,
   todayWorkdayEnd,
   visibleTimeRangeOptions,
 } from "./time-constants";
@@ -113,6 +114,25 @@ describe("time-constants", () => {
         "q3",
         "q4",
       ]);
+    });
+  });
+
+  describe("#endOfTimeRange", () => {
+    const someDayInJuly = new Date(2026, 6, 31);
+
+    it("resolves a quarter option to the end of that quarter", () => {
+      expect(endOfTimeRange("q1", someDayInJuly)).toEqual(
+        new Date(2026, 2, 31, 23, 59, 59, 999)
+      );
+      expect(endOfTimeRange("q3", someDayInJuly)).toEqual(
+        new Date(2026, 8, 30, 23, 59, 59, 999)
+      );
+    });
+
+    it("is unbounded for all other options", () => {
+      expect(endOfTimeRange("w8", someDayInJuly)).toBeUndefined();
+      expect(endOfTimeRange("ytd", someDayInJuly)).toBeUndefined();
+      expect(endOfTimeRange("unknown", someDayInJuly)).toBeUndefined();
     });
   });
 });
