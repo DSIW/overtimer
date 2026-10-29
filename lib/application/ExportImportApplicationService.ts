@@ -13,8 +13,7 @@ export default class ExportImportApplicationService {
   async importFile(file: File) {
     const timeLogs = await new TimeLogsFile().read(file);
     if (timeLogs.length > 0) {
-      await this.timeLogRepository.deleteAll();
-      await this.timeLogRepository.saveAll(timeLogs);
+      await this.timeLogRepository.replaceAll(timeLogs);
     }
   }
 
