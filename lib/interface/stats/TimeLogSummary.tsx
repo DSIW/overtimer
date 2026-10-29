@@ -14,7 +14,7 @@ export default function TimeLogSummary({ timeLogs }: Props) {
   const weeklyOvertimeMs = timeLogStatistics.getWeeklyOvertimeMs();
   const totalOvertimeMs = timeLogStatistics.getTotalOvertimeMs();
 
-  const showWeekly = weeklyOvertimeMs !== 0 && totalOvertimeMs !== 0;
+  const showWeekly = weeklyOvertimeMs !== 0;
 
   return (
     <StatisticsRow>
