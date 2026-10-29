@@ -24,7 +24,10 @@ export default class TimeLogStatistics {
     const thisWeekTimeLogs = this.timeLogs.filter((timeLog) =>
       this.isThisWeek(timeLog)
     );
-    return new TimeLogStatistics(thisWeekTimeLogs).getTotalOvertimeMs();
+    return new TimeLogStatistics(
+      thisWeekTimeLogs,
+      this.nowDate
+    ).getTotalOvertimeMs();
   }
 
   getTimerValues() {
