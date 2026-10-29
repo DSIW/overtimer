@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import TimeLog from "./TimeLog";
 import * as DateFns from "date-fns";
 import { HOUR, todayWorkdayEnd } from "./time-constants";
@@ -129,5 +130,63 @@ describe("TimeLog#isEmptyAt()", () => {
     const timeLog = new TimeLog({ startTime });
 
     expect(timeLog.isEmptyAt(new Date("2026-10-28T08:00:01.000"))).toBe(false);
+  });
+});
+
+describe("TimeLog#isValid() for a running time log", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-28T10:00:00"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("is valid if it started earlier today", () => {
+    const timeLog = new TimeLog({ startTime: new Date("2026-10-28T08:00:00") });
+
+    expect(timeLog.isValid()).toBe(true);
+  });
+
+  it("is invalid if it starts in the future", () => {
+    const timeLog = new TimeLog({ startTime: new Date("2026-10-28T11:00:00") });
+
+    expect(timeLog.isValid()).toBe(false);
+  });
+
+  it("is invalid if it starts now", () => {
+    const timeLog = new TimeLog({ startTime: new Date("2026-10-28T10:00:00") });
+
+    expect(timeLog.isValid()).toBe(false);
+  });
+
+  it("is invalid if it started on a previous day", () => {
+    const timeLog = new TimeLog({ startTime: new Date("2026-10-27T08:00:00") });
+
+    expect(timeLog.isValid()).toBe(false);
+  });
+});
+
+describe("TimeLog#isDeletable() relative to now", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-28T00:30:00"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("allows deleting a log still running from before midnight", () => {
+    const timeLog = new TimeLog({ startTime: new Date("2026-10-27T23:00:00") });
+
+    expect(timeLog.isDeletable()).toBe(true);
+  });
+
+  it("forbids deleting a log running since today", () => {
+    const timeLog = new TimeLog({ startTime: new Date("2026-10-28T00:10:00") });
+
+    expect(timeLog.isDeletable()).toBe(false);
   });
 });

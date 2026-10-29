@@ -379,3 +379,77 @@ function testFulfilledTimeLog(date: Date, hours: number) {
     endTime: DateFns.addHours(date, hours),
   });
 }
+
+describe("TimeLogStatistics#getTimerValues() for today's worked time", () => {
+  // Wed, 2026-10-28
+  const at = (time: string) => withTime(DateFns.parseISO("2026-10-28"), time);
+  const doneLog = (day: string, start: string, hours: number) =>
+    TimeLogTestFactory.testFulfilledTimeLog(
+      DateFns.parseISO(day),
+      start,
+      hours
+    );
+
+  it("adds the running time log's elapsed time to today's done time logs", () => {
+    // 3h done + 2h running => 3h remaining
+    const timeLogs = [
+      TimeLogTestFactory.testRunningTimeLog(at("12:00:00")),
+      doneLog("2026-10-28", "08:00:00", 3),
+    ];
+
+    const values = new TimeLogStatistics(
+      timeLogs,
+      at("14:00:00")
+    ).getTimerValues();
+
+    expect(values).toMatchObject({
+      isRunning: true,
+      value: 3 * HOUR,
+      isOverdue: false,
+    });
+  });
+
+  it("does not count previous days' time logs for today", () => {
+    const timeLogs = [doneLog("2026-10-27", "08:00:00", 6)];
+
+    const values = new TimeLogStatistics(
+      timeLogs,
+      at("14:00:00")
+    ).getTimerValues();
+
+    expect(values).toMatchObject({ value: 8 * HOUR, isOverdue: false });
+  });
+
+  it("is overdue as soon as exactly the daily target is worked", () => {
+    const timeLogs = [doneLog("2026-10-28", "06:00:00", 8)];
+
+    const values = new TimeLogStatistics(
+      timeLogs,
+      at("14:30:00")
+    ).getTimerValues();
+
+    expect(values).toMatchObject({ value: 0, isOverdue: true });
+  });
+
+  it("shows a pause from the start of the pause window", () => {
+    const timeLogs = [doneLog("2026-10-28", "05:00:00", 0.5)];
+
+    const values = new TimeLogStatistics(
+      timeLogs,
+      at("06:00:00")
+    ).getTimerValues();
+
+    expect(values.pauseMs).toBe(30 * 60 * 1000);
+  });
+
+  it("shows no pause for a stop on a previous day", () => {
+    const timeLogs = [doneLog("2026-10-27", "08:00:00", 2)];
+
+    const values = new TimeLogStatistics(
+      timeLogs,
+      at("10:00:00")
+    ).getTimerValues();
+
+    expect(values.pauseMs).toBeUndefined();
+  });
+});
