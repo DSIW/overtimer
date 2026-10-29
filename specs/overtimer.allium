@@ -616,6 +616,5 @@ open question "The weekly overtime card is hidden whenever total overtime is exa
 open question "Is Worker a single implicit actor (single-user, device-local app), or should multiple people/devices be modelled?"
 open question "Analysis history sums signed over/undertime per workday, so today's unfinished day shows as undertime, while the total overtime figures ignore today's undertime. Should history exclude today's undertime too?"
 open question "Analysis history groups by locale week number (not Monday-start weeks as on the dashboard); late-December days can land in week 1 and merge with early January. Which week definition is intended?"
-open question "Weekday medians sort values as text and only average the two middle values for some list lengths, so medians can be wrong on real data. Is the standard statistical median intended?"
 open question "The analysis year filter resets to the default (current year or all) whenever stored time logs change, discarding the worker's selection. Intended?"
 open question "The analysis page uses every stored time log regardless of the dashboard time range, while the dashboard's 'total overtime' is range-scoped. Should the two totals agree?"
