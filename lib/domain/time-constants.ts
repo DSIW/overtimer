@@ -58,6 +58,22 @@ export function startOfTimeRange(
   }
 }
 
+// Only quarters are bounded; all other ranges run until now.
+export function endOfTimeRange(
+  optionId: string = DEFAULT_TIME_RANGE_OPTION_ID,
+  today = TODAY
+): Date | undefined {
+  const option = TIME_RANGE_OPTIONS.find(
+    (candidate) => candidate.id === optionId
+  );
+
+  if (option?.kind !== "quarter") {
+    return undefined;
+  }
+
+  return DateFns.endOfQuarter(DateFns.setQuarter(today, option.quarter));
+}
+
 export function todayWorkdayEnd() {
   return withTime(new Date(), "17:00:00");
 }

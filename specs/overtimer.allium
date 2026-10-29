@@ -443,7 +443,8 @@ surface TimerDashboard {
 
     -- Time logs shown on the dashboard and used for its statistics.
     let range_start = time_range_start(preferences.time_range, now)
-    let shown_logs = TimeLogs where started_at > range_start
+    let range_end = time_range_end(preferences.time_range, now)
+    let shown_logs = TimeLogs where started_at > range_start and started_at <= range_end
     let hidden_log_count = TimeLogs.count - shown_logs.count
 
     let todays_logs = shown_logs where day = day_of(now)
@@ -522,7 +523,9 @@ surface TimerDashboard {
         --   last N weeks: start (Monday 00:00) of the week containing
         --     now - N weeks
         --   this year: 1 January of the current year
-        --   quarter Qn: first day of Qn in the current year (no end bound)
+        --   quarter Qn: first day of Qn in the current year
+        --   only quarters have an end: time_range_end(Qn, now) is the last
+        --     day of Qn; all other ranges run until now.
         -- Hidden time logs are reported as "outdated"; nothing is deleted.
         -- overtime_of(logs, now) applies the same past/today overtime
         -- computation as total_overtime to the given logs. Weekly overtime
@@ -626,7 +629,6 @@ open question "Start/stop is decided by the most recent time log only (the timer
 open question "'Start with time' is implemented as start-now plus an edit dialog; cancelling the dialog leaves the log started at now. Is that intended, or should cancelling abort the start?"
 open question "Every calendar day with at least one done time log is expected to have 8 h of work, including weekends and public holidays, while days without time logs count as neither over- nor undertime. Is counting weekend days as 8 h targets intended?"
 open question "Dashboard statistics (total and weekly overtime, today's remaining time) only consider time logs inside the selected time range, so 'total overtime' changes with the range. Is total overtime meant to be range-scoped?"
-open question "Quarter time ranges have no end: selecting Q1 in Q3 shows time logs from 1 January until now, the same as Q1-Q3. Should a quarter be bounded by its end?"
 open question "The time range start and the set of selectable quarters are computed from the date the page was loaded, not the current date, so a page kept open across midnight or a quarter boundary uses a stale range. Intended?"
 open question "The README says 'Limit timelogs to 8 full weeks' but nothing is ever deleted; older logs are only hidden and counted as 'outdated'. Is automatic pruning expected, or should the README change?"
 open question "Importing an empty backup file changes nothing but still reports success. Should an empty import be rejected or replace everything with nothing?"

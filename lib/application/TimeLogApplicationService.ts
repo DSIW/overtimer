@@ -1,6 +1,7 @@
 import TimeLog from "../domain/TimeLog";
 import TimeLogRepository from "../infrastructure/TimeLogRepository";
 import {
+  endOfTimeRange,
   startOfTimeRange,
   DEFAULT_TIME_RANGE_OPTION_ID,
 } from "../domain/time-constants";
@@ -20,7 +21,8 @@ export default class TimeLogApplicationService {
     timeRangeOptionId: string = DEFAULT_TIME_RANGE_OPTION_ID
   ) {
     const recentLimitDate = startOfTimeRange(timeRangeOptionId);
-    return await this.timeLogRepository.allBefore(recentLimitDate);
+    const endDate = endOfTimeRange(timeRangeOptionId);
+    return await this.timeLogRepository.allBefore(recentLimitDate, endDate);
   }
 
   async getAllTimeLogs() {
