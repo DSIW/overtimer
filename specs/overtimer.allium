@@ -296,6 +296,7 @@ rule ImportTimeLogs {
 
     requires: file.entries.count > 0
     requires: file.entries.all(e => is_valid_entry(e, now))
+    requires: file.entries.all(a => file.entries.count(b => b.started_at = a.started_at) = 1)
 
     ensures:
         for existing in TimeLogs:
@@ -602,8 +603,6 @@ open question "Start/stop is decided by the most recent time log only (the timer
 open question "A running time log forgotten over midnight can be stopped the next day, producing a done log that spans two days and violates DoneLogsAreWithinOneDay (such a log would then fail re-import). Should stopping clamp to the start day, reject, or is the current behaviour accepted?"
 open question "Today's worked time (dashboard timer and notification) adds the elapsed time of the latest time log regardless of the day it started on, so a running log forgotten from a previous day inflates today's remaining time and can make today appear overdue. Should only today's running log count?"
 open question "Stopping the timer within the same second it was started yields started_at = ended_at, which violates DoneLogsAreWithinOneDay (started_at < ended_at). Should such a stop be rejected, the log deleted, or the invariant relaxed to started_at <= ended_at?"
-open question "A backup file with duplicate start times passes import validation but produces time logs that violate UniqueStartTimes. Should the whole file be rejected, or should duplicates be collapsed?"
-open question "Known divergence: ImportTimeLogs is specified as all-or-nothing, but the implementation deletes all time logs and then writes the new ones outside a single transaction, so a failure during writing loses data. Should import be made atomic?"
 open question "Known divergence: the storage persistence warning does not disappear after a successful retry, and it is shown while the first persistence check is still pending. The spec intends it to show only while storage is known to be non-persistent. Confirm and fix the implementation?"
 open question "'Start with time' is implemented as start-now plus an edit dialog; cancelling the dialog leaves the log started at now. Is that intended, or should cancelling abort the start?"
 open question "Every calendar day with at least one done time log is expected to have 8 h of work, including weekends and public holidays, while days without time logs count as neither over- nor undertime. Is counting weekend days as 8 h targets intended?"
