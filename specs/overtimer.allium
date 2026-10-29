@@ -389,9 +389,9 @@ rule SelectAnalysisYear {
     ensures: analysis_filter.year = year
 }
 
--- On opening the analysis page (and, in the current implementation,
--- whenever the stored time logs change) the filter falls back to the
--- current year if it has time logs, otherwise to all years.
+-- On opening the analysis page the filter falls back to the current year if
+-- it has time logs, otherwise to all years. A year the worker selected is
+-- kept while it still has time logs.
 rule ResetAnalysisYear {
     when: WorkerOpensAnalysis(worker)
 
@@ -615,5 +615,4 @@ open question "Backups are only made when the timer is stopped after 17:00. Days
 open question "Is Worker a single implicit actor (single-user, device-local app), or should multiple people/devices be modelled?"
 open question "Analysis history sums signed over/undertime per workday, so today's unfinished day shows as undertime, while the total overtime figures ignore today's undertime. Should history exclude today's undertime too?"
 open question "Analysis history groups by locale week number (not Monday-start weeks as on the dashboard); late-December days can land in week 1 and merge with early January. Which week definition is intended?"
-open question "The analysis year filter resets to the default (current year or all) whenever stored time logs change, discarding the worker's selection. Intended?"
 open question "The analysis page uses every stored time log regardless of the dashboard time range, while the dashboard's 'total overtime' is range-scoped. Should the two totals agree?"

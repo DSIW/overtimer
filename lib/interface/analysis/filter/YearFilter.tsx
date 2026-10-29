@@ -1,5 +1,5 @@
 import { SelectChangeEvent } from "@mui/material/Select";
-import React, { Fragment, ReactElement, useEffect, useState } from "react";
+import React, { Fragment, ReactElement, useState } from "react";
 import TimeLog from "../../../domain/TimeLog";
 import _ from "lodash";
 import YearSelect, { ALL_YEARS } from "./YearSelect";
@@ -22,12 +22,13 @@ export default function YearFilter(props: Props) {
   const currentYear = new Date().getFullYear();
   const defaultYear = years.includes(currentYear) ? currentYear : ALL_YEARS;
 
-  const [yearFilter, setYearFilter] = useState("" + defaultYear);
+  const [selectedYear, setSelectedYear] = useState<string | undefined>();
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setYearFilter("" + defaultYear);
-  }, [props.timeLogs, defaultYear]);
+  // keep the worker's selection as long as that year still has time logs
+  const selectionIsAvailable =
+    selectedYear !== undefined &&
+    (selectedYear === ALL_YEARS || years.includes(parseInt(selectedYear)));
+  const yearFilter = selectionIsAvailable ? selectedYear : "" + defaultYear;
 
   const timeLogs = props.timeLogs.filter((timeLog) => {
     return (
@@ -37,7 +38,7 @@ export default function YearFilter(props: Props) {
   });
 
   function handleYearSelect(event: SelectChangeEvent) {
-    setYearFilter(event.target.value);
+    setSelectedYear(event.target.value);
   }
 
   return (
