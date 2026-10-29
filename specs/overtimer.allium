@@ -189,15 +189,28 @@ rule StartTimerWithStartTime {
     ensures: TimeLog.created(started_at: started_at, status: running)
 }
 
+-- Timestamps have whole-second precision.
 rule StopTimer {
     when: WorkerStopsTimer(worker, log)
 
     requires: log.status = running
+    requires: now > log.started_at
 
     ensures:
         log.status = done
         log.ended_at = now
     ensures: TimerStopped(log: log, at: now)
+}
+
+-- Stopping within the second the log was started would produce an empty
+-- log, so the log is discarded instead.
+rule DiscardEmptyTimeLog {
+    when: WorkerStopsTimer(worker, log)
+
+    requires: log.status = running
+    requires: now <= log.started_at
+
+    ensures: not exists log
 }
 
 -- Editing and deleting ---------------------------------------
@@ -602,7 +615,6 @@ surface AnalysisPage {
 open question "Start/stop is decided by the most recent time log only (the timer stops the latest log if it is running, otherwise starts a new one). Should the rule be 'no running time log exists' as specified, or is a second running log (e.g. after back-dating a running log before an earlier done log) acceptable?"
 open question "A running time log forgotten over midnight can be stopped the next day, producing a done log that spans two days and violates DoneLogsAreWithinOneDay (such a log would then fail re-import). Should stopping clamp to the start day, reject, or is the current behaviour accepted?"
 open question "Today's worked time (dashboard timer and notification) adds the elapsed time of the latest time log regardless of the day it started on, so a running log forgotten from a previous day inflates today's remaining time and can make today appear overdue. Should only today's running log count?"
-open question "Stopping the timer within the same second it was started yields started_at = ended_at, which violates DoneLogsAreWithinOneDay (started_at < ended_at). Should such a stop be rejected, the log deleted, or the invariant relaxed to started_at <= ended_at?"
 open question "'Start with time' is implemented as start-now plus an edit dialog; cancelling the dialog leaves the log started at now. Is that intended, or should cancelling abort the start?"
 open question "Every calendar day with at least one done time log is expected to have 8 h of work, including weekends and public holidays, while days without time logs count as neither over- nor undertime. Is counting weekend days as 8 h targets intended?"
 open question "Dashboard statistics (total and weekly overtime, today's remaining time) only consider time logs inside the selected time range, so 'total overtime' changes with the range. Is total overtime meant to be range-scoped?"

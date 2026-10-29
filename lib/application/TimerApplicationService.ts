@@ -17,6 +17,13 @@ export default class TimerApplicationService {
   async stop(currentTimeLog: TimeLog) {
     const endTime = new Date();
 
+    // a log that would be empty (stopped within the second it was started)
+    // carries no information and would be invalid, so it is discarded
+    if (currentTimeLog.isEmptyAt(endTime)) {
+      await this.timeLogRepository.delete(currentTimeLog);
+      return;
+    }
+
     const updatedTimeLog = new TimeLog({
       ...currentTimeLog,
       endTime,

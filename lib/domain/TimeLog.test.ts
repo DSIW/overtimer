@@ -115,3 +115,19 @@ describe("TimeLog", () => {
     });
   });
 });
+
+describe("TimeLog#isEmptyAt()", () => {
+  const startTime = new Date("2026-10-28T08:00:00.400");
+
+  it("is empty within the second it was started", () => {
+    const timeLog = new TimeLog({ startTime });
+
+    expect(timeLog.isEmptyAt(new Date("2026-10-28T08:00:00.900"))).toBe(true);
+  });
+
+  it("is not empty one second later", () => {
+    const timeLog = new TimeLog({ startTime });
+
+    expect(timeLog.isEmptyAt(new Date("2026-10-28T08:00:01.000"))).toBe(false);
+  });
+});

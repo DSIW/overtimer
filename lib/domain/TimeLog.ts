@@ -35,6 +35,10 @@ export default class TimeLog {
     return sameDay && this.startTime < end;
   }
 
+  isEmptyAt(time: Date): boolean {
+    return this.reducePrecision(time) <= this.startTime;
+  }
+
   isRunning() {
     return !this.endTime;
   }
