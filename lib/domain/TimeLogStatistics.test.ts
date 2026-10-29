@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import TimeLog from "./TimeLog";
 import TimeLogStatistics from "./TimeLogStatistics";
 import * as DateFns from "date-fns";
@@ -151,6 +152,94 @@ describe("TimeLogStatistics", () => {
       const statistics = new TimeLogStatistics([lastWeekTimeLog], TODAY);
 
       expect(statistics.getWeeklyOvertimeMs()).toBe(0);
+    });
+  });
+
+  describe("getTotalOvertimeMs() across several days", () => {
+    it("ignores a running time log left over from a previous day", () => {
+      const forgotten = TimeLogTestFactory.testRunningTimeLog(YESTERDAY);
+
+      const statistics = new TimeLogStatistics([forgotten], TODAY);
+
+      expect(statistics.getTotalOvertimeMs()).toBe(0);
+    });
+
+    it("counts each past day fully against its own target", () => {
+      // two days ago 10h (+2h), yesterday 5h (-3h)
+      const twoDaysAgo = testFulfilledTimeLog(
+        DateFns.subDays(YESTERDAY, 1),
+        10
+      );
+      const yesterday = testFulfilledTimeLog(YESTERDAY, 5);
+
+      const statistics = new TimeLogStatistics([yesterday, twoDaysAgo], TODAY);
+
+      expect(statistics.getTotalOvertimeMs()).toBe(-1 * HOUR);
+    });
+
+    it("does not let today's undertime reduce the overtime of past days", () => {
+      const yesterday = testFulfilledTimeLog(YESTERDAY, 8 + 2);
+      const today = testFulfilledTimeLog(todayWorkdayStart(), 3);
+
+      const statistics = new TimeLogStatistics([today, yesterday], TODAY);
+
+      expect(statistics.getTotalOvertimeMs()).toBe(2 * HOUR);
+    });
+
+    it("counts today's overtime once today's done time logs exceed the target", () => {
+      const morning = testFulfilledTimeLog(todayWorkdayStart(), 5);
+      const afternoon = testFulfilledTimeLog(
+        DateFns.addHours(todayWorkdayStart(), 6),
+        4
+      );
+
+      const statistics = new TimeLogStatistics([afternoon, morning], TODAY);
+
+      expect(statistics.getTotalOvertimeMs()).toBe(1 * HOUR);
+    });
+  });
+
+  describe("getWeeklyOvertimeMs() within the current week", () => {
+    // Wed, 2026-10-28; the week started Mon, 2026-10-26
+    const NOW = DateFns.parseISO("2026-10-28T18:00:00");
+    const at = (day: string, start: string, hours: number) =>
+      TimeLogTestFactory.testFulfilledTimeLog(
+        DateFns.parseISO(day),
+        start,
+        hours
+      );
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("counts past days of the week fully and today's undertime not at all", () => {
+      vi.useFakeTimers({ toFake: ["Date"] });
+      vi.setSystemTime(NOW);
+      // Mon 7h (-1h), today 3h (ignored), last Fri 10h (other week)
+      const timeLogs = [
+        at("2026-10-28", "08:00:00", 3),
+        at("2026-10-26", "08:00:00", 7),
+        at("2026-10-23", "08:00:00", 10),
+      ];
+
+      const statistics = new TimeLogStatistics(timeLogs, NOW);
+
+      expect(statistics.getWeeklyOvertimeMs()).toBe(-1 * HOUR);
+    });
+
+    it("applies the past/today split relative to the given now", () => {
+      // Wed, 2022-08-03 (system time is not faked)
+      const now = DateFns.parseISO("2022-08-03T18:00:00");
+      // Mon 9h (+1h), today 3h (today's undertime must be ignored)
+      const timeLogs = [
+        at("2022-08-03", "08:00:00", 3),
+        at("2022-08-01", "08:00:00", 9),
+      ];
+
+      const statistics = new TimeLogStatistics(timeLogs, now);
+
+      expect(statistics.getWeeklyOvertimeMs()).toBe(1 * HOUR);
     });
   });
 

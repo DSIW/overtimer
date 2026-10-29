@@ -279,6 +279,59 @@ describe("Workday", () => {
     });
   });
 
+  describe("measures at and around the daily target of 8 hours", () => {
+    const workdayOf = (hours: number) =>
+      new Workday([
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "08:00:00", hours),
+      ]);
+
+    it("caps work time only above the target, keeping a shorter day as is", () => {
+      expect(workdayOf(7).getCappedTotalWorkTimeMs()).toEqual(7 * HOUR);
+    });
+
+    it("has no overtime when exactly the target is worked", () => {
+      expect(workdayOf(8).getOvertimeMs()).toEqual(0);
+    });
+
+    it("has neither over- nor undertime when exactly the target is worked", () => {
+      expect(workdayOf(8).getOverAndUndertimeMs()).toEqual(0);
+    });
+
+    it("sums the work time of all time logs before comparing with the target", () => {
+      const workday = new Workday([
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "08:00:00", 5),
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "14:00:00", 4),
+      ]);
+
+      expect(workday.getTotalWorkTimeMs()).toEqual(9 * HOUR);
+      expect(workday.hasOvertime()).toBe(true);
+      expect(workday.getOvertimeMs()).toEqual(1 * HOUR);
+      expect(workday.getOverAndUndertimeMs()).toEqual(1 * HOUR);
+      expect(workday.getCappedTotalWorkTimeMs()).toEqual(8 * HOUR);
+    });
+
+    it("reports an undertime day as negative over/undertime but zero overtime", () => {
+      const workday = workdayOf(6);
+
+      expect(workday.hasOvertime()).toBe(false);
+      expect(workday.getOverAndUndertimeMs()).toEqual(-2 * HOUR);
+      expect(workday.getOvertimeMs()).toEqual(0);
+    });
+  });
+
+  describe("getPauseMs with unordered time logs", () => {
+    it("sums the gaps between consecutive time logs regardless of input order", () => {
+      const workday = new Workday([
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "13:00:00", 1),
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "09:00:00", 1),
+        TimeLogTestFactory.testFulfilledTimeLog(DAY, "10:30:00", 1),
+      ]);
+
+      // gaps: 10:00-10:30 (0.5h) and 11:30-13:00 (1.5h)
+      expect(workday.getPauseMs()).toEqual(2 * HOUR);
+    });
+  });
+
   describe("validation", () => {
     it("throws error if any timelog is running", () => {
       const timeLog = TimeLogTestFactory.testFulfilledTimeLog(
