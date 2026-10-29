@@ -118,7 +118,12 @@ export default class TimeLogStatistics {
 
   private getCurrentWorkTimeMs() {
     const currentTimeLog = this.timeLogs[0];
-    const elapsedMs = currentTimeLog?.getElapsedMs(this.nowDate) || 0;
+    // a running log forgotten from a previous day must not count for today
+    const elapsedMs =
+      (currentTimeLog &&
+        this.isToday(currentTimeLog) &&
+        currentTimeLog.getElapsedMs(this.nowDate)) ||
+      0;
 
     const todayTotalMs = this.getTodayTotalMs();
     const totalWorkMs = this.getTotalWorkTimeMs();
