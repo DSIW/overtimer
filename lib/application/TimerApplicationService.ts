@@ -1,3 +1,4 @@
+import { endOfDay, isSameDay } from "date-fns";
 import TimeLog from "../domain/TimeLog";
 import TimeLogRepository from "../infrastructure/TimeLogRepository";
 import { exportImportApplicationService } from "./ExportImportApplicationService";
@@ -15,7 +16,11 @@ export default class TimerApplicationService {
   }
 
   async stop(currentTimeLog: TimeLog) {
-    const endTime = new Date();
+    const now = new Date();
+    // a log forgotten over midnight ends at the end of the day it started on
+    const endTime = isSameDay(now, currentTimeLog.startTime)
+      ? now
+      : endOfDay(currentTimeLog.startTime);
 
     // a log that would be empty (stopped within the second it was started)
     // carries no information and would be invalid, so it is discarded
@@ -30,9 +35,7 @@ export default class TimerApplicationService {
     });
     await this.timeLogRepository.update(updatedTimeLog);
 
-    await exportImportApplicationService.exportAllTimeLogsAfterWorkdayEnd(
-      endTime
-    );
+    await exportImportApplicationService.exportAllTimeLogsAfterWorkdayEnd(now);
   }
 }
 
