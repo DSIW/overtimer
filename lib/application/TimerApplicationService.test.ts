@@ -58,4 +58,17 @@ describe("TimerApplicationService#stop()", () => {
     expect(update).not.toHaveBeenCalled();
     expect(exportAfterWorkdayEnd).not.toHaveBeenCalled();
   });
+
+  it("ends a time log forgotten over midnight at the end of its day", async () => {
+    const running = new TimeLog({
+      id: 1,
+      startTime: new Date("2026-10-27T08:00:00"),
+    });
+
+    await new TimerApplicationService().stop(running);
+
+    expect(update.mock.calls[0][0].endTime).toEqual(
+      new Date("2026-10-27T23:59:59")
+    );
+  });
 });
