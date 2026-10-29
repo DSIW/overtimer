@@ -33,6 +33,7 @@ export default function PersistenceWarning({ timeLogs }: Props) {
 
   async function handleTrial() {
     const isPersisted = await requestPersistence();
+    setPersisted(isPersisted);
     if (!isPersisted) {
       enqueueSnackbar("Still no permission! Please go to your site settings.", {
         variant: "error",
@@ -40,7 +41,7 @@ export default function PersistenceWarning({ timeLogs }: Props) {
     }
   }
 
-  if (timeLogs.length <= 0 || persisted) {
+  if (timeLogs.length <= 0 || persisted !== false) {
     return null;
   }
 
