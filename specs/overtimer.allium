@@ -466,7 +466,7 @@ surface TimerDashboard {
                 and last_stop_today != null
 
         -- Overtime summary.
-        weekly_overtime when weekly_overtime != 0.minutes and total_overtime != 0.minutes
+        weekly_overtime when weekly_overtime != 0.minutes
         total_overtime
 
         -- Time log table, newest first.
@@ -612,7 +612,6 @@ open question "The README says 'Limit timelogs to 8 full weeks' but nothing is e
 open question "Importing an empty backup file changes nothing but still reports success. Should an empty import be rejected or replace everything with nothing?"
 open question "Import validity is judged relative to the import moment: a running entry from an earlier day (e.g. a backup taken while the timer ran) makes the whole file invalid. Intended?"
 open question "Backups are only made when the timer is stopped after 17:00. Days on which the worker stops earlier (or never stops) get no automatic backup. Is a stop-triggered backup the intended policy, or is a once-per-day backup expected?"
-open question "The weekly overtime card is hidden whenever total overtime is exactly zero, even if this week has overtime. Intended?"
 open question "Is Worker a single implicit actor (single-user, device-local app), or should multiple people/devices be modelled?"
 open question "Analysis history sums signed over/undertime per workday, so today's unfinished day shows as undertime, while the total overtime figures ignore today's undertime. Should history exclude today's undertime too?"
 open question "Analysis history groups by locale week number (not Monday-start weeks as on the dashboard); late-December days can land in week 1 and merge with early January. Which week definition is intended?"
