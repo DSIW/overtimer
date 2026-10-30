@@ -117,6 +117,83 @@ describe("time-constants", () => {
     });
   });
 
+  describe("#startOfTimeRange for every option", () => {
+    const someDayInNovember = new Date(2026, 10, 18, 15, 30);
+
+    it.each([
+      ["w4", 4],
+      ["w8", 8],
+      ["w12", 12],
+      ["w26", 26],
+      ["w52", 52],
+    ])(
+      "resolves %s to the Monday 00:00 of the week containing now minus %i weeks",
+      (id, weeks) => {
+        expect(startOfTimeRange(id, someDayInNovember)).toEqual(
+          startOfLastWeeks(weeks as number, someDayInNovember)
+        );
+      }
+    );
+
+    it("resolves Q2 and Q4 to the first day of that quarter in the current year", () => {
+      expect(startOfTimeRange("q2", someDayInNovember)).toEqual(
+        new Date(2026, 3, 1)
+      );
+      expect(startOfTimeRange("q4", someDayInNovember)).toEqual(
+        new Date(2026, 9, 1)
+      );
+    });
+
+    it("uses last 8 weeks as the default option", () => {
+      expect(startOfTimeRange(undefined, someDayInNovember)).toEqual(
+        startOfLastWeeks(8, someDayInNovember)
+      );
+    });
+  });
+
+  describe("#visibleTimeRangeOptions at a quarter boundary", () => {
+    const quarterIds = (today: Date) =>
+      visibleTimeRangeOptions(today)
+        .filter((option) => option.kind === "quarter")
+        .map((option) => option.id);
+
+    it("hides Q2 on the last moment of Q1", () => {
+      expect(quarterIds(new Date(2026, 2, 31, 23, 59, 59))).toEqual(["q1"]);
+    });
+
+    it("offers Q2 from the first moment of Q2", () => {
+      expect(quarterIds(new Date(2026, 3, 1, 0, 0, 0))).toEqual(["q1", "q2"]);
+    });
+
+    it("always offers every week range and this year", () => {
+      for (const month of [0, 3, 6, 9]) {
+        const ids = visibleTimeRangeOptions(new Date(2026, month, 1)).map(
+          (option) => option.id
+        );
+        expect(ids).toEqual(
+          expect.arrayContaining(["w4", "w8", "w12", "w26", "w52", "ytd"])
+        );
+      }
+    });
+  });
+
+  describe("#endOfTimeRange for every option", () => {
+    const someDayInNovember = new Date(2026, 10, 18);
+
+    it("resolves Q2 and Q4 to the last moment of that quarter", () => {
+      expect(endOfTimeRange("q2", someDayInNovember)).toEqual(
+        new Date(2026, 5, 30, 23, 59, 59, 999)
+      );
+      expect(endOfTimeRange("q4", someDayInNovember)).toEqual(
+        new Date(2026, 11, 31, 23, 59, 59, 999)
+      );
+    });
+
+    it.each(["w4", "w12", "w26", "w52"])("is unbounded for %s", (id) => {
+      expect(endOfTimeRange(id, someDayInNovember)).toBeUndefined();
+    });
+  });
+
   describe("#endOfTimeRange", () => {
     const someDayInJuly = new Date(2026, 6, 31);
 
