@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.4.1](https://github.com/DSIW/overtimer/compare/overtimer-v1.4.0...overtimer-v1.4.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* bound a quarter time range to the end of the quarter ([#1388](https://github.com/DSIW/overtimer/issues/1388)) ([e7765f0](https://github.com/DSIW/overtimer/commit/e7765f0e25944f8d622ff0216f15e196c03fa557))
+* compute weekday medians correctly ([#1382](https://github.com/DSIW/overtimer/issues/1382)) ([3caf78f](https://github.com/DSIW/overtimer/commit/3caf78f5b7669c1e744c42c46cd521d1c81b27d7))
+* count only today's running time log towards today's worked time ([#1387](https://github.com/DSIW/overtimer/issues/1387)) ([8d92380](https://github.com/DSIW/overtimer/commit/8d923809891e74f41472c4dc3d532861d3a1a270))
+* discard a time log that is stopped within the second it was started ([#1385](https://github.com/DSIW/overtimer/issues/1385)) ([1a35a0a](https://github.com/DSIW/overtimer/commit/1a35a0a489c9fbc388f2e1d43b8b50daca605fb0))
+* do not save the edit dialog while it shows an error ([#1380](https://github.com/DSIW/overtimer/issues/1380)) ([f494409](https://github.com/DSIW/overtimer/commit/f49440961839ffe5907f5b69b143def6b24896d7))
+* end a time log forgotten over midnight at the end of its day ([#1386](https://github.com/DSIW/overtimer/issues/1386)) ([6dcab12](https://github.com/DSIW/overtimer/commit/6dcab129f6d9a90adb5477ef8a4e6c638ffc88ab))
+* hide the persistence warning until storage is known to be non-persistent ([#1381](https://github.com/DSIW/overtimer/issues/1381)) ([a6b40e7](https://github.com/DSIW/overtimer/commit/a6b40e700b997726c81068403fd8e119042a8362))
+* keep the selected analysis year when time logs change ([#1384](https://github.com/DSIW/overtimer/issues/1384)) ([07f0320](https://github.com/DSIW/overtimer/commit/07f0320751f37410398dec113215d5184e55b2f4))
+* make backup import atomic and reject duplicate start times ([#1378](https://github.com/DSIW/overtimer/issues/1378)) ([8065ca7](https://github.com/DSIW/overtimer/commit/8065ca740a29d978bfbea348bb35c4dca9e14eb2))
+* show the week overtime card whenever this week has overtime ([#1383](https://github.com/DSIW/overtimer/issues/1383)) ([42c56d4](https://github.com/DSIW/overtimer/commit/42c56d42b78e6cfae672846c70180a0be12aaa0f))
+
 ## [1.4.0](https://github.com/DSIW/overtimer/compare/overtimer-v1.3.1...overtimer-v1.4.0) (2026-10-12)
 
 
